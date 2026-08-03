@@ -190,7 +190,12 @@ input,select,textarea{font:inherit;color:inherit}
 .veil-cta{display:none}
 @media(max-width:759px){
   .veil-cta{display:flex;gap:10px}
-  .veil-cta .btn{padding:0 14px;white-space:nowrap}
+  .veil-cta a{display:inline-flex;align-items:center;justify-content:center;gap:.6em;
+    min-height:50px;padding:0 14px;border-radius:2px;font-family:var(--skandia-m);
+    font-weight:600;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
+    white-space:nowrap;background:var(--ink);color:var(--paper);
+    transition:opacity .3s var(--ease)}
+  .veil-cta a:hover{opacity:.85}
 }
 
 /* ── platform marks: official artwork, official colours ── */
