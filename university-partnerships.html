@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>University Partnerships — The Access Exchange</title>
+  <meta name="description" content="Partner your university with The Access Exchange: on-campus interview events, student access to industry guests, and co-branded career programming. See how partnerships work and get in touch.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="university-partnerships">
+
+  <!-- TEMPLATE-PART: header -->
+  <!-- .is-active on the current page's nav link is applied by script.js from <body data-page="...">, keeping this header byte-identical on every page. Becomes an is_page() conditional in WordPress. -->
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header" id="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">The Access <span>Exchange</span></a>
+      <nav class="site-nav" aria-label="Primary">
+        <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu">
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+          <span class="visually-hidden">Menu</span>
+        </button>
+        <ul class="nav-menu" id="nav-menu">
+          <li><a class="nav-link" data-nav="home" href="index.html">Home</a></li>
+          <li><a class="nav-link" data-nav="interview-series" href="interview-series.html">Interview Series</a></li>
+          <li><a class="nav-link" data-nav="university-partnerships" href="university-partnerships.html">University Partnerships</a></li>
+          <li><a class="nav-link" data-nav="interviews-insights" href="interviews-insights.html">Interviews &amp; Insights</a></li>
+          <li><a class="nav-link" data-nav="about" href="about.html">About</a></li>
+          <li><a class="nav-link" data-nav="contact" href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <!-- /TEMPLATE-PART: header -->
+
+  <main id="main">
+
+    <section class="hero">
+      <div class="container">
+        <p class="section-kicker">University Partnerships</p>
+        <h1 class="hero-title">Bring the industry <em>to your students</em>.</h1>
+        <p class="hero-lede">We partner with universities to turn our interview network into campus programming — live events, guest access, and career content your students can actually use.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#inquiry">Start a partnership</a>
+          <a class="btn btn-secondary" href="#how-it-works">How it works</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="how-it-works">
+      <div class="container">
+        <div class="section-head">
+          <p class="section-kicker">The model</p>
+          <h2 class="section-title">How partnerships work.</h2>
+          <p class="section-intro">Lightweight to set up, run with your existing career services or student societies, and shaped around your calendar.</p>
+        </div>
+        <div class="steps">
+          <div class="step">
+            <span class="step-number">01</span>
+            <h3>Scope a program together</h3>
+            <p>A short call with your careers team or student society to pick a format — live interview nights, workshop series, or recorded sessions for your platforms.</p>
+          </div>
+          <div class="step">
+            <span class="step-number">02</span>
+            <h3>We bring the guests</h3>
+            <p>We match speakers from our interview network to the industries and roles your students actually want, and handle outreach and prep.</p>
+          </div>
+          <div class="step">
+            <span class="step-number">03</span>
+            <h3>Run it on campus</h3>
+            <p>Events run live at your university or online, co-branded with your institution. Students get direct Q&amp;A time, not just a talk.</p>
+          </div>
+          <div class="step">
+            <span class="step-number">04</span>
+            <h3>Keep the content</h3>
+            <p>Recordings and written recaps stay available to your students afterwards, so each event compounds into a growing career resource.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-alt">
+      <div class="container">
+        <div class="section-head">
+          <p class="section-kicker">Partners</p>
+          <h2 class="section-title">Institutions we work with.</h2>
+          <p class="section-intro">Partner announcements are coming soon — logos below are placeholders.</p>
+        </div>
+        <!-- WP-DYNAMIC: partner-logos (will become an ACF repeater or logo grid block once real partners are confirmed) -->
+        <div class="logo-row">
+          <img src="assets/images/placeholder-partner.svg" alt="">
+          <img src="assets/images/placeholder-partner.svg" alt="">
+          <img src="assets/images/placeholder-partner.svg" alt="">
+          <img src="assets/images/placeholder-partner.svg" alt="">
+          <img src="assets/images/placeholder-partner.svg" alt="">
+        </div>
+        <!-- /WP-DYNAMIC: partner-logos -->
+      </div>
+    </section>
+
+    <section class="section" id="inquiry">
+      <div class="container">
+        <div class="section-head">
+          <p class="section-kicker">Get started</p>
+          <h2 class="section-title">Tell us about your institution.</h2>
+          <p class="section-intro">A few lines is enough — we'll follow up to scope the rest together.</p>
+        </div>
+        <!-- Prototype form: client-side validation only. Becomes a WordPress form plugin shortcode. -->
+        <form class="form" data-validate novalidate>
+          <div class="form-field">
+            <label for="uni-institution">Institution name</label>
+            <input type="text" id="uni-institution" name="institution-name" required aria-required="true" autocomplete="organization">
+          </div>
+          <div class="form-field">
+            <label for="uni-contact">Contact name</label>
+            <input type="text" id="uni-contact" name="contact-name" required aria-required="true" autocomplete="name">
+          </div>
+          <div class="form-field">
+            <label for="uni-email">Email</label>
+            <input type="email" id="uni-email" name="email" required aria-required="true" autocomplete="email">
+          </div>
+          <div class="form-field">
+            <label for="uni-role">Role / Department</label>
+            <input type="text" id="uni-role" name="role-department" required aria-required="true" autocomplete="organization-title">
+          </div>
+          <div class="form-field">
+            <label for="uni-interest">Partnership interest</label>
+            <textarea id="uni-interest" name="partnership-interest" required aria-required="true"></textarea>
+          </div>
+          <label class="visually-hidden" for="uni-hp" aria-hidden="true">Leave this field empty</label>
+          <input type="text" id="uni-hp" name="hp-field" class="visually-hidden" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <button type="submit" class="btn btn-primary">Send partnership inquiry</button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- TEMPLATE-PART: footer -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-about">
+        <p class="footer-brand">The Access <span>Exchange</span></p>
+        <p>A tech-focused media and professional development platform connecting emerging talent with the people building the industry.</p>
+      </div>
+      <nav class="footer-nav" aria-label="Footer">
+        <h2 class="footer-heading">Explore</h2>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="interview-series.html">Interview Series</a></li>
+          <li><a href="university-partnerships.html">University Partnerships</a></li>
+          <li><a href="interviews-insights.html">Interviews &amp; Insights</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="footer-cta on-dark">
+        <h2 class="footer-heading">Get in touch</h2>
+        <p>Have a guest, partnership, or story in mind? We&rsquo;d love to hear it.</p>
+        <a class="btn btn-secondary" href="contact.html">Contact us</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p>&copy; 2026 The Access Exchange. All rights reserved.</p>
+    </div>
+  </footer>
+  <!-- /TEMPLATE-PART: footer -->
+
+  <script src="assets/js/script.js"></script>
+</body>
+</html>

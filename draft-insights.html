@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Insights - The Access Exchange</title>
+<meta name="description" content="Everything we have published: interview write-ups, breaking-in guides, levelling-up notes and what happens on campus. Search it, filter it, or start with the five people send most often.">
+<meta name="theme-color" content="#F8F8F3">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Insights - The Access Exchange">
+<meta property="og:description" content="Everything we have published, in one place.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+
+<style>
+/* ═══════════════════════════════════════════════════════════════════
+   INSIGHTS  ·  the INDEX system
+   A search-first archive. Tiles on tinted cards rather than the
+   hairline-rule composition used by the other three pages, a sticky
+   topic sidebar with live counts, and a mixed-span stream.
+
+   Signature interaction: filtering runs a real FLIP animation - cards
+   travel to their new positions instead of snapping. Nothing else on
+   the site does this.
+
+   TYPE  Skandia + Leif are the licensed families used by First Round
+   Review. Named first so a purchased licence drops straight in;
+   Figtree is the free stand-in rendering this draft.
+   ═══════════════════════════════════════════════════════════════════ */
+:root{
+  --paper:#F8F8F3;
+  --paper-2:#F0F0E8;
+  --paper-3:#E4E4DA;
+  --ink:#14140F;
+  --ink-2:#4A4A42;
+  --ink-3:#83837A;
+  --accent:#000000;
+
+  --rule:color-mix(in srgb,var(--ink) 14%,transparent);
+  --rule-2:color-mix(in srgb,var(--ink) 28%,transparent);
+
+  --skandia:"Skandia Book","Skandia Regular",Figtree,"Helvetica Neue",Arial,sans-serif;
+  --skandia-m:"Skandia Medium","Skandia Bold",Figtree,"Helvetica Neue",Arial,sans-serif;
+  --leif:"Leif Regular",Figtree,"Helvetica Neue",Arial,sans-serif;
+
+  --shell:1560px;
+  --pad:clamp(18px,4vw,64px);
+  --gut:clamp(12px,1.4vw,20px);
+  --sec:clamp(52px,7vw,116px);
+  --hair:1px;
+  --r:10px;                     /* this page is tiles, so it has a radius */
+
+  /* shared masthead */
+  --mast-tall:clamp(96px,12vw,158px);
+  --mast-short:clamp(64px,7vw,78px);
+  --fs-mark:clamp(1.5rem,5.7vw,4.2rem);
+  --fs-mark-sm:clamp(1.1rem,1.85vw,1.5rem);
+
+  /* the masthead and footer ignore the page shell so they match everywhere */
+  --chrome-shell:1560px;
+  --chrome-pad:clamp(18px,4vw,64px);
+
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;overflow-x:clip}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--leif);font-size:clamp(.98rem,1.05vw,1.06rem);line-height:1.6;
+  -webkit-font-smoothing:antialiased;overflow-x:clip}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,h4,p,figure,blockquote,dl,dd{margin:0}
+ul,ol{margin:0;padding:0;list-style:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+input,select,textarea{font:inherit;color:inherit}
+::selection{background:var(--ink);color:var(--paper)}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+
+.shell{max-width:var(--shell);margin-inline:auto;padding-inline:var(--pad)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.ic{width:19px;height:19px;flex:0 0 auto;stroke:currentColor;stroke-width:1.6;
+  stroke-linecap:round;stroke-linejoin:round;fill:none}
+.lab{font-family:var(--skandia-m);font-size:clamp(.61rem,.7vw,.7rem);font-weight:600;
+  letter-spacing:.19em;text-transform:uppercase;line-height:1}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SHARED MASTHEAD  ·  identical on every page
+   Light throughout. The control row is pinned to its own band and never
+   moves; only the wordmark travels and shrinks as the bar collapses.
+   ═══════════════════════════════════════════════════════════════════ */
+.mast{position:fixed;inset:0 0 auto;z-index:700;height:var(--mast-tall);
+  --mark-top:calc(var(--mast-short) + (var(--mast-tall) - var(--mast-short)) * .38);
+  background:var(--paper);color:var(--ink);
+  transition:height .55s var(--ease),box-shadow .5s var(--ease)}
+.mast.compact{height:var(--mast-short);
+  --mark-top:calc(var(--mast-short) / 2);
+  box-shadow:0 1px 0 var(--rule)}
+.mast-spacer{height:var(--mast-tall)}
+
+/* fixed band: the menu, search and buttons hold this position in both
+   states and are deliberately not animated */
+.mast-in{position:absolute;left:0;right:0;top:0;height:var(--mast-short);
+  max-width:var(--chrome-shell);margin-inline:auto;padding-inline:var(--chrome-pad);
+  display:flex;align-items:center;justify-content:space-between;gap:16px;z-index:2;
+  pointer-events:none}
+.mast-l,.mast-r{display:flex;align-items:center;gap:clamp(14px,2vw,30px);
+  pointer-events:auto}
+.mast-l button,.mast-r .txt{color:var(--ink-2);transition:color .35s var(--ease)}
+.mast-l button:hover,.mast-r .txt:hover{color:var(--ink)}
+.mast-r .txt{display:none}
+@media(min-width:760px){.mast-r .txt{display:inline}}
+.mast-r .cta{min-height:38px;padding:0 18px;border-radius:2px;
+  background:var(--ink);color:var(--paper);display:inline-flex;align-items:center;
+  transition:opacity .3s var(--ease)}
+.mast-r .cta:hover{opacity:.84}
+
+/* only these two move */
+.mast-rule{position:absolute;left:calc(50% - 50vw);right:calc(50% - 50vw);
+  top:var(--mark-top);height:var(--hair);background:var(--rule);z-index:0;
+  transition:opacity .4s var(--ease),top .55s var(--ease)}
+.mast.compact .mast-rule{opacity:0}
+.mark{position:absolute;left:50%;top:var(--mark-top);translate:-50% -50%;z-index:1;
+  background:var(--paper);padding-inline:clamp(14px,3vw,42px);white-space:nowrap;
+  font-family:var(--skandia);font-weight:400;font-size:var(--fs-mark);line-height:1;
+  letter-spacing:-.038em;color:var(--ink);
+  transition:font-size .55s var(--ease),top .55s var(--ease)}
+.mark i{font-style:italic;font-weight:300}
+.mast.compact .mark{font-size:var(--fs-mark-sm)}
+@media(max-width:759px){
+  :root{--mast-tall:60px;--mast-short:60px}
+  .mast-l .srchbtn{display:none}
+  .mast-rule{display:none}
+  .mast-r .cta{min-height:34px;padding:0 12px;font-size:.6rem;letter-spacing:.11em}
+  .mast-r .cta .lg{display:none}
+  .mark{left:clamp(52px,14vw,64px);translate:0 -50%;
+    background:none;padding:0;letter-spacing:-.03em;font-size:clamp(.98rem,4.2vw,1.24rem)}
+  .mast.compact .mark{font-size:clamp(.98rem,4.2vw,1.24rem)}
+  .mast-in{gap:12px}
+}
+.prog{position:absolute;left:0;bottom:0;height:var(--hair);width:100%;background:var(--ink);
+  transform:scaleX(0);transform-origin:left;opacity:0;transition:opacity .4s var(--ease)}
+.mast.compact .prog{opacity:.7}
+@supports (animation-timeline:scroll()){
+  .prog{animation:grow linear both;animation-timeline:scroll(root block)}
+}
+@keyframes grow{to{transform:scaleX(1)}}
+
+/* ── the menu: a light panel that opens OVER the masthead, so its first
+   item sits at the top of the screen with no dead space above it ── */
+.veil{position:fixed;inset:0;z-index:800;
+  opacity:0;visibility:hidden;transition:opacity .4s var(--ease),visibility .4s}
+.veil.open{opacity:1;visibility:visible}
+.veil::before{content:"";position:absolute;inset:0;
+  background:color-mix(in srgb,var(--ink) 18%,transparent);
+  -webkit-backdrop-filter:blur(16px) saturate(.9);backdrop-filter:blur(16px) saturate(.9)}
+.veil-panel{position:absolute;inset:0 auto 0 0;width:min(40%,500px);min-width:330px;
+  background:var(--paper);color:var(--ink);
+  border-right:var(--hair) solid var(--rule);
+  padding:clamp(16px,1.8vw,22px) clamp(20px,2.4vw,40px) clamp(20px,2.4vw,30px);
+  overflow-y:auto;display:flex;flex-direction:column;gap:clamp(18px,2.2vw,28px);
+  box-shadow:0 0 60px rgba(20,20,15,.16);
+  transform:translateX(-101%);transition:transform .5s var(--ease)}
+.veil.open .veil-panel{transform:none}
+@media(max-width:759px){.veil-panel{width:100%;min-width:0}}
+.veil-top{display:flex;align-items:center;justify-content:space-between;gap:16px;
+  min-height:var(--mast-short)}
+.veil-mark{font-family:var(--skandia);font-weight:400;letter-spacing:-.036em;
+  font-size:clamp(1.05rem,1.5vw,1.3rem);line-height:1}
+.veil-mark i{font-style:italic;font-weight:300}
+.veil-close{color:var(--ink-2);transition:color .3s var(--ease)}
+.veil-close:hover{color:var(--ink)}
+.veil-nav li{border-bottom:var(--hair) solid var(--rule)}
+.veil-nav li:first-child{border-top:var(--hair) solid var(--rule)}
+.veil-nav a{display:block;padding:clamp(9px,1vw,13px) 0;font-family:var(--skandia);
+  font-weight:400;font-size:clamp(1.16rem,1.9vw,1.6rem);line-height:1.14;letter-spacing:-.03em;
+  transition:padding-left .45s var(--ease),color .3s var(--ease)}
+.veil-nav a:hover{padding-left:12px}
+.veil-nav a[aria-current]{font-style:italic;color:var(--ink-3)}
+.veil.open .veil-nav li{opacity:0;transform:translateY(12px);
+  animation:vin .55s var(--ease) forwards;animation-delay:calc(var(--i) * 40ms + 130ms)}
+@keyframes vin{to{opacity:1;transform:none}}
+.veil-sides{display:grid;gap:20px}
+@media(min-width:460px){.veil-sides{grid-template-columns:1.1fr .9fr}}
+.veil-side h4{margin-bottom:11px;color:var(--ink-3)}
+.veil-side li + li{margin-top:7px}
+.veil-side a{color:var(--ink-2);font-size:.93rem}
+.veil-side a:hover{color:var(--ink)}
+
+/* ── platform marks: official artwork, official colours ── */
+.bi{width:26px;height:26px;display:block}
+.plat-row{display:flex;align-items:center;gap:clamp(12px,1.6vw,18px);flex-wrap:wrap}
+.foot .plat-row{justify-content:center}
+.plat-row a{display:block;opacity:.92;
+  transition:transform .35s var(--ease),opacity .3s var(--ease)}
+.plat-row a:hover{transform:translateY(-2px);opacity:1}
+/* ── search: a real overlay that filters an index of the site ── */
+.find{position:fixed;inset:0;z-index:820;opacity:0;visibility:hidden;
+  transition:opacity .3s var(--ease),visibility .3s}
+.find.open{opacity:1;visibility:visible}
+.find::before{content:"";position:absolute;inset:0;
+  background:color-mix(in srgb,var(--ink) 26%,transparent);
+  -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.find-box{position:relative;max-width:720px;margin:clamp(60px,12vh,140px) auto 0;
+  background:var(--paper);border-radius:14px;box-shadow:0 30px 80px rgba(20,20,15,.24);
+  overflow:hidden;transform:translateY(-10px);transition:transform .35s var(--ease)}
+.find.open .find-box{transform:none}
+.find-in{display:flex;align-items:center;gap:14px;padding:18px 20px;
+  border-bottom:var(--hair) solid var(--rule)}
+.find-in input{flex:1;border:0;outline:0;background:none;font-family:var(--skandia);
+  font-size:clamp(1.05rem,1.8vw,1.4rem);letter-spacing:-.024em}
+.find-in input::placeholder{color:var(--ink-3)}
+.find-in .ic{width:21px;height:21px;color:var(--ink-3)}
+.find-in kbd{font-family:var(--skandia-m);font-size:.62rem;font-weight:600;letter-spacing:.1em;
+  color:var(--ink-3);border:var(--hair) solid var(--rule-2);border-radius:4px;padding:4px 7px}
+.find-out{max-height:min(58vh,520px);overflow-y:auto}
+.find-out a{display:block;padding:13px 20px;border-bottom:var(--hair) solid var(--rule);
+  transition:background .25s var(--ease)}
+.find-out a:hover,.find-out a.sel{background:var(--paper-2)}
+.find-out b{display:block;font-family:var(--skandia);font-weight:400;font-size:1.04rem;
+  letter-spacing:-.022em;margin-bottom:3px}
+.find-out span{color:var(--ink-3);font-size:.86rem}
+.find-none{padding:26px 20px;color:var(--ink-3)}
+
+/* ═══ 01 · THE SEARCH HEADER ════════════════════════════════════ */
+.top{padding:clamp(30px,4.4vw,66px) 0 clamp(24px,3vw,42px)}
+.top-row{display:grid;gap:18px;align-items:end;margin-bottom:clamp(24px,3vw,40px)}
+@media(min-width:820px){.top-row{grid-template-columns:1fr auto}}
+.top h1{font-family:var(--skandia);font-weight:400;
+  font-size:clamp(2.1rem,6vw,5.2rem);line-height:.98;letter-spacing:-.042em}
+.tally{color:var(--ink-3);display:flex;align-items:baseline;gap:8px}
+.tally b{font-family:var(--skandia);font-weight:400;font-size:clamp(1.5rem,2.4vw,2.2rem);
+  line-height:1;letter-spacing:-.03em;color:var(--ink);font-variant-numeric:tabular-nums}
+
+/* a search field big enough to be the point of the page */
+.hunt{position:relative;display:flex;align-items:center;gap:14px;
+  padding:clamp(14px,1.6vw,20px) clamp(16px,1.8vw,24px);
+  background:var(--paper-2);border-radius:var(--r);
+  box-shadow:inset 0 0 0 var(--hair) transparent;
+  transition:box-shadow .3s var(--ease),background .3s var(--ease)}
+.hunt:focus-within{background:var(--paper);box-shadow:inset 0 0 0 var(--hair) var(--rule-2)}
+.hunt .ic{width:21px;height:21px;color:var(--ink-3)}
+.hunt input{flex:1;border:0;outline:0;background:none;font-family:var(--skandia);
+  font-size:clamp(1.02rem,1.7vw,1.42rem);letter-spacing:-.022em}
+.hunt input::placeholder{color:var(--ink-3)}
+.hunt button{color:var(--ink-3);opacity:0;pointer-events:none;transition:opacity .25s var(--ease)}
+.hunt.has button{opacity:1;pointer-events:auto}
+.hunt button:hover{color:var(--ink)}
+
+/* ═══ 02 · SIDEBAR + STREAM ═════════════════════════════════════ */
+.body{padding-bottom:var(--sec)}
+.body-grid{display:grid;gap:clamp(24px,3vw,52px)}
+@media(min-width:1000px){.body-grid{grid-template-columns:210px minmax(0,1fr);align-items:start}}
+
+.topics{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:12px}
+.topics::-webkit-scrollbar{display:none}
+@media(min-width:1000px){
+  .topics{position:sticky;top:calc(var(--mast-short) + 22px);
+    flex-direction:column;gap:0;overflow:visible;padding-bottom:0}
+}
+.topics button{display:flex;align-items:center;justify-content:space-between;gap:14px;
+  white-space:nowrap;padding:10px 14px;border-radius:999px;color:var(--ink-3);
+  box-shadow:inset 0 0 0 var(--hair) var(--rule);
+  transition:background .3s var(--ease),color .3s var(--ease),box-shadow .3s var(--ease)}
+@media(min-width:1000px){
+  .topics button{border-radius:6px;padding:11px 12px;box-shadow:none;
+    border-bottom:var(--hair) solid var(--rule);border-radius:0}
+  .topics button:last-child{border-bottom:0}
+}
+.topics button:hover{color:var(--ink)}
+@media(min-width:1000px){.topics button:hover{background:var(--paper-2)}}
+.topics button[aria-pressed="true"]{background:var(--ink);color:var(--paper);box-shadow:none}
+.topics .ct{font-variant-numeric:tabular-nums;opacity:.62;
+  transition:opacity .3s var(--ease)}
+
+/* the stream: mixed spans, tiles not rules */
+.stream{display:grid;gap:var(--gut);grid-template-columns:1fr}
+@media(min-width:620px){.stream{grid-template-columns:repeat(4,1fr)}}
+@media(min-width:1240px){.stream{grid-template-columns:repeat(6,1fr)}}
+.it{grid-column:span 1;background:var(--paper-2);border-radius:var(--r);overflow:hidden;
+  display:flex;flex-direction:column;
+  transition:background .35s var(--ease),transform .45s var(--ease)}
+@media(min-width:620px){.it{grid-column:span 2}}
+.it:hover{background:var(--paper-3);transform:translateY(-3px)}
+.it--lead{grid-column:span 1}
+@media(min-width:620px){.it--lead{grid-column:span 4}}
+.it .ph{overflow:hidden;background:var(--paper-3);aspect-ratio:16/10}
+.it--lead .ph{aspect-ratio:16/7}
+.it .ph img{width:100%;height:100%;object-fit:cover;
+  transition:transform 1.1s var(--ease)}
+.it:hover .ph img{transform:scale(1.04)}
+.it-in{padding:clamp(15px,1.6vw,22px) clamp(15px,1.6vw,22px) clamp(18px,1.9vw,26px);
+  display:flex;flex-direction:column;flex:1;gap:9px}
+.it .kind{color:var(--ink-3);display:flex;align-items:center;gap:9px}
+.it h3{font-family:var(--skandia);font-weight:400;letter-spacing:-.026em;line-height:1.16;
+  font-size:clamp(1.02rem,1.4vw,1.24rem)}
+.it--lead h3{font-size:clamp(1.4rem,2.6vw,2.2rem);letter-spacing:-.034em;line-height:1.06}
+.it--lead .sub{color:var(--ink-2);font-size:clamp(.96rem,1.1vw,1.06rem);line-height:1.5;max-width:52ch}
+.it .who{color:var(--ink-3);font-size:.86rem;margin-top:auto;padding-top:4px}
+/* text-only tiles give the stream its rhythm */
+.it--text{background:var(--ink);color:var(--paper)}
+.it--text:hover{background:#22221b}
+.it--text .kind,.it--text .who{color:color-mix(in srgb,var(--paper) 58%,transparent)}
+.it--text .it-in{padding-block:clamp(20px,2.2vw,30px);justify-content:center}
+/* text tiles have no image, so nothing should be pinned to the bottom of
+   a row sized by its tallest photo card */
+.it--text .who{margin-top:14px}
+.it--text h3{font-size:clamp(1.16rem,1.8vw,1.5rem)}
+.it.hide{display:none}
+/* cards that have just entered the filtered set */
+.it.pop{animation:pop .5s var(--ease) both}
+@keyframes pop{from{opacity:0;transform:scale(.965)}to{opacity:1;transform:none}}
+
+.empty{grid-column:1/-1;padding:clamp(40px,6vw,90px) 0;text-align:center;color:var(--ink-3)}
+.empty b{display:block;font-family:var(--skandia);font-weight:400;color:var(--ink);
+  font-size:clamp(1.3rem,2.4vw,2rem);letter-spacing:-.03em;margin-bottom:10px}
+.empty[hidden]{display:none}
+
+/* ═══ 03 · INLINE NEWSLETTER BAND ═══════════════════════════════ */
+.band{grid-column:1/-1;background:var(--ink);color:var(--paper);border-radius:var(--r);
+  padding:clamp(24px,3vw,42px);display:grid;gap:clamp(18px,2.2vw,34px);align-items:center}
+@media(min-width:820px){.band{grid-template-columns:1fr auto}}
+.band h2{font-family:var(--skandia);font-weight:400;font-size:clamp(1.3rem,2.4vw,2rem);
+  line-height:1.08;letter-spacing:-.03em;margin-bottom:8px}
+.band p{color:color-mix(in srgb,var(--paper) 64%,transparent);max-width:46ch;font-size:.98rem}
+.band form{display:flex;flex-wrap:wrap;gap:8px}
+.band input{min-height:48px;padding-inline:16px;border-radius:6px;min-width:220px;flex:1;
+  background:color-mix(in srgb,var(--paper) 9%,transparent);color:var(--paper);
+  border:var(--hair) solid color-mix(in srgb,var(--paper) 24%,transparent);outline:0;
+  transition:border-color .3s var(--ease)}
+.band input::placeholder{color:color-mix(in srgb,var(--paper) 44%,transparent)}
+.band input:focus{border-color:var(--paper)}
+.band .btn{background:var(--paper);color:var(--ink)}
+.band .done{font-family:var(--skandia);font-size:1.1rem;letter-spacing:-.024em}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.6em;
+  min-height:48px;padding:0 24px;border-radius:6px;font-family:var(--skandia-m);
+  font-weight:600;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
+  background:var(--ink);color:var(--paper);transition:opacity .3s var(--ease)}
+.btn:hover{opacity:.85}
+
+/* ═══ 04 · START HERE ═══════════════════════════════════════════ */
+.start{padding:var(--sec) 0;border-top:var(--hair) solid var(--rule);background:var(--paper-2)}
+.start-head{margin-bottom:clamp(24px,3vw,44px)}
+.start h2{font-family:var(--skandia);font-weight:400;font-size:clamp(1.7rem,3.4vw,2.9rem);
+  line-height:1.04;letter-spacing:-.034em;margin-bottom:10px}
+.start .lede{color:var(--ink-2);max-width:56ch}
+.five{border-top:var(--hair) solid var(--rule-2)}
+.five a{display:grid;grid-template-columns:auto 1fr auto;gap:clamp(14px,2.2vw,32px);
+  align-items:center;padding:clamp(16px,2vw,26px) 0;
+  border-bottom:var(--hair) solid var(--rule);
+  transition:padding-inline .5s var(--ease),background .35s var(--ease)}
+.five a:hover{padding-inline:14px;background:var(--paper)}
+.five .n{font-family:var(--skandia);font-size:clamp(1.2rem,2vw,1.7rem);line-height:1;
+  color:var(--ink-3);transition:color .3s var(--ease)}
+.five a:hover .n{color:var(--ink)}
+.five h3{font-family:var(--skandia);font-weight:400;font-size:clamp(1.06rem,1.8vw,1.5rem);
+  line-height:1.14;letter-spacing:-.026em}
+.five .ic{opacity:0;transform:translateX(-6px);
+  transition:opacity .4s var(--ease),transform .4s var(--ease)}
+.five a:hover .ic{opacity:1;transform:none}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SHARED FOOTER  ·  identical on every page, dark against the light page
+   ═══════════════════════════════════════════════════════════════════ */
+.foot{background:var(--ink);color:var(--paper);padding:clamp(38px,4.4vw,70px) 0 26px}
+.foot > .shell{max-width:var(--chrome-shell);padding-inline:var(--chrome-pad)}
+.foot-cols{display:flex;flex-wrap:wrap;justify-content:center;text-align:center;
+  gap:clamp(26px,3.6vw,74px);
+  padding-bottom:clamp(32px,4vw,60px);
+  border-bottom:var(--hair) solid color-mix(in srgb,var(--paper) 16%,transparent)}
+.foot-cols > div{flex:0 1 auto;min-width:132px}
+.foot h4{color:color-mix(in srgb,var(--paper) 50%,transparent);margin-bottom:15px}
+.foot li + li{margin-top:9px}
+.foot li a{color:color-mix(in srgb,var(--paper) 70%,transparent);font-size:.92rem;
+  transition:color .3s var(--ease)}
+.foot li a:hover{color:var(--paper);text-decoration:underline;text-underline-offset:3px}
+/* fills the measure between the rules; Access bold, Exchange lighter, as
+   in the masthead */
+.foot-mark{display:block;text-align:center;white-space:nowrap;
+  font-family:var(--skandia-m);font-weight:500;color:var(--paper);
+  font-size:clamp(1.9rem,9.65vw,9.6rem);line-height:1;letter-spacing:-.05em;
+  padding:clamp(30px,4vw,60px) 0 clamp(22px,2.8vw,40px)}
+.foot-mark i{font-style:italic;font-weight:300}
+.foot-bot{display:flex;flex-wrap:wrap;gap:10px 22px;justify-content:space-between;
+  padding-top:20px;border-top:var(--hair) solid color-mix(in srgb,var(--paper) 16%,transparent);
+  color:color-mix(in srgb,var(--paper) 50%,transparent)}
+.foot-bot a:hover{color:var(--paper)}
+/* the platform marks keep their own colours against the dark ground */
+.foot .plat-row a{opacity:1}
+
+/* ── photography: natural colour, with only a light move on hover ── */
+.ph img{filter:none;transition:transform .85s var(--ease)}
+.ph{transition:box-shadow .45s var(--ease)}
+a:hover .ph img,.card:hover .ph img,.it:hover .ph img,.face:hover .ph img,
+.minor:hover .ph img,.who .ph:hover img,.campus .ph:hover img{transform:scale(1.03)}
+a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
+  box-shadow:0 12px 30px rgba(20,20,15,.14)}
+/* ── video: a poster that swaps itself for the player on click.
+   Nothing from YouTube is requested until someone actually presses play,
+   which is what keeps the page inside the 80+ PageSpeed target. ── */
+.vid{position:relative;display:block;width:100%;aspect-ratio:16/9;overflow:hidden;
+  background:var(--ink);cursor:pointer;border:0;padding:0}
+.vid img{width:100%;height:100%;object-fit:cover;transition:transform .9s var(--ease)}
+.vid:hover img{transform:scale(1.02)}
+.vid iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vid-play{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
+.vid-play span{display:grid;place-items:center;width:clamp(56px,7vw,84px);aspect-ratio:1;
+  border-radius:50%;background:rgba(255,0,0,.92);
+  box-shadow:0 10px 30px rgba(0,0,0,.3);transition:transform .35s var(--ease)}
+.vid:hover .vid-play span{transform:scale(1.08)}
+.vid-play svg{width:38%;height:38%;fill:#fff}
+.vid-dur{position:absolute;right:10px;bottom:10px;padding:4px 8px;border-radius:3px;
+  background:rgba(20,20,15,.82);color:#fff;font-variant-numeric:tabular-nums}
+.vid.on .vid-play,.vid.on .vid-dur{display:none}
+
+/* ── small screens ── */
+@media(max-width:559px){
+  .find-box{margin-inline:12px;border-radius:10px}
+  .find-in{padding:14px 15px}
+  .find-in kbd{display:none}
+  /* the wordmark is set to fill the measure, so it needs the tighter
+     ratio once the side padding stops shrinking with the viewport */
+  .foot-mark{font-size:9.1vw}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;
+    transition-duration:.001ms!important;scroll-behavior:auto!important}
+  .it.pop{animation:none}
+  .veil.open .veil-nav li{opacity:1;transform:none}
+}
+</style>
+</head>
+
+<body>
+
+<svg class="sr" aria-hidden="true" focusable="false"><defs>
+  <g id="i-menu"><path d="M3 7h18M3 12h18M3 17h18"/></g>
+  <g id="i-close"><path d="M5 5l14 14M19 5L5 19"/></g>
+  <g id="i-search"><circle cx="10.8" cy="10.8" r="6.8"/><path d="M15.8 15.8L21 21"/></g>
+  <g id="i-arrow"><path d="M4 12h15M13 6l6 6-6 6"/></g>
+  <g id="i-left"><path d="M15 5l-7 7 7 7"/></g>
+  <g id="i-right"><path d="M9 5l7 7-7 7"/></g>
+
+
+  <g id="b-youtube"><path fill="#FF0000" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/><path fill="#fff" d="M9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></g>
+</defs></svg>
+
+<header class="mast" id="mast">
+  <span class="mast-rule" aria-hidden="true"></span>
+  <a class="mark" href="draft-index.html">The Access <i>Exchange</i></a>
+  <div class="mast-in">
+    <div class="mast-l">
+      <button type="button" id="menuBtn" aria-expanded="false" aria-controls="veil" aria-label="Open menu">
+        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-menu"/></svg>
+      </button>
+      <button type="button" class="srchbtn" aria-label="Search">
+        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-search"/></svg>
+      </button>
+    </div>
+    <div class="mast-r lab">
+      <a href="draft-interview-series.html" class="txt">Interviews</a>
+      <a href="draft-university-partnerships.html" class="cta"><span class="lg">For&nbsp;</span>Universities</a>
+    </div>
+  </div>
+  <span class="prog" aria-hidden="true"></span>
+</header>
+<div class="mast-spacer" id="top"></div>
+
+<div class="veil" id="veil" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+  <div class="veil-panel">
+    <div class="veil-top">
+      <a class="veil-mark" href="draft-index.html">The Access <i>Exchange</i></a>
+      <button type="button" id="veilClose" aria-label="Close menu">
+        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-close"/></svg>
+      </button>
+    </div>
+    <nav aria-label="Main">
+      <ul class="veil-nav">
+        <li style="--i:0"><a href="draft-index.html">Home</a></li>
+        <li style="--i:1"><a href="draft-interview-series.html">The Interview Series</a></li>
+        <li style="--i:2"><a href="draft-university-partnerships.html">University Partnerships</a></li>
+        <li style="--i:3"><a href="draft-insights.html" aria-current="page">Insights</a></li>
+        <li style="--i:4"><a href="draft-about.html">About</a></li>
+        <li style="--i:5"><a href="draft-contact.html">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="veil-sides">
+      <div class="veil-side">
+        <h4 class="lab">Get involved</h4>
+        <ul>
+          <li><a href="draft-interview-series.html#be-a-guest">Be a guest</a></li>
+          <li><a href="draft-university-partnerships.html#enquire">Partner with us</a></li>
+          <li><a href="draft-contact.html">General enquiries</a></li>
+        </ul>
+      </div>
+      <div class="veil-side">
+        <h4 class="lab">Watch</h4>
+        <div class="plat-row">
+          <a href="#" aria-label="Watch on YouTube"><svg class="bi" viewBox="0 0 24 24" aria-hidden="true"><use href="#b-youtube"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="find" id="find" role="dialog" aria-modal="true" aria-label="Search" hidden>
+  <div class="find-box">
+    <div class="find-in">
+      <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-search"/></svg>
+      <label class="sr" for="findq">Search the site</label>
+      <input id="findq" type="search" placeholder="Search interviews, pages, topics" autocomplete="off">
+      <kbd>ESC</kbd>
+    </div>
+    <div class="find-out" id="findout"></div>
+  </div>
+</div>
+
+<main>
+
+<!-- ═══ 01 · SEARCH HEADER ════════════════════════════════════════ -->
+<section class="top">
+  <div class="shell">
+    <div class="top-row">
+      <h1>Insights</h1>
+      <p class="tally lab"><b id="tally">14</b><span id="tallyWord">pieces published</span></p>
+    </div>
+
+    <div class="hunt" id="hunt">
+      <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-search"/></svg>
+      <label class="sr" for="q">Search everything we have published</label>
+      <input id="q" type="search" placeholder="Search by title, guest or topic" autocomplete="off">
+      <button type="button" id="clear" aria-label="Clear search">
+        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-close"/></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 02 · SIDEBAR + STREAM ═════════════════════════════════════ -->
+<section class="body">
+  <div class="shell body-grid">
+
+    <nav class="topics lab" id="topics" aria-label="Filter by topic">
+      <button type="button" data-topic="all" aria-pressed="true">All<span class="ct">14</span></button>
+      <button type="button" data-topic="interview" aria-pressed="false">Interviews<span class="ct">5</span></button>
+      <button type="button" data-topic="breaking-in" aria-pressed="false">Breaking in<span class="ct">3</span></button>
+      <button type="button" data-topic="levelling-up" aria-pressed="false">Levelling up<span class="ct">3</span></button>
+      <button type="button" data-topic="on-campus" aria-pressed="false">On campus<span class="ct">3</span></button>
+    </nav>
+
+    <div class="stream" id="stream">
+
+      <a class="it it--lead" href="#" data-topic="interview">
+        <div class="ph"><img src="https://images.pexels.com/photos/1181519/pexels-photo-1181519.jpeg?auto=compress&cs=tinysrgb&w=1400&h=620&fit=crop" alt="Amara Osei" decoding="async"></div>
+        <div class="it-in">
+          <span class="kind lab">Interview · Jul 30</span>
+          <h3>From bootcamp to staff engineer in five years</h3>
+          <p class="sub">The three promotions that mattered, the one that did not, and the projects she volunteered for on purpose.</p>
+          <span class="who">Amara Osei, Staff Engineer</span>
+        </div>
+      </a>
+
+      <a class="it" href="#" data-topic="breaking-in">
+        <div class="ph"><img src="https://images.pexels.com/photos/1181359/pexels-photo-1181359.jpeg?auto=compress&cs=tinysrgb&w=700&h=440&fit=crop" alt="" loading="lazy" decoding="async"></div>
+        <div class="it-in">
+          <span class="kind lab">Breaking in · Jul 20</span>
+          <h3>Forty applications, two offers: a graduate's honest account</h3>
+          <span class="who">Tobi Adeyinka</span>
+        </div>
+      </a>
+
+      <a class="it it--text" href="#" data-topic="levelling-up">
+        <div class="it-in">
+          <span class="kind lab">Levelling up · Jul 28</span>
+          <h3>Asking for the promotion, in the words that worked</h3>
+          <span class="who">Written out in full, including the version that was turned down first</span>
+        </div>
+      </a>
+
+      <a class="it" href="#" data-topic="interview">
+        <div class="ph"><img src="https://images.pexels.com/photos/1181675/pexels-photo-1181675.jpeg?auto=compress&cs=tinysrgb&w=700&h=440&fit=crop" alt="" loading="lazy" decoding="async"></div>
+        <div class="it-in">
+          <span class="kind lab">Interview · Jul 27</span>
+          <h3>What a backend interview loop actually tests</h3>
+          <span class="who">Ravi Menon, Engineering Manager</span>
+        </div>
+      </a>
+
+      <a class="it" href="#" data-topic="on-campus">
+        <div class="ph"><img src="https://images.pexels.com/photos/5940841/pexels-photo-5940841.jpeg?auto=compress&cs=tinysrgb&w=700&h=440&fit=crop" alt="" loading="lazy" decoding="async"></div>
+        <div class="it-in">
+          <span class="kind lab">On campus · Jul 26</span>
+          <h3>Running a guest session that students stay behind after</h3>
+          <span class="who">Notes from the first term of partnerships</span>
+        </div>
+      </a>
+
+      <a class="it" href="#" data-topic="interview">
+        <div class="ph"><img src="https://images.pexels.com/photos/1181605/pexels-photo-1181605.jpeg?auto=compress&cs=tinysrgb&w=700&h=440&fit=crop" alt="" loading="lazy" decoding="async"></div>
+        <div class="it-in">
+          <span class="kind lab">Interview · Jul 25</span>
+          <h3>Moving from support into product without a technical degree</h3>
+          <span class="who">Fiona Bright, Senior Product Manager</span>
+        </div>
+      </a>
+
+
+      <a class="it it--text" href="#" data-topic="breaking-in">
+        <div class="it-in">
+          <span class="kind lab">Breaking in · Jul 24</span>
+          <h3>How to read a job spec you are not qualified for</h3>
+          <span class="who">The four lines that actually matter, and the six that do not</span>
+        </div>
+      </a>
+
+      <a class="it" href="#" data-topic="interview">
+        <div class="ph"><img src="https://images.pexels.com/photos/1181316/pexels-photo-1181316.jpeg?auto=compress&cs=tinysrgb&w=700&h=440&fit=crop" alt="" loading="lazy" decoding="async"></div>
+        <div class="it-in">
+          <span class="kind lab">Interview · Jul 23</span>
+          <h3>The parts of a data science job nobody puts in the job spec</h3>
+          <span class="who">Dr Leila Haddad, Lead Data Scientist</span>
+        </div>
+      </a>
+
+      <a class="it" href="#" data-topic="levelling-up">
+        <div class="ph"><img src="https://images.pexels.com/photos/1181712/pexels-photo-1181712.jpeg?auto=compress&cs=tinysrgb&w=700&h=440&fit=crop" alt="" loading="lazy" decoding="async"></div>
+        <div class="it-in">
+          <span class="kind lab">Levelling up · Jul 22</span>
+          <h3>Becoming the person who reviews other people's work</h3>
+          <span class="who">The first six months of seniority</span>
+        </div>
+      </a>
+
+      <a class="it it--text" href="#" data-topic="on-campus">
+        <div class="it-in">
+          <span class="kind lab">On campus · Jul 21</span>
+          <h3>A portfolio workshop that fits inside one seminar slot</h3>
+          <span class="who">Fifty minutes, twelve students, no slides</span>
+        </div>
+      </a>
+
+      <a class="it" href="#" data-topic="breaking-in">
+        <div class="ph"><img src="https://images.pexels.com/photos/1454360/pexels-photo-1454360.jpeg?auto=compress&cs=tinysrgb&w=700&h=440&fit=crop" alt="" loading="lazy" decoding="async"></div>
+        <div class="it-in">
+          <span class="kind lab">Breaking in · Jul 19</span>
+          <h3>Internships, placements and the routes people forget exist</h3>
+          <span class="who">Grace Nwosu, Early Careers Lead</span>
+        </div>
+      </a>
+
+      <a class="it" href="#" data-topic="levelling-up">
+        <div class="ph"><img src="https://images.pexels.com/photos/1181677/pexels-photo-1181677.jpeg?auto=compress&cs=tinysrgb&w=700&h=440&fit=crop" alt="" loading="lazy" decoding="async"></div>
+        <div class="it-in">
+          <span class="kind lab">Levelling up · Jul 17</span>
+          <h3>Staying technical, or moving to management</h3>
+          <span class="who">Two guests who chose opposite paths at the same point</span>
+        </div>
+      </a>
+
+      <a class="it" href="#" data-topic="interview">
+        <div class="ph"><img src="https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg?auto=compress&cs=tinysrgb&w=700&h=440&fit=crop" alt="" loading="lazy" decoding="async"></div>
+        <div class="it-in">
+          <span class="kind lab">Interview · Jul 11</span>
+          <h3>Research to industry: what transfers and what does not</h3>
+          <span class="who">Dr Ines Costa, Machine Learning Engineer</span>
+        </div>
+      </a>
+
+      <a class="it it--text" href="#" data-topic="on-campus">
+        <div class="it-in">
+          <span class="kind lab">On campus · Jul 08</span>
+          <h3>Keeping the recordings: how departments reuse the library</h3>
+          <span class="who">What three careers teams did with theirs</span>
+        </div>
+      </a>
+
+      <p class="empty" id="empty" hidden>
+        <b>Nothing matches that.</b>
+        Try a guest's name, a job title, or clear the search to see everything.
+      </p>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 04 · START HERE ═══════════════════════════════════════════ -->
+<section class="start">
+  <div class="shell">
+    <div class="start-head">
+      <h2>New here? Start with these.</h2>
+      <p class="lede">The five pieces people send to someone else most often.</p>
+    </div>
+    <div class="five">
+      <a href="#"><span class="n">01</span><h3>The five job titles most people have never heard of</h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      <a href="#"><span class="n">02</span><h3>How to read a job spec you are not qualified for</h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      <a href="#"><span class="n">03</span><h3>Cold outreach that people actually reply to</h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      <a href="#"><span class="n">04</span><h3>Your first ninety days, from four people who remember them</h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      <a href="#"><span class="n">05</span><h3>Do you need the degree? Four people answer differently</h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="shell">
+    <div class="foot-cols">
+      <div><h4 class="lab">Interviews</h4><ul>
+        <li><a href="draft-interview-series.html">Latest</a></li>
+        <li><a href="draft-interview-series.html#episodes">Engineering</a></li>
+        <li><a href="draft-interview-series.html#episodes">Product</a></li>
+        <li><a href="draft-interview-series.html#episodes">Data &amp; AI</a></li>
+        <li><a href="draft-interview-series.html#episodes">Design</a></li>
+        <li><a href="draft-interview-series.html#episodes">Breaking in</a></li></ul></div>
+      <div><h4 class="lab">Universities</h4><ul>
+        <li><a href="draft-university-partnerships.html">How it works</a></li>
+        <li><a href="draft-university-partnerships.html">What is included</a></li>
+        <li><a href="draft-university-partnerships.html">For careers teams</a></li></ul></div>
+      <div><h4 class="lab">Platform</h4><ul>
+        <li><a href="draft-index.html">Home</a></li><li><a href="draft-about.html">About</a></li>
+        <li><a href="draft-insights.html">Insights</a></li>
+        <li><a href="draft-interview-series.html#be-a-guest">Be a guest</a></li>
+        <li><a href="draft-contact.html">Contact</a></li></ul></div>
+      <div><h4 class="lab">Watch</h4>
+        <div class="plat-row">
+          <a href="#" aria-label="Watch on YouTube"><svg class="bi" viewBox="0 0 24 24" aria-hidden="true"><use href="#b-youtube"/></svg></a>
+        </div></div>
+    </div>
+    <div class="foot-mark">The Access <i>Exchange</i></div>
+    <div class="foot-bot lab">
+      <span>© 2026 The Access Exchange</span>
+      <span><a href="#">Privacy</a> · <a href="#">Terms</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* shared masthead: collapses in place, dark to light */
+  var mast = document.getElementById('mast');
+  var onScroll = function(){ mast.classList.toggle('compact', window.scrollY > 70); };
+  addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  /* shared menu */
+  var btn = document.getElementById('menuBtn'), veil = document.getElementById('veil');
+  var icon = btn.querySelector('use');
+  function setMenu(open){
+    btn.setAttribute('aria-expanded', open);
+    btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    icon.setAttribute('href', open ? '#i-close' : '#i-menu');
+    document.body.style.overflow = open ? 'hidden' : '';
+    if(open){ veil.hidden = false; requestAnimationFrame(function(){ veil.classList.add('open'); }); }
+    else { veil.classList.remove('open'); setTimeout(function(){ veil.hidden = true; }, reduce ? 0 : 400); }
+  }
+  btn.addEventListener('click', function(){ setMenu(btn.getAttribute('aria-expanded') !== 'true'); });
+  document.getElementById('veilClose').addEventListener('click', function(){ setMenu(false); });
+
+/* click-to-load video: swap the poster for the player, in place */
+  document.querySelectorAll('[data-yt]').forEach(function(v){
+    v.addEventListener('click', function(){
+      if(v.classList.contains('on')) return;
+      var f = document.createElement('iframe');
+      f.src = 'https://www.youtube-nocookie.com/embed/' + v.dataset.yt +
+              '?autoplay=1&rel=0&modestbranding=1';
+      f.title = v.dataset.title || 'Interview';
+      f.allow = 'accelerometer; autoplay; encrypted-media; picture-in-picture';
+      f.setAttribute('allowfullscreen', '');
+      v.appendChild(f);
+      v.classList.add('on');
+    });
+  });
+
+  /* ── search: filters a small static index of the site ── */
+  var INDEX = [
+    {t:'Home', d:'The platform and its two vehicles', u:'draft-index.html'},
+    {t:'The Interview Series', d:'Format, archive and how to be a guest', u:'draft-interview-series.html'},
+    {t:'University Partnerships', d:'How a partnership is scoped, what it costs', u:'draft-university-partnerships.html'},
+    {t:'Insights', d:'Everything we have published', u:'draft-insights.html'},
+    {t:'About', d:'Why this exists and what we refuse to do', u:'draft-about.html'},
+    {t:'Contact', d:'Guests, universities, press or anything else', u:'draft-contact.html'},
+    {t:'Be a guest', d:'Guest inquiry form', u:'draft-interview-series.html#be-a-guest'},
+    {t:'Partner with us', d:'University inquiry form', u:'draft-university-partnerships.html#enquire'},
+    {t:'The archive', d:'Every episode in full', u:'draft-interview-series.html#episodes'},
+    {t:'A term, mapped', d:'What a partnership looks like across twelve weeks', u:'draft-university-partnerships.html#s4'},
+    {t:'Cost and commitment', d:'What a partnership costs, lead times, procurement', u:'draft-university-partnerships.html#s7'},
+    {t:'From bootcamp to staff engineer in five years', d:'Amara Osei, Staff Engineer', u:'draft-interview-series.html'},
+    {t:'What a backend interview loop actually tests', d:'Ravi Menon, Engineering Manager', u:'draft-interview-series.html'},
+    {t:'Moving from support into product without a technical degree', d:'Fiona Bright, Senior Product Manager', u:'draft-interview-series.html'},
+    {t:'The parts of a data science job nobody puts in the job spec', d:'Dr Leila Haddad, Lead Data Scientist', u:'draft-interview-series.html'},
+    {t:'Forty applications, two offers', d:'Tobi Adeyinka, Junior Developer', u:'draft-interview-series.html'},
+    {t:'Building a portfolio when you have never shipped anything', d:'Marta Kowalska, Product Designer', u:'draft-interview-series.html'},
+    {t:'Switching from civil engineering at thirty-one', d:'Callum Reid, Platform Engineer', u:'draft-interview-series.html'},
+    {t:'Internships, placements and the routes people forget exist', d:'Grace Nwosu, Early Careers Lead', u:'draft-interview-series.html'}
+  ];
+  var find = document.getElementById('find'), findq = document.getElementById('findq'),
+      findout = document.getElementById('findout'), srch = document.querySelector('.srchbtn'), sel = -1;
+
+  function render(list){
+    sel = -1;
+    if(!list.length){ findout.innerHTML = '<p class="find-none">Nothing matches that.</p>'; return; }
+    findout.innerHTML = list.map(function(r){
+      return '<a href="' + r.u + '"><b>' + r.t + '</b><span>' + r.d + '</span></a>';
+    }).join('');
+  }
+  function runFind(){
+    var q = findq.value.trim().toLowerCase();
+    if(!q) return render(INDEX.slice(0, 6));
+    render(INDEX.filter(function(r){
+      return (r.t + ' ' + r.d).toLowerCase().indexOf(q) > -1;
+    }));
+  }
+  function setFind(open){
+    if(open){ find.hidden = false; requestAnimationFrame(function(){ find.classList.add('open'); findq.focus(); }); runFind(); }
+    else { find.classList.remove('open'); findq.value = ''; setTimeout(function(){ find.hidden = true; }, reduce ? 0 : 300); }
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+  if(srch) srch.addEventListener('click', function(){ setFind(true); });
+  findq.addEventListener('input', runFind);
+  find.addEventListener('click', function(e){ if(!e.target.closest('.find-box')) setFind(false); });
+  addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && !find.hidden){ setFind(false); return; }
+    if((e.key === '/' || (e.key === 'k' && (e.metaKey || e.ctrlKey))) && find.hidden
+       && !/^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName)){
+      e.preventDefault(); setFind(true); return;
+    }
+    if(find.hidden) return;
+    var items = [].slice.call(findout.querySelectorAll('a'));
+    if(!items.length) return;
+    if(e.key === 'ArrowDown' || e.key === 'ArrowUp'){
+      e.preventDefault();
+      sel = (sel + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length;
+      items.forEach(function(a,i){ a.classList.toggle('sel', i === sel); });
+      items[sel].scrollIntoView({block:'nearest'});
+    }
+    if(e.key === 'Enter' && sel > -1){ items[sel].click(); }
+  });
+  addEventListener('keydown', function(e){ if(e.key === 'Escape' && !veil.hidden) setMenu(false); });
+  veil.addEventListener('click', function(e){
+    if(e.target.closest('a') || !e.target.closest('.veil-panel')) setMenu(false);
+  });
+
+  /* ── the index: search + topic filter, re-laid out with FLIP ──
+     Cards travel to their new positions rather than snapping. First and
+     Last are measured around a single synchronous DOM mutation, then the
+     delta is played back with the Web Animations API - transform only,
+     so it stays on the compositor. */
+  var stream = document.getElementById('stream'),
+      cards  = [].slice.call(stream.querySelectorAll('.it')),
+      empty  = document.getElementById('empty'),
+      hunt   = document.getElementById('hunt'),
+      input  = document.getElementById('q'),
+      clear  = document.getElementById('clear'),
+      topics = document.getElementById('topics'),
+      tally  = document.getElementById('tally'),
+      word   = document.getElementById('tallyWord'),
+      band   = null;
+
+  var topic = 'all', term = '';
+
+  /* cache the searchable text once */
+  cards.forEach(function(c){ c._hay = c.textContent.toLowerCase().replace(/\s+/g,' '); });
+
+  function matches(c){
+    if(topic !== 'all' && c.dataset.topic !== topic) return false;
+    if(term && c._hay.indexOf(term) === -1) return false;
+    return true;
+  }
+
+  function apply(){
+    /* FIRST - measure everything that is currently on screen */
+    var first = new Map();
+    cards.forEach(function(c){ first.set(c, c.getBoundingClientRect()); });
+
+    /* MUTATE */
+    var shown = 0, entered = [];
+    cards.forEach(function(c){
+      var was = !c.classList.contains('hide');
+      var now = matches(c);
+      if(now) shown++;
+      c.classList.toggle('hide', !now);
+      if(now && !was) entered.push(c);
+    });
+    /* the newsletter band only belongs in the unfiltered stream */
+    if(band) band.style.display = (topic === 'all' && !term) ? '' : 'none';
+    empty.hidden = shown > 0;
+
+    /* LAST + INVERT + PLAY */
+    if(!reduce){
+      cards.forEach(function(c){
+        if(c.classList.contains('hide')) return;
+        var f = first.get(c);
+        if(!f || !f.width){ c.classList.remove('pop'); void c.offsetWidth; c.classList.add('pop'); return; }
+        var l = c.getBoundingClientRect();
+        var dx = f.left - l.left, dy = f.top - l.top;
+        if(!dx && !dy) return;
+        c.animate(
+          [{transform:'translate(' + dx + 'px,' + dy + 'px)'},{transform:'none'}],
+          {duration:520, easing:'cubic-bezier(.22,1,.36,1)'}
+        );
+      });
+    }
+
+    tally.textContent = shown;
+    word.textContent = shown === 1 ? 'piece found' : (topic === 'all' && !term ? 'pieces published' : 'pieces found');
+    hunt.classList.toggle('has', !!term);
+  }
+
+  topics.addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return;
+    topic = b.dataset.topic;
+    topics.querySelectorAll('button').forEach(function(x){
+      x.setAttribute('aria-pressed', String(x === b));
+    });
+    apply();
+  });
+
+  var t = null;
+  input.addEventListener('input', function(){
+    clearTimeout(t);
+    t = setTimeout(function(){ term = input.value.trim().toLowerCase(); apply(); }, 110);
+  });
+  clear.addEventListener('click', function(){
+    input.value = ''; term = ''; apply(); input.focus();
+  });
+  input.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && input.value){ input.value = ''; term = ''; apply(); }
+  });
+
+  apply();
+
+  /* forms: prototype only, no endpoint */
+  document.querySelectorAll('[data-validate]').forEach(function(f){
+    f.addEventListener('submit', function(ev){
+      ev.preventDefault();
+      if(f.querySelector('[name=hp-field]').value) return;
+      var email = f.querySelector('input[type=email]');
+      if(email && !email.checkValidity()){ email.focus(); return; }
+      f.innerHTML = '<p class="done">Thank you. Check your inbox to confirm.</p>';
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

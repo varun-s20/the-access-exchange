@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Access Exchange — Conversations That Open Doors in Tech</title>
+  <meta name="description" content="The Access Exchange is a tech-focused media and professional development platform: candid interviews with industry builders, university partnerships, and practical career insights.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="home">
+
+  <!-- TEMPLATE-PART: header -->
+  <!-- .is-active on the current page's nav link is applied by script.js from <body data-page="...">, keeping this header byte-identical on every page. Becomes an is_page() conditional in WordPress. -->
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header" id="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">The Access <span>Exchange</span></a>
+      <nav class="site-nav" aria-label="Primary">
+        <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu">
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+          <span class="visually-hidden">Menu</span>
+        </button>
+        <ul class="nav-menu" id="nav-menu">
+          <li><a class="nav-link" data-nav="home" href="index.html">Home</a></li>
+          <li><a class="nav-link" data-nav="interview-series" href="interview-series.html">Interview Series</a></li>
+          <li><a class="nav-link" data-nav="university-partnerships" href="university-partnerships.html">University Partnerships</a></li>
+          <li><a class="nav-link" data-nav="interviews-insights" href="interviews-insights.html">Interviews &amp; Insights</a></li>
+          <li><a class="nav-link" data-nav="about" href="about.html">About</a></li>
+          <li><a class="nav-link" data-nav="contact" href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <!-- /TEMPLATE-PART: header -->
+
+  <main id="main">
+
+    <section class="hero">
+      <div class="container">
+        <p class="section-kicker">Tech media &middot; Professional development</p>
+        <h1 class="hero-title">Conversations that <em>open doors</em> in tech.</h1>
+        <p class="hero-lede">The Access Exchange brings candid interviews with the people building the industry to the students and early-career professionals trying to break into it — through an original interview series and hands-on university partnerships.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="interview-series.html">Explore the Interview Series</a>
+          <a class="btn btn-secondary" href="university-partnerships.html">Partner With Us</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <p class="section-kicker">What we do</p>
+          <h2 class="section-title">Three ways in.</h2>
+          <p class="section-intro">Everything we publish and every partnership we run has one goal: shortening the distance between talent and opportunity.</p>
+        </div>
+        <div class="card-grid">
+          <article class="card">
+            <div class="card-body">
+              <p class="card-tag">Interview Series</p>
+              <h3 class="card-title"><a href="interview-series.html">Candid conversations with builders</a></h3>
+              <p class="card-text">Long-form interviews with founders, engineers, and operators about how they actually got here — the decisions, detours, and doors that opened along the way.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-body">
+              <p class="card-tag">University Partnerships</p>
+              <h3 class="card-title"><a href="university-partnerships.html">Programs built with universities</a></h3>
+              <p class="card-text">We work with career services and student societies to bring industry voices on campus and give students a direct line to working professionals.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-body">
+              <p class="card-tag">Insights</p>
+              <h3 class="card-title"><a href="interviews-insights.html">Practical career insights</a></h3>
+              <p class="card-text">Written pieces distilled from our interviews: negotiation, portfolios, first-90-days playbooks, and the unwritten rules nobody teaches you.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-alt">
+      <div class="container">
+        <div class="section-head">
+          <p class="section-kicker">Featured</p>
+          <h2 class="section-title">From the interview series.</h2>
+        </div>
+        <!-- WP-DYNAMIC: featured-interviews (will become a custom post type loop, latest featured episodes) -->
+        <div class="card-grid">
+          <article class="card">
+            <div class="card-media"><img src="assets/images/placeholder-guest.svg" alt=""></div>
+            <div class="card-body">
+              <p class="card-tag">Episode 12</p>
+              <h3 class="card-title"><a href="interview-series.html">From bootcamp to staff engineer in five years</a></h3>
+              <p class="card-text">A senior engineer on skipping the credential race, finding mentors who actually respond, and what hiring managers really screen for.</p>
+              <p class="card-meta">42 min &middot; Career paths</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-media"><img src="assets/images/placeholder-guest.svg" alt=""></div>
+            <div class="card-body">
+              <p class="card-tag">Episode 11</p>
+              <h3 class="card-title"><a href="interview-series.html">Building a startup while still on campus</a></h3>
+              <p class="card-text">A student founder on balancing coursework with customers, raising a first round, and why university networks are underrated leverage.</p>
+              <p class="card-meta">38 min &middot; Founders</p>
+            </div>
+          </article>
+        </div>
+        <!-- /WP-DYNAMIC: featured-interviews -->
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <p class="section-kicker">Latest insights</p>
+          <h2 class="section-title">Read before your next move.</h2>
+        </div>
+        <!-- WP-DYNAMIC: latest-insights (will become a recent posts loop from the insights category) -->
+        <div class="card-grid">
+          <article class="card">
+            <div class="card-media"><img src="assets/images/placeholder-insight.svg" alt=""></div>
+            <div class="card-body">
+              <p class="card-tag">Insight</p>
+              <h3 class="card-title"><a href="interviews-insights.html">What five hiring managers told us about junior portfolios</a></h3>
+              <p class="card-text">The common thread across every conversation: depth on one real project beats breadth on ten tutorials.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-media"><img src="assets/images/placeholder-insight.svg" alt=""></div>
+            <div class="card-body">
+              <p class="card-tag">Insight</p>
+              <h3 class="card-title"><a href="interviews-insights.html">The cold outreach template that actually gets replies</a></h3>
+              <p class="card-text">Built from advice given by three guests who answer their own inboxes — specific, short, and easy to say yes to.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-media"><img src="assets/images/placeholder-insight.svg" alt=""></div>
+            <div class="card-body">
+              <p class="card-tag">Insight</p>
+              <h3 class="card-title"><a href="interviews-insights.html">Your first 90 days: advice from people who manage juniors</a></h3>
+              <p class="card-text">Ask more questions than feels comfortable, ship something small in week one, and write everything down.</p>
+            </div>
+          </article>
+        </div>
+        <!-- /WP-DYNAMIC: latest-insights -->
+      </div>
+    </section>
+
+    <section class="cta-band on-dark">
+      <div class="container">
+        <div>
+          <h2>Know someone we should talk to?</h2>
+          <p>Suggest a guest, propose a partnership, or just say hello.</p>
+        </div>
+        <a class="btn btn-primary" href="contact.html">Get in touch</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- TEMPLATE-PART: footer -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-about">
+        <p class="footer-brand">The Access <span>Exchange</span></p>
+        <p>A tech-focused media and professional development platform connecting emerging talent with the people building the industry.</p>
+      </div>
+      <nav class="footer-nav" aria-label="Footer">
+        <h2 class="footer-heading">Explore</h2>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="interview-series.html">Interview Series</a></li>
+          <li><a href="university-partnerships.html">University Partnerships</a></li>
+          <li><a href="interviews-insights.html">Interviews &amp; Insights</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="footer-cta on-dark">
+        <h2 class="footer-heading">Get in touch</h2>
+        <p>Have a guest, partnership, or story in mind? We&rsquo;d love to hear it.</p>
+        <a class="btn btn-secondary" href="contact.html">Contact us</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p>&copy; 2026 The Access Exchange. All rights reserved.</p>
+    </div>
+  </footer>
+  <!-- /TEMPLATE-PART: footer -->
+
+  <script src="assets/js/script.js"></script>
+</body>
+</html>

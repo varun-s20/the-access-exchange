@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interview Series — The Access Exchange</title>
+  <meta name="description" content="Long-form interviews with founders, engineers, and operators in tech. Watch the latest episode, browse the archive, or apply to be a guest on The Access Exchange.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="interview-series">
+
+  <!-- TEMPLATE-PART: header -->
+  <!-- .is-active on the current page's nav link is applied by script.js from <body data-page="...">, keeping this header byte-identical on every page. Becomes an is_page() conditional in WordPress. -->
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header" id="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">The Access <span>Exchange</span></a>
+      <nav class="site-nav" aria-label="Primary">
+        <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu">
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+          <span class="visually-hidden">Menu</span>
+        </button>
+        <ul class="nav-menu" id="nav-menu">
+          <li><a class="nav-link" data-nav="home" href="index.html">Home</a></li>
+          <li><a class="nav-link" data-nav="interview-series" href="interview-series.html">Interview Series</a></li>
+          <li><a class="nav-link" data-nav="university-partnerships" href="university-partnerships.html">University Partnerships</a></li>
+          <li><a class="nav-link" data-nav="interviews-insights" href="interviews-insights.html">Interviews &amp; Insights</a></li>
+          <li><a class="nav-link" data-nav="about" href="about.html">About</a></li>
+          <li><a class="nav-link" data-nav="contact" href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <!-- /TEMPLATE-PART: header -->
+
+  <main id="main">
+
+    <section class="hero">
+      <div class="container">
+        <p class="section-kicker">The Interview Series</p>
+        <h1 class="hero-title">Real career stories, told <em>unfiltered</em>.</h1>
+        <p class="hero-lede">Each episode is a long-form conversation with someone building in tech — founders, engineers, designers, operators — about how they broke in, what they'd do differently, and what they look for when they hire. Made for students and early-career professionals who want the real version, not the highlight reel.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#inquiry">Apply to be a guest</a>
+          <a class="btn btn-secondary" href="#episodes">Browse past episodes</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <p class="section-kicker">Latest episode</p>
+          <h2 class="section-title">Watch the newest conversation.</h2>
+        </div>
+        <!-- WP-DYNAMIC: featured-episode-embed (video URL/ID becomes an ACF field or embed block) -->
+        <div class="video-embed">
+          <iframe src="https://www.youtube.com/embed/VIDEO_ID_PLACEHOLDER" title="The Access Exchange — latest episode (placeholder embed)" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <!-- /WP-DYNAMIC: featured-episode-embed -->
+      </div>
+    </section>
+
+    <section class="section section-alt" id="episodes">
+      <div class="container">
+        <div class="section-head">
+          <p class="section-kicker">Archive</p>
+          <h2 class="section-title">Past episodes.</h2>
+        </div>
+        <!-- WP-DYNAMIC: episode-archive (will become a custom post type loop) -->
+        <div class="card-grid">
+          <article class="card">
+            <div class="card-media"><img src="assets/images/placeholder-episode.svg" alt=""></div>
+            <div class="card-body">
+              <p class="card-tag">Episode 12</p>
+              <h3 class="card-title"><a href="#episodes">Priya N. — Staff Engineer</a></h3>
+              <p class="card-text">From bootcamp to staff engineer in five years, and what hiring managers really screen for.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-media"><img src="assets/images/placeholder-episode.svg" alt=""></div>
+            <div class="card-body">
+              <p class="card-tag">Episode 11</p>
+              <h3 class="card-title"><a href="#episodes">Marcus T. — Student Founder</a></h3>
+              <p class="card-text">Building a startup while still on campus, and why university networks are underrated leverage.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-media"><img src="assets/images/placeholder-episode.svg" alt=""></div>
+            <div class="card-body">
+              <p class="card-tag">Episode 10</p>
+              <h3 class="card-title"><a href="#episodes">Elena R. — Product Design Lead</a></h3>
+              <p class="card-text">Portfolio reviews from the other side of the table: what stands out and what gets skipped.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-media"><img src="assets/images/placeholder-episode.svg" alt=""></div>
+            <div class="card-body">
+              <p class="card-tag">Episode 9</p>
+              <h3 class="card-title"><a href="#episodes">David O. — Engineering Manager</a></h3>
+              <p class="card-text">What great juniors do in their first 90 days, from someone who has onboarded dozens.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-media"><img src="assets/images/placeholder-episode.svg" alt=""></div>
+            <div class="card-body">
+              <p class="card-tag">Episode 8</p>
+              <h3 class="card-title"><a href="#episodes">Sara K. — Developer Advocate</a></h3>
+              <p class="card-text">Turning open-source contributions and writing into a career path that didn't exist ten years ago.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-media"><img src="assets/images/placeholder-episode.svg" alt=""></div>
+            <div class="card-body">
+              <p class="card-tag">Episode 7</p>
+              <h3 class="card-title"><a href="#episodes">James L. — VC Analyst</a></h3>
+              <p class="card-text">How to get into venture without knowing anyone, and what founders should know about the other side.</p>
+            </div>
+          </article>
+        </div>
+        <!-- /WP-DYNAMIC: episode-archive -->
+      </div>
+    </section>
+
+    <section class="section" id="inquiry">
+      <div class="container">
+        <div class="section-head">
+          <p class="section-kicker">Be a guest</p>
+          <h2 class="section-title">Have a story worth sharing?</h2>
+          <p class="section-intro">We're always looking for guests with a genuine path to talk about — no title requirements, no follower minimums. If your story would help someone break in, we want to hear it.</p>
+        </div>
+        <!-- Prototype form: client-side validation only. Becomes a WordPress form plugin shortcode. -->
+        <form class="form" data-validate novalidate>
+          <div class="form-field">
+            <label for="guest-name">Name</label>
+            <input type="text" id="guest-name" name="name" required aria-required="true" autocomplete="name">
+          </div>
+          <div class="form-field">
+            <label for="guest-email">Email</label>
+            <input type="email" id="guest-email" name="email" required aria-required="true" autocomplete="email">
+          </div>
+          <div class="form-field">
+            <label for="guest-org">Organization / Role</label>
+            <input type="text" id="guest-org" name="organization-role" required aria-required="true" autocomplete="organization">
+          </div>
+          <div class="form-field">
+            <label for="guest-expertise">Area of expertise</label>
+            <input type="text" id="guest-expertise" name="expertise" required aria-required="true">
+          </div>
+          <div class="form-field">
+            <label for="guest-why">Why you'd be a great guest</label>
+            <textarea id="guest-why" name="why-guest" required aria-required="true"></textarea>
+          </div>
+          <label class="visually-hidden" for="guest-hp" aria-hidden="true">Leave this field empty</label>
+          <input type="text" id="guest-hp" name="hp-field" class="visually-hidden" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <button type="submit" class="btn btn-primary">Send guest inquiry</button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- TEMPLATE-PART: footer -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-about">
+        <p class="footer-brand">The Access <span>Exchange</span></p>
+        <p>A tech-focused media and professional development platform connecting emerging talent with the people building the industry.</p>
+      </div>
+      <nav class="footer-nav" aria-label="Footer">
+        <h2 class="footer-heading">Explore</h2>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="interview-series.html">Interview Series</a></li>
+          <li><a href="university-partnerships.html">University Partnerships</a></li>
+          <li><a href="interviews-insights.html">Interviews &amp; Insights</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="footer-cta on-dark">
+        <h2 class="footer-heading">Get in touch</h2>
+        <p>Have a guest, partnership, or story in mind? We&rsquo;d love to hear it.</p>
+        <a class="btn btn-secondary" href="contact.html">Contact us</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p>&copy; 2026 The Access Exchange. All rights reserved.</p>
+    </div>
+  </footer>
+  <!-- /TEMPLATE-PART: footer -->
+
+  <script src="assets/js/script.js"></script>
+</body>
+</html>

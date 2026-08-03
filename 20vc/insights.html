@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Insights | The Access Exchange</title>
+<meta name="description" content="Career stories, interview write-ups and practical guidance from people working in tech — plus how we run partnership programmes with universities.">
+<meta name="theme-color" content="#21fbac">
+
+<!-- Skandia (sans) + Leif (Times-derived serif) are licensed retail faces.
+     Hanken Grotesk + Newsreader are the closest free stand-ins. Swap the two
+     font vars in :root when the real licences land. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300..800;1,300..800&family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   tokens
+   ============================================================ */
+:root{
+  /* neutrals */
+  --body-bg:#fbfbf6;
+  --typography:#000503;
+  --black-25:#00050340;
+  --white:#fff;
+  --white-20:#fff3;
+  --border:#ddd;
+  --gray-100:#dcddd7;
+  --gray-200:#bcbdb9;
+  --gray-400:#556b68;
+  /* brand */
+  --purple-100:#3b1044;
+  --purple-200:#e4adff;
+  --purple-300:#f8e8ff;
+  --green-100:#243c39;
+  --green-200:#21fbac;
+  --green-300:#b6f2d8;
+  --blue-100:#191f54;
+  --blue-200:#89baff;
+  --blue-300:#dfe9f7;
+  --red-100:#56001f;
+  --red-200:#ff4d58;
+  --yellow-100:#614e39;
+  --yellow-200:#f4cf54;
+
+  /* type */
+  --sans:"Hanken Grotesk","Skandia",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+  --serif:"Newsreader","Leif Regular",Times,"Times New Roman",serif;
+
+  /* layout */
+  --shell:1280px;
+  --pad:20px;
+  --gap-section:60px;
+  --lede-w:658px;
+  --col-side:312fr;
+  --col-lede:658fr;
+  --col-rail:312fr;
+
+  --fs-lede:32px;
+  --fs-h2:32px;
+  --fs-deck:20px;
+  --fs-card:20px;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--body-bg);
+  color:var(--typography);
+  font-family:var(--sans);
+  font-size:16px;
+  line-height:1.4;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,h4,p,figure,blockquote{margin:0}
+ul{margin:0;padding:0;list-style:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--typography);outline-offset:3px}
+
+.shell{max-width:var(--shell);margin-inline:auto;padding-inline:var(--pad)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.sprite{position:absolute;width:0;height:0;overflow:hidden}
+
+/* ============================================================
+   header
+   ============================================================ */
+.site-head{position:relative;padding-block:14px;background:var(--body-bg);
+  border-bottom:1px solid var(--gray-100)}
+.head-in{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.logo{display:flex;align-items:baseline;gap:8px;font-weight:700;letter-spacing:-.04em;
+  font-size:19px;line-height:1;white-space:nowrap}
+.logo span{font-family:var(--serif);font-style:italic;font-weight:400;
+  font-size:18px;letter-spacing:-.01em;color:var(--gray-400)}
+
+.nav{display:none}
+.nav ul{display:flex;align-items:center}
+.nav li{position:relative}
+.nav li > a{display:flex;align-items:center;gap:5px;height:30px;padding:0 8px;
+  margin:0 6px;font-size:14px;line-height:1;border-radius:4px}
+.nav li > a:hover{background:var(--gray-100)}
+.nav .caret{width:9px;height:9px;flex:0 0 auto;transition:transform .2s ease}
+.nav .is-sub > a{color:var(--gray-400)}
+.nav-cta{display:none;font-size:14px;font-weight:600;padding:0 14px;height:34px;
+  align-items:center;border:1px solid var(--typography);border-radius:999px;white-space:nowrap}
+.nav-cta:hover{background:var(--typography);color:var(--body-bg)}
+
+/* dropdown */
+.dropdown{position:absolute;top:100%;left:0;z-index:40;display:none;min-width:240px;
+  padding:10px;background:var(--body-bg);border:1px solid var(--gray-100);border-radius:6px;
+  box-shadow:0 12px 32px var(--black-25)}
+.dropdown a{display:block;padding:7px 10px;font-size:14px;border-radius:4px}
+.dropdown a:hover{background:var(--purple-300)}
+.nav li:hover .dropdown,.nav li:focus-within .dropdown{display:block}
+
+/* mobile menu */
+.burger{display:inline-flex;flex-direction:column;justify-content:space-between;
+  width:24px;height:16px;padding:0}
+.burger span{display:block;height:2px;background:currentColor;border-radius:2px;transition:.2s ease}
+.burger[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+.burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.mobile-nav{display:none;border-top:1px solid var(--gray-100);padding:8px 0 20px}
+.mobile-nav.is-open{display:block}
+.mobile-nav a{display:block;padding:14px 0;font-size:18px;font-weight:500;
+  border-bottom:1px solid var(--gray-100)}
+.mobile-nav a.sub{padding-left:16px;font-size:16px;color:var(--gray-400)}
+.mobile-nav .signin{border-bottom:0;font-weight:700}
+
+/* ============================================================
+   shared article bits
+   ============================================================ */
+.thumb{position:relative;display:block;overflow:hidden;background:var(--gray-100);
+  aspect-ratio:3/2;margin-bottom:10px}
+.thumb img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease,filter .4s ease}
+.card:hover .thumb img,a.thumb:hover img{transform:scale(1.03)}
+
+.kicker{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--gray-400);margin-bottom:8px}
+.card-title{font-family:var(--sans);font-weight:500;letter-spacing:-.02em;
+  font-size:var(--fs-card);line-height:1.15;margin-bottom:6px}
+.card:hover .card-title{text-decoration:underline;text-underline-offset:3px}
+.deck{font-family:var(--serif);font-size:17px;line-height:1.35;color:var(--typography)}
+.byline{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:13px;color:var(--gray-400)}
+.byline img{width:26px;height:26px;border-radius:50%;object-fit:cover;border:1px solid var(--gray-100)}
+
+.section{margin-bottom:var(--gap-section)}
+.section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;
+  padding-bottom:10px;margin-bottom:22px;border-bottom:1px solid var(--gray-100)}
+.section-head h2{font-size:var(--fs-h2);font-weight:500;letter-spacing:-.03em;line-height:1.05}
+.section-head .more{font-size:14px;font-weight:600;white-space:nowrap;text-decoration:underline;
+  text-underline-offset:3px}
+.section-head .more:hover{color:var(--gray-400)}
+
+/* ============================================================
+   featured area — [ left stack | lede | rail ]
+   ============================================================ */
+.featured{padding-top:24px}
+.featured-in{display:flex;flex-direction:column;gap:32px}
+
+.lede{padding-bottom:32px;border-bottom:1px solid var(--gray-100)}
+.lede .thumb{aspect-ratio:3/2}
+.lede h3{font-size:var(--fs-lede);font-weight:500;letter-spacing:-.03em;line-height:1.05;
+  margin:16px 0 8px}
+.lede:hover h3{text-decoration:underline;text-underline-offset:4px}
+.lede .deck{font-size:var(--fs-deck);line-height:1.35}
+
+.side-stack{display:flex;flex-direction:column;gap:28px}
+
+.rail{padding:22px 16px;border:1px solid var(--gray-100)}
+.rail h2{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  padding-bottom:10px;margin-bottom:14px;border-bottom:1px solid var(--gray-100)}
+.slim{display:flex;gap:14px;align-items:flex-start;padding-bottom:16px;margin-bottom:16px;
+  border-bottom:1px solid var(--gray-100)}
+.slim:last-child{padding-bottom:0;margin-bottom:0;border-bottom:0}
+.slim .thumb{flex:0 0 84px;width:84px;aspect-ratio:1;margin:0}
+.slim h3{font-size:15px;font-weight:500;letter-spacing:-.01em;line-height:1.2}
+.slim:hover h3{text-decoration:underline;text-underline-offset:2px}
+.slim .num{font-family:var(--serif);font-size:20px;color:var(--gray-200);line-height:1;flex:0 0 auto}
+
+/* ============================================================
+   bands
+   ============================================================ */
+.band{padding-block:40px;margin-bottom:var(--gap-section)}
+.band-lilac{background:var(--purple-300);color:var(--purple-100)}
+.band-plum{background:var(--purple-100);color:var(--purple-200)}
+.band-orchid{background:var(--purple-200);color:var(--purple-100)}
+.band-green{background:var(--green-100);color:var(--green-300)}
+.band h2{font-size:24px;font-weight:600;letter-spacing:-.03em;line-height:1.1;margin-bottom:26px}
+.band .deck{color:inherit}
+
+.props{display:grid;gap:26px}
+.prop{display:flex;gap:14px;align-items:flex-start}
+.prop .dot{flex:0 0 34px;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;
+  background:var(--purple-100);color:var(--purple-300);font-size:15px;font-weight:700}
+.band-plum .prop .dot{background:var(--purple-200);color:var(--purple-100)}
+.prop h3{font-size:17px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+.prop p{font-family:var(--serif);font-size:16px;line-height:1.35;opacity:.9}
+
+/* ============================================================
+   guests
+   ============================================================ */
+.builders{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 16px}
+.builder{text-align:left}
+.builder img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:50%;
+  background:var(--gray-100);margin-bottom:12px;transition:filter .3s ease}
+.builder:hover img{filter:saturate(1.15) contrast(1.05)}
+.builder h3{font-size:15px;font-weight:700;letter-spacing:-.01em}
+.builder p{font-size:13px;color:var(--gray-400);margin-top:2px}
+.builder .work{display:inline-block;margin-top:8px;font-family:var(--serif);font-size:15px;
+  line-height:1.25;text-decoration:underline;text-underline-offset:3px}
+
+/* ============================================================
+   testimonials
+   ============================================================ */
+.quotes{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;
+  padding-bottom:8px;scrollbar-width:none;-ms-overflow-style:none}
+.quotes::-webkit-scrollbar{display:none}
+.quote{flex:0 0 86%;scroll-snap-align:start;padding:24px;border:1px solid var(--white-20);
+  border-radius:8px;background:rgba(255,255,255,.04)}
+.quote blockquote{font-family:var(--serif);font-style:italic;font-size:20px;line-height:1.3;
+  letter-spacing:-.01em;margin-bottom:18px}
+.quote figcaption{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--purple-200)}
+.quote figcaption img{width:36px;height:36px;border-radius:50%;object-fit:cover}
+.quote strong{display:block;font-size:14px;color:var(--white)}
+
+/* ============================================================
+   grids + rails
+   ============================================================ */
+.grid{display:grid;gap:34px}
+.card{display:block}
+
+.rail-scroll{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;
+  padding-bottom:10px;scrollbar-width:none;-ms-overflow-style:none;
+  margin-inline:calc(var(--pad) * -1);padding-inline:var(--pad)}
+.rail-scroll::-webkit-scrollbar{display:none}
+.rail-scroll > .card{flex:0 0 78%;scroll-snap-align:start}
+.rail-nav{display:none;gap:8px}
+.rail-nav button{width:36px;height:36px;border:1px solid var(--gray-200);border-radius:50%;
+  display:grid;place-items:center}
+.rail-nav button:hover{background:var(--typography);color:var(--body-bg);border-color:var(--typography)}
+.rail-nav svg{width:14px;height:14px}
+
+/* collection band tints */
+.collection{padding-block:34px;margin-bottom:var(--gap-section)}
+.collection .section-head{border-bottom-color:currentColor}
+.tint-blue{background:var(--blue-300);color:var(--blue-100)}
+.tint-green{background:var(--green-300);color:var(--green-100)}
+.tint-yellow{background:var(--yellow-200);color:var(--yellow-100)}
+.collection .kicker,.collection .deck,.collection .byline{color:inherit}
+.collection .thumb{background:rgba(0,0,0,.08)}
+
+/* ============================================================
+   subscribe
+   ============================================================ */
+.subscribe h2{font-size:24px;font-weight:600;letter-spacing:-.03em;margin-bottom:6px}
+.subscribe .deck{margin-bottom:22px}
+.sub-form{display:grid;gap:10px;max-width:520px}
+.sub-form input{height:50px;padding:0 16px;font:inherit;font-size:16px;border-radius:6px;
+  border:1px solid currentColor;background:var(--body-bg);color:var(--typography)}
+.sub-form input::placeholder{color:var(--gray-400)}
+.sub-form button{height:50px;padding:0 24px;border-radius:6px;font-weight:700;font-size:15px;
+  background:var(--typography);color:var(--body-bg);transition:opacity .2s ease}
+.sub-form button:hover{opacity:.82}
+.band-plum .sub-form button{background:var(--purple-200);color:var(--purple-100)}
+.sub-note{margin-top:12px;font-size:13px;opacity:.75}
+.sub-form input:user-invalid{border-color:var(--red-200)}
+
+/* ============================================================
+   series band
+   ============================================================ */
+.pod{background:var(--green-100);color:var(--green-300);padding:32px 0;
+  margin-bottom:var(--gap-section)}
+.pod-in{display:grid;gap:26px}
+.pod h2{font-size:28px;font-weight:600;letter-spacing:-.03em;margin-bottom:8px}
+.pod .deck{color:inherit;margin-bottom:20px}
+.pod-links{display:flex;flex-wrap:wrap;gap:10px}
+.pod-links a{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 16px;
+  border:1px solid var(--green-200);border-radius:999px;font-size:14px;font-weight:600}
+.pod-links a:hover{background:var(--green-200);color:var(--green-100)}
+.pod-links svg{width:16px;height:16px}
+.pod-art{border-radius:10px;overflow:hidden;aspect-ratio:1;max-width:340px}
+
+/* ============================================================
+   footer
+   ============================================================ */
+.site-foot{background:var(--typography);color:var(--body-bg);padding:52px 0 32px}
+.foot-quote{font-family:var(--serif);font-style:italic;font-size:20px;line-height:1.35;
+  max-width:620px;margin-bottom:40px;color:var(--gray-200)}
+.foot-cols{display:grid;gap:32px}
+.foot-cols h3{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gray-200);margin-bottom:14px}
+.foot-cols li + li{margin-top:11px}
+.foot-cols a{font-size:15px}
+.foot-cols a:hover,.foot-bottom a:hover{color:var(--green-200)}
+.socials{display:flex;gap:14px;margin-top:26px}
+.socials a{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;
+  border:1px solid var(--white-20)}
+.socials a:hover{background:var(--green-200);color:var(--typography);border-color:var(--green-200)}
+.socials svg{width:17px;height:17px}
+.foot-bottom{display:flex;flex-wrap:wrap;gap:10px 22px;justify-content:space-between;
+  margin-top:44px;padding-top:20px;border-top:1px solid var(--white-20);
+  font-size:13px;color:var(--gray-200)}
+
+/* ============================================================
+   breakpoints — sm 640 / lg 1024 / xl 1280
+   ============================================================ */
+@media (min-width:640px){
+  :root{--pad:24px;--fs-lede:36px;--fs-h2:36px}
+  .props{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .builders{grid-template-columns:repeat(3,minmax(0,1fr));gap:30px 20px}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:36px 22px}
+  .rail-scroll > .card{flex-basis:46%}
+  .quote{flex-basis:60%}
+  .sub-form{grid-template-columns:1fr auto}
+  .foot-cols{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .pod-in{grid-template-columns:1fr 300px;align-items:center}
+}
+@media (min-width:1024px){
+  :root{--pad:32px;--gap-section:80px;--fs-lede:48px;--fs-h2:48px;--fs-deck:24px;--fs-card:22px}
+  .nav{display:block}
+  .nav-cta{display:inline-flex}
+  .burger,.mobile-nav{display:none !important}
+  .site-head{padding-block:18px}
+  .logo{font-size:24px}
+  .logo span{font-size:22px}
+
+  /* column ratio 312 / 658 / 312 — as fr so it never overflows at 1024 */
+  .featured-in{display:grid;align-items:start;gap:0;
+    grid-template-columns:minmax(0,var(--col-side)) minmax(0,var(--col-lede)) minmax(0,var(--col-rail))}
+  .side-stack{min-width:0;padding-right:16px}
+  .lede{min-width:0;max-width:var(--lede-w);padding:0 16px;
+    border-bottom:0;border-left:1px solid var(--gray-100);border-right:1px solid var(--gray-100)}
+  .rail{min-width:0;margin-left:16px;padding:24px 18px}
+
+  .grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:44px 26px}
+  .rail-scroll > .card{flex-basis:31%}
+  .rail-nav{display:flex}
+  .quote{flex-basis:38%}
+  .band{padding-block:56px}
+  .collection{padding-block:52px}
+  .band h2{font-size:36px}
+  .subscribe h2{font-size:32px}
+  .pod{padding:56px 0}
+  .pod h2{font-size:36px}
+  .foot-cols{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .site-foot{padding:72px 0 36px}
+  .foot-quote{font-size:26px}
+}
+@media (min-width:1280px){
+  .builders{grid-template-columns:repeat(5,minmax(0,1fr))}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .thumb img,.builder img,.burger span{transition:none}
+  .rail-scroll,.quotes{scroll-behavior:auto}
+}
+</style>
+</head>
+
+<body>
+<a class="sr-only" href="#main">Skip to content</a>
+
+<!-- ---------- icon sprite ---------- -->
+<svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-caret" viewBox="0 0 12 12"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="m2.5 4.5 3.5 3.5 3.5-3.5"/></symbol>
+  <symbol id="i-arrow-l" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M15 4 7 12l8 8"/></symbol>
+  <symbol id="i-arrow-r" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="m9 4 8 8-8 8"/></symbol>
+  <symbol id="i-apple" viewBox="0 0 24 24"><path fill="currentColor" d="M16.4 12.6c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.2-2.8.8-3.5.8s-1.8-.8-3-.8c-1.5 0-2.9.9-3.7 2.3-1.6 2.7-.4 6.7 1.1 8.9.8 1.1 1.7 2.3 2.9 2.2 1.2 0 1.6-.7 3-.7s1.8.7 3 .7 2-1.1 2.8-2.2c.9-1.2 1.2-2.4 1.3-2.5-.1 0-2.5-1-2.5-3.4ZM14.2 5.8c.6-.8 1.1-1.9 1-3-.9 0-2.1.6-2.8 1.4-.6.7-1.2 1.8-1 2.9 1 .1 2.1-.5 2.8-1.3Z"/></symbol>
+  <symbol id="i-spotify" viewBox="0 0 24 24"><path fill="currentColor" d="M12 1.8A10.2 10.2 0 1 0 22.2 12 10.2 10.2 0 0 0 12 1.8Zm4.4 14.8a.8.8 0 0 1-1.1.3 12.8 12.8 0 0 0-6.3-1.5 13.9 13.9 0 0 0-2.5.3.8.8 0 0 1-.4-1.5 15.4 15.4 0 0 1 2.9-.3 14.3 14.3 0 0 1 7.1 1.7.8.8 0 0 1 .3 1Zm1.2-3a.9.9 0 0 1-1.3.3 15.7 15.7 0 0 0-7.6-1.8 17 17 0 0 0-3.2.4.9.9 0 1 1-.5-1.8 18.8 18.8 0 0 1 3.7-.4 17.4 17.4 0 0 1 8.5 2 .9.9 0 0 1 .4 1.3Zm1.2-3.3a1 1 0 0 1-1.5.3A18.9 18.9 0 0 0 9 8.5a20.2 20.2 0 0 0-3.9.5 1 1 0 1 1-.6-2A22 22 0 0 1 9 6.5a20.9 20.9 0 0 1 9.5 2.3 1 1 0 0 1 .3 1.5Z"/></symbol>
+  <symbol id="i-youtube" viewBox="0 0 24 24"><path fill="currentColor" d="M22 12s0-3.3-.4-4.9a2.6 2.6 0 0 0-1.8-1.8C18.2 4.9 12 4.9 12 4.9s-6.2 0-7.8.4a2.6 2.6 0 0 0-1.8 1.8C2 8.7 2 12 2 12s0 3.3.4 4.9a2.6 2.6 0 0 0 1.8 1.8c1.6.4 7.8.4 7.8.4s6.2 0 7.8-.4a2.6 2.6 0 0 0 1.8-1.8c.4-1.6.4-4.9.4-4.9ZM10 15.2V8.8l5.4 3.2Z"/></symbol>
+  <symbol id="i-rss" viewBox="0 0 24 24"><g fill="currentColor"><circle cx="5.5" cy="18.5" r="2.2"/><path d="M3.3 10.6a.9.9 0 0 1 1-1A11.5 11.5 0 0 1 15.7 20a.9.9 0 0 1-1 1h-1a.9.9 0 0 1-.9-.8 8.1 8.1 0 0 0-7.6-7.6.9.9 0 0 1-.8-.9Zm0-5.8a.9.9 0 0 1 1-.9A17.3 17.3 0 0 1 21.4 20a.9.9 0 0 1-1 1h-1a.9.9 0 0 1-.9-.9A13.9 13.9 0 0 0 4.2 6.7a.9.9 0 0 1-.9-.9Z"/></g></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path fill="currentColor" d="M17.6 3h3.3l-7.2 8.2L22 21h-6.3l-4.6-5.9L5.8 21H2.5l7.7-8.8L2 3h6.4l4.2 5.4Zm-1.2 16h1.8L7.7 4.9H5.8Z"/></symbol>
+  <symbol id="i-linkedin" viewBox="0 0 24 24"><path fill="currentColor" d="M4.6 3a2 2 0 1 1 0 4 2 2 0 0 1 0-4ZM3 8.6h3.3V21H3Zm6 0h3.1v1.7c.5-.9 1.7-1.9 3.5-1.9 3 0 3.9 1.9 3.9 4.6V21h-3.3v-6.4c0-1.5-.5-2.5-1.9-2.5-1 0-1.7.7-2 1.4-.1.2-.1.6-.1.9V21H9Z"/></symbol>
+</svg>
+
+<!-- ============================================================
+     header
+     ============================================================ -->
+<header class="site-head">
+  <div class="shell head-in">
+    <a class="logo" href="index.html">The Access Exchange <span>Insights</span></a>
+
+    <nav class="nav" aria-label="Primary">
+      <ul>
+        <li>
+          <a href="#latest">Interviews <svg class="caret" aria-hidden="true"><use href="#i-caret"/></svg></a>
+          <div class="dropdown">
+            <a href="#latest">Latest interviews</a>
+            <a href="#breaking-in">Breaking in</a>
+            <a href="#levelling-up">Levelling up</a>
+            <a href="#on-campus">On campus</a>
+          </div>
+        </li>
+        <li>
+          <a href="#start-here">Start here <svg class="caret" aria-hidden="true"><use href="#i-caret"/></svg></a>
+          <div class="dropdown">
+            <a href="#start-here">New here? Start here</a>
+            <a href="#guests">Voices from the series</a>
+            <a href="#universities">For universities</a>
+          </div>
+        </li>
+        <li><a href="index.html#universities">Universities</a></li>
+        <li><a href="#subscribe">Newsletter</a></li>
+        <li><a href="#series">The series</a></li>
+        <li class="is-sub"><a href="index.html">Home</a></li>
+      </ul>
+    </nav>
+
+    <a class="nav-cta" href="contact.html">Get in touch</a>
+
+    <button class="burger" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <nav class="shell mobile-nav" id="mobile-nav" aria-label="Mobile">
+    <a href="#latest">Interviews</a>
+    <a href="#start-here">Start here</a>
+    <a href="index.html#universities">Universities</a>
+    <a href="#subscribe">Newsletter</a>
+    <a href="#series">The series</a>
+    <a class="sub" href="#breaking-in">Breaking in</a>
+    <a class="sub" href="#levelling-up">Levelling up</a>
+    <a class="signin" href="contact.html">Get in touch</a>
+  </nav>
+</header>
+
+<main id="main">
+
+  <!-- ============================================================
+       featured area
+       ============================================================ -->
+  <section class="shell featured section" aria-label="Featured">
+    <div class="featured-in">
+
+      <!-- left stack -->
+      <div class="side-stack">
+        <a class="card" href="#">
+          <figure class="thumb">
+            <img loading="lazy" width="600" height="400" alt="Product manager talking with a colleague"
+              src="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=800">
+          </figure>
+          <span class="kicker">Interview</span>
+          <h3 class="card-title">Support to product, without a technical degree</h3>
+          <p class="deck">Fiona Bright on the internal move nobody advertised, and how she made the case for it.</p>
+          <span class="byline">
+            <img loading="lazy" alt="" src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=80">
+            Fiona Bright
+          </span>
+        </a>
+
+        <a class="card" href="#">
+          <figure class="thumb">
+            <img loading="lazy" width="600" height="400" alt="Two colleagues reviewing a whiteboard"
+              src="https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=800">
+          </figure>
+          <span class="kicker">Interview</span>
+          <h3 class="card-title">What I got wrong applying for my first ten roles</h3>
+          <p class="deck">A hiring manager reads back his own early applications and marks them honestly.</p>
+          <span class="byline">
+            <img loading="lazy" alt="" src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=80">
+            Ravi Menon
+          </span>
+        </a>
+      </div>
+
+      <!-- lede -->
+      <a class="lede card" href="#">
+        <figure class="thumb">
+          <img width="1200" height="800" alt="Interview being recorded in a bright room"
+            src="https://images.pexels.com/photos/7433822/pexels-photo-7433822.jpeg?auto=compress&cs=tinysrgb&w=1280">
+        </figure>
+        <span class="kicker">Featured interview</span>
+        <h3>From bootcamp to staff engineer in five years</h3>
+        <p class="deck">Amara Osei did not study computer science. She talks through the three promotions that mattered, the one that did not, the projects she volunteered for on purpose, and what she would tell someone finishing a bootcamp this month.</p>
+        <span class="byline">
+          <img loading="lazy" alt="" src="https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&w=80">
+          Amara Osei &middot; 42 min interview
+        </span>
+      </a>
+
+      <!-- right rail -->
+      <aside class="rail">
+        <h2>Most watched</h2>
+        <a class="slim card" href="#">
+          <span class="num">01</span>
+          <figure class="thumb"><img loading="lazy" alt="" src="https://images.pexels.com/photos/3182812/pexels-photo-3182812.jpeg?auto=compress&cs=tinysrgb&w=200"></figure>
+          <h3>What a backend interview loop actually tests</h3>
+        </a>
+        <a class="slim card" href="#">
+          <span class="num">02</span>
+          <figure class="thumb"><img loading="lazy" alt="" src="https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg?auto=compress&cs=tinysrgb&w=200"></figure>
+          <h3>Building a portfolio when you have never shipped anything</h3>
+        </a>
+        <a class="slim card" href="#">
+          <span class="num">03</span>
+          <figure class="thumb"><img loading="lazy" alt="" src="https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=200"></figure>
+          <h3>Forty applications, two offers: a graduate&rsquo;s account</h3>
+        </a>
+        <a class="slim card" href="#">
+          <span class="num">04</span>
+          <figure class="thumb"><img loading="lazy" alt="" src="https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=200"></figure>
+          <h3>Switching careers at thirty-one, with a mortgage</h3>
+        </a>
+        <a class="slim card" href="#">
+          <span class="num">05</span>
+          <figure class="thumb"><img loading="lazy" alt="" src="https://images.pexels.com/photos/3182759/pexels-photo-3182759.jpeg?auto=compress&cs=tinysrgb&w=200"></figure>
+          <h3>Internships and placements: the routes people forget exist</h3>
+        </a>
+      </aside>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       why people follow
+       ============================================================ -->
+  <section class="band band-lilac">
+    <div class="shell">
+      <h2>What The Access Exchange actually is</h2>
+      <p class="deck" style="margin-bottom:30px;max-width:660px">A tech-focused media and professional-development platform, running through two vehicles: an interview series, and partnerships with universities.</p>
+      <div class="props">
+        <div class="prop">
+          <span class="dot" aria-hidden="true">1</span>
+          <div>
+            <h3>The interview series</h3>
+            <p>Long-form conversations with people working in tech. What the job involves, how they got in, what they would do differently.</p>
+          </div>
+        </div>
+        <div class="prop">
+          <span class="dot" aria-hidden="true">2</span>
+          <div>
+            <h3>University partnerships</h3>
+            <p>Programmes built with careers services and departments &mdash; guest sessions, workshops, and a content library the institution keeps.</p>
+          </div>
+        </div>
+        <div class="prop">
+          <span class="dot" aria-hidden="true">3</span>
+          <div>
+            <h3>Specific, not motivational</h3>
+            <p>Real numbers, real timelines, real rejections. Advice you can act on this week rather than agree with and forget.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       guests
+       ============================================================ -->
+  <section class="shell section" id="guests">
+    <div class="section-head">
+      <h2>Voices from the series</h2>
+      <a class="more" href="contact.html">Be a guest</a>
+    </div>
+    <div class="builders">
+      <a class="builder" href="#">
+        <img loading="lazy" alt="Portrait of Amara Osei" src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=400">
+        <h3>Amara Osei</h3>
+        <p>Staff Engineer</p>
+        <span class="work">On five years from bootcamp to staff</span>
+      </a>
+      <a class="builder" href="#">
+        <img loading="lazy" alt="Portrait of Ravi Menon" src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=400">
+        <h3>Ravi Menon</h3>
+        <p>Engineering Manager</p>
+        <span class="work">What an interview loop is really testing</span>
+      </a>
+      <a class="builder" href="#">
+        <img loading="lazy" alt="Portrait of Dr Leila Haddad" src="https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=400">
+        <h3>Dr Leila Haddad</h3>
+        <p>Lead Data Scientist</p>
+        <span class="work">The parts of the job nobody puts in the spec</span>
+      </a>
+      <a class="builder" href="#">
+        <img loading="lazy" alt="Portrait of Tobi Adeyinka" src="https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=400">
+        <h3>Tobi Adeyinka</h3>
+        <p>Junior Developer</p>
+        <span class="work">Forty applications, two offers</span>
+      </a>
+      <a class="builder" href="#">
+        <img loading="lazy" alt="Portrait of Marta Kowalska" src="https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=400">
+        <h3>Marta Kowalska</h3>
+        <p>Product Designer</p>
+        <span class="work">Portfolios before you have shipped anything</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       testimonials
+       ============================================================ -->
+  <section class="band band-plum">
+    <div class="shell">
+      <h2 style="color:var(--purple-200)">What people take away from it</h2>
+      <div class="quotes">
+        <figure class="quote">
+          <blockquote>The first careers session my students actually stayed behind after. They had questions, which almost never happens.</blockquote>
+          <figcaption>
+            <img loading="lazy" alt="" src="https://images.pexels.com/photos/1181690/pexels-photo-1181690.jpeg?auto=compress&cs=tinysrgb&w=80">
+            <span><strong>Hannah Doyle</strong>Careers Consultant, university partner</span>
+          </figcaption>
+        </figure>
+        <figure class="quote">
+          <blockquote>I sent one interview to my whole cohort. Three of them changed how they were writing applications that week.</blockquote>
+          <figcaption>
+            <img loading="lazy" alt="" src="https://images.pexels.com/photos/845457/pexels-photo-845457.jpeg?auto=compress&cs=tinysrgb&w=80">
+            <span><strong>Marcus Feld</strong>Course Lead, Computing</span>
+          </figcaption>
+        </figure>
+        <figure class="quote">
+          <blockquote>Being interviewed was the first time anyone asked me about the parts of the route that went badly.</blockquote>
+          <figcaption>
+            <img loading="lazy" alt="" src="https://images.pexels.com/photos/1181519/pexels-photo-1181519.jpeg?auto=compress&cs=tinysrgb&w=80">
+            <span><strong>Sofia Lindqvist</strong>Series guest, Security Engineer</span>
+          </figcaption>
+        </figure>
+        <figure class="quote">
+          <blockquote>I did not know a job like mine existed until I watched someone describe theirs.</blockquote>
+          <figcaption>
+            <img loading="lazy" alt="" src="https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=80">
+            <span><strong>Ben Oyelaran</strong>Final-year student</span>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       latest interviews
+       ============================================================ -->
+  <section class="shell section" id="latest">
+    <div class="section-head">
+      <h2>Latest interviews</h2>
+      <a class="more" href="index.html#interviews">View all</a>
+    </div>
+    <div class="grid">
+      <a class="card" href="#">
+        <figure class="thumb"><img loading="lazy" alt="Team standing around a laptop" src="https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg?auto=compress&cs=tinysrgb&w=800"></figure>
+        <span class="kicker">Data &amp; AI</span>
+        <h3 class="card-title">Research to industry: what transfers and what does not</h3>
+        <p class="deck">Three years into a PhD, one year into a machine learning job, and the gap between them.</p>
+        <span class="byline"><img loading="lazy" alt="" src="https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=80"> Dr Ines Costa</span>
+      </a>
+      <a class="card" href="#">
+        <figure class="thumb"><img loading="lazy" alt="Person writing on a glass wall" src="https://images.pexels.com/photos/3184296/pexels-photo-3184296.jpeg?auto=compress&cs=tinysrgb&w=800"></figure>
+        <span class="kicker">Engineering</span>
+        <h3 class="card-title">What a backend interview loop actually tests</h3>
+        <p class="deck">The four stages, what each one is really scoring, and where most candidates lose it.</p>
+        <span class="byline"><img loading="lazy" alt="" src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=80"> Ravi Menon</span>
+      </a>
+      <a class="card" href="#">
+        <figure class="thumb"><img loading="lazy" alt="Close-up of a notebook and laptop" src="https://images.pexels.com/photos/3183197/pexels-photo-3183197.jpeg?auto=compress&cs=tinysrgb&w=800"></figure>
+        <span class="kicker">Breaking in</span>
+        <h3 class="card-title">Internships, placements and the routes people forget exist</h3>
+        <p class="deck">Early careers lead on the schemes that stay half-empty every year, and why.</p>
+        <span class="byline"><img loading="lazy" alt="" src="https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=80"> Grace Nwosu</span>
+      </a>
+      <a class="card" href="#">
+        <figure class="thumb"><img loading="lazy" alt="Meeting in a glass-walled room" src="https://images.pexels.com/photos/3182773/pexels-photo-3182773.jpeg?auto=compress&cs=tinysrgb&w=800"></figure>
+        <span class="kicker">Product</span>
+        <h3 class="card-title">What a first-round product interview is listening for</h3>
+        <p class="deck">Two hiring rounds, forty candidates, and the pattern that separated the shortlist.</p>
+        <span class="byline"><img loading="lazy" alt="" src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=80"> Sanjay Iyer</span>
+      </a>
+      <a class="card" href="#">
+        <figure class="thumb"><img loading="lazy" alt="Colleagues talking at a desk" src="https://images.pexels.com/photos/3184405/pexels-photo-3184405.jpeg?auto=compress&cs=tinysrgb&w=800"></figure>
+        <span class="kicker">Levelling up</span>
+        <h3 class="card-title">Asking for the promotion, in the words that worked</h3>
+        <p class="deck">The conversation, written out, including the version that was turned down first.</p>
+        <span class="byline"><img loading="lazy" alt="" src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=80"> Amara Osei</span>
+      </a>
+      <a class="card" href="#">
+        <figure class="thumb"><img loading="lazy" alt="Designer working late at a desk" src="https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=800"></figure>
+        <span class="kicker">Design</span>
+        <h3 class="card-title">Building a portfolio when you have never shipped anything</h3>
+        <p class="deck">What a design lead is looking for in the three projects you do have.</p>
+        <span class="byline"><img loading="lazy" alt="" src="https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&w=80"> Marta Kowalska</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       collection — start here
+       ============================================================ -->
+  <section class="collection tint-blue" id="start-here">
+    <div class="shell">
+      <div class="section-head">
+        <div>
+          <h2>New here? Start with these.</h2>
+          <p class="deck" style="margin-top:8px">The five interviews people send to someone else most often.</p>
+        </div>
+        <div class="rail-nav" data-rail-nav>
+          <button type="button" data-dir="-1" aria-label="Scroll left"><svg aria-hidden="true"><use href="#i-arrow-l"/></svg></button>
+          <button type="button" data-dir="1" aria-label="Scroll right"><svg aria-hidden="true"><use href="#i-arrow-r"/></svg></button>
+        </div>
+      </div>
+      <div class="rail-scroll" data-rail>
+        <a class="card" href="#">
+          <figure class="thumb"><img loading="lazy" alt="Team retrospective session" src="https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=800"></figure>
+          <h3 class="card-title">The five job titles most people have never heard of</h3>
+        </a>
+        <a class="card" href="#">
+          <figure class="thumb"><img loading="lazy" alt="Two people reviewing a document" src="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=800"></figure>
+          <h3 class="card-title">How to read a job spec you are not qualified for</h3>
+        </a>
+        <a class="card" href="#">
+          <figure class="thumb"><img loading="lazy" alt="Whiteboard planning session" src="https://images.pexels.com/photos/3184287/pexels-photo-3184287.jpeg?auto=compress&cs=tinysrgb&w=800"></figure>
+          <h3 class="card-title">Cold outreach that people actually reply to</h3>
+        </a>
+        <a class="card" href="#">
+          <figure class="thumb"><img loading="lazy" alt="Person presenting to a room" src="https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=800"></figure>
+          <h3 class="card-title">Your first ninety days, from four people who remember them</h3>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       subscribe
+       ============================================================ -->
+  <section class="band band-orchid subscribe" id="subscribe">
+    <div class="shell">
+      <h2>One conversation, every week.</h2>
+      <p class="deck">A new interview and a short write-up of what was useful in it. No filler, no fads.</p>
+      <form class="sub-form" novalidate data-validate>
+        <label class="sr-only" for="email-1">Email address</label>
+        <input id="email-1" type="email" name="email" placeholder="you@example.com" required autocomplete="email">
+        <input class="sr-only" type="text" name="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button type="submit">Subscribe</button>
+      </form>
+      <p class="sub-note" data-msg role="status">Free. One email a week. Unsubscribe whenever.</p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       breaking in
+       ============================================================ -->
+  <section class="shell section" id="breaking-in">
+    <div class="section-head">
+      <h2>Breaking in</h2>
+      <a class="more" href="index.html#interviews">View all</a>
+    </div>
+    <div class="grid">
+      <a class="card" href="#">
+        <figure class="thumb"><img loading="lazy" alt="Graduates in an early careers session" src="https://images.pexels.com/photos/3182812/pexels-photo-3182812.jpeg?auto=compress&cs=tinysrgb&w=800"></figure>
+        <span class="kicker">Breaking in</span>
+        <h3 class="card-title">Forty applications, two offers: a graduate&rsquo;s honest account</h3>
+        <p class="deck">Every rejection, in order, and what changed between application twelve and thirty-one.</p>
+      </a>
+      <a class="card" href="#">
+        <figure class="thumb"><img loading="lazy" alt="Person sketching an idea" src="https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg?auto=compress&cs=tinysrgb&w=800"></figure>
+        <span class="kicker">Breaking in</span>
+        <h3 class="card-title">Switching careers at thirty-one, with a mortgage</h3>
+        <p class="deck">The eighteen-month plan, the pay cut, and the month it stopped feeling reckless.</p>
+      </a>
+      <a class="card" href="#">
+        <figure class="thumb"><img loading="lazy" alt="Laptop with charts" src="https://images.pexels.com/photos/3183153/pexels-photo-3183153.jpeg?auto=compress&cs=tinysrgb&w=800"></figure>
+        <span class="kicker">Breaking in</span>
+        <h3 class="card-title">Do you need the degree? Four people answer differently</h3>
+        <p class="deck">Two with, two without, and the point where it stopped mattering for all of them.</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       collection — on campus
+       ============================================================ -->
+  <section class="collection tint-green" id="on-campus">
+    <div class="shell">
+      <div class="section-head">
+        <div>
+          <h2>On campus</h2>
+          <p class="deck" style="margin-top:8px">How the partnership programmes run, from the institutions that host them.</p>
+        </div>
+        <div class="rail-nav" data-rail-nav>
+          <button type="button" data-dir="-1" aria-label="Scroll left"><svg aria-hidden="true"><use href="#i-arrow-l"/></svg></button>
+          <button type="button" data-dir="1" aria-label="Scroll right"><svg aria-hidden="true"><use href="#i-arrow-r"/></svg></button>
+        </div>
+      </div>
+      <div class="rail-scroll" data-rail>
+        <a class="card" href="#">
+          <figure class="thumb"><img loading="lazy" alt="Guest speaker at a campus session" src="https://images.pexels.com/photos/7433822/pexels-photo-7433822.jpeg?auto=compress&cs=tinysrgb&w=800"></figure>
+          <h3 class="card-title">Running a guest session that students stay behind after</h3>
+        </a>
+        <a class="card" href="#">
+          <figure class="thumb"><img loading="lazy" alt="Workshop in progress" src="https://images.pexels.com/photos/6953774/pexels-photo-6953774.jpeg?auto=compress&cs=tinysrgb&w=800"></figure>
+          <h3 class="card-title">A portfolio workshop that fits inside one seminar slot</h3>
+        </a>
+        <a class="card" href="#">
+          <figure class="thumb"><img loading="lazy" alt="Student asking a question" src="https://images.pexels.com/photos/7598562/pexels-photo-7598562.jpeg?auto=compress&cs=tinysrgb&w=800"></figure>
+          <h3 class="card-title">What careers teams asked us for in the first term</h3>
+        </a>
+        <a class="card" href="#">
+          <figure class="thumb"><img loading="lazy" alt="Two people in conversation" src="https://images.pexels.com/photos/7600899/pexels-photo-7600899.jpeg?auto=compress&cs=tinysrgb&w=800"></figure>
+          <h3 class="card-title">Keeping the recordings: how departments reuse the library</h3>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       levelling up
+       ============================================================ -->
+  <section class="shell section" id="levelling-up">
+    <div class="section-head">
+      <h2>Levelling up</h2>
+      <a class="more" href="index.html#interviews">View all</a>
+    </div>
+    <div class="grid">
+      <a class="card" href="#">
+        <figure class="thumb"><img loading="lazy" alt="One-on-one conversation" src="https://images.pexels.com/photos/3184405/pexels-photo-3184405.jpeg?auto=compress&cs=tinysrgb&w=800"></figure>
+        <span class="kicker">Levelling up</span>
+        <h3 class="card-title">Asking for the promotion, in the words that worked</h3>
+        <p class="deck">Written out in full, including the version that was turned down first.</p>
+      </a>
+      <a class="card" href="#">
+        <figure class="thumb"><img loading="lazy" alt="Manager talking to a team" src="https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=800"></figure>
+        <span class="kicker">Levelling up</span>
+        <h3 class="card-title">Becoming the person who reviews other people&rsquo;s work</h3>
+        <p class="deck">The first six months of seniority, and the habits that quietly stop working.</p>
+      </a>
+      <a class="card" href="#">
+        <figure class="thumb"><img loading="lazy" alt="Team meeting around a table" src="https://images.pexels.com/photos/3182759/pexels-photo-3182759.jpeg?auto=compress&cs=tinysrgb&w=800"></figure>
+        <span class="kicker">Levelling up</span>
+        <h3 class="card-title">Staying technical, or moving to management</h3>
+        <p class="deck">Two guests who chose opposite paths at the same point, five years on.</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       collection — for universities
+       ============================================================ -->
+  <section class="collection tint-yellow" id="universities">
+    <div class="shell">
+      <div class="section-head">
+        <div>
+          <h2>For universities</h2>
+          <p class="deck" style="margin-top:8px">What a partnership involves, and what your careers team is left holding afterwards.</p>
+        </div>
+        <div class="rail-nav" data-rail-nav>
+          <button type="button" data-dir="-1" aria-label="Scroll left"><svg aria-hidden="true"><use href="#i-arrow-l"/></svg></button>
+          <button type="button" data-dir="1" aria-label="Scroll right"><svg aria-hidden="true"><use href="#i-arrow-r"/></svg></button>
+        </div>
+      </div>
+      <div class="rail-scroll" data-rail>
+        <a class="card" href="index.html#universities">
+          <figure class="thumb"><img loading="lazy" alt="Scoping meeting" src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=800"></figure>
+          <h3 class="card-title">01 &mdash; Scope a programme around your term dates</h3>
+        </a>
+        <a class="card" href="index.html#universities">
+          <figure class="thumb"><img loading="lazy" alt="Speaker being introduced" src="https://images.pexels.com/photos/3183197/pexels-photo-3183197.jpeg?auto=compress&cs=tinysrgb&w=800"></figure>
+          <h3 class="card-title">02 &mdash; We bring guests matched to your course mix</h3>
+        </a>
+        <a class="card" href="index.html#universities">
+          <figure class="thumb"><img loading="lazy" alt="Workshop on campus" src="https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg?auto=compress&cs=tinysrgb&w=800"></figure>
+          <h3 class="card-title">03 &mdash; Run it on campus or online, with workshops</h3>
+        </a>
+        <a class="card" href="contact.html">
+          <figure class="thumb"><img loading="lazy" alt="Team reviewing materials" src="https://images.pexels.com/photos/3182773/pexels-photo-3182773.jpeg?auto=compress&cs=tinysrgb&w=800"></figure>
+          <h3 class="card-title">04 &mdash; Keep the recordings and materials</h3>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       the series
+       ============================================================ -->
+  <section class="pod" id="series">
+    <div class="shell pod-in">
+      <div>
+        <span class="kicker" style="color:var(--green-200)">Watch &amp; listen</span>
+        <h2>The Interview Series</h2>
+        <p class="deck">Every conversation in full &mdash; the decisions, the timelines, and the parts that did not make the write-up. New interview every week.</p>
+        <div class="pod-links">
+          <a href="#"><svg aria-hidden="true"><use href="#i-apple"/></svg> Apple Podcasts</a>
+          <a href="#"><svg aria-hidden="true"><use href="#i-spotify"/></svg> Spotify</a>
+          <a href="#"><svg aria-hidden="true"><use href="#i-youtube"/></svg> YouTube</a>
+          <a href="#"><svg aria-hidden="true"><use href="#i-rss"/></svg> RSS</a>
+        </div>
+      </div>
+      <figure class="pod-art">
+        <img loading="lazy" alt="The Interview Series artwork" src="https://images.pexels.com/photos/6953815/pexels-photo-6953815.jpeg?auto=compress&cs=tinysrgb&w=700">
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       second subscribe
+       ============================================================ -->
+  <section class="band band-plum subscribe">
+    <div class="shell">
+      <h2 style="color:var(--purple-200)">Know someone we should talk to?</h2>
+      <p class="deck">Most of the best interviews came from someone else&rsquo;s recommendation &mdash; including your own, if you work in tech.</p>
+      <form class="sub-form" novalidate data-validate>
+        <label class="sr-only" for="email-2">Email address</label>
+        <input id="email-2" type="email" name="email" placeholder="you@example.com" required autocomplete="email">
+        <input class="sr-only" type="text" name="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button type="submit">Send me the form</button>
+      </form>
+      <p class="sub-note" data-msg role="status">Or go straight to the <a href="contact.html" style="text-decoration:underline">contact page</a>.</p>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================================================
+     footer
+     ============================================================ -->
+<footer class="site-foot">
+  <div class="shell">
+    <p class="foot-quote">&ldquo;I did not know a job like mine existed until I heard someone describe theirs.&rdquo;</p>
+
+    <div class="foot-cols">
+      <div>
+        <h3>Interviews</h3>
+        <ul>
+          <li><a href="#latest">Latest interviews</a></li>
+          <li><a href="#start-here">Start here</a></li>
+          <li><a href="#breaking-in">Breaking in</a></li>
+          <li><a href="#levelling-up">Levelling up</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Universities</h3>
+        <ul>
+          <li><a href="index.html#universities">How partnerships work</a></li>
+          <li><a href="#on-campus">On campus</a></li>
+          <li><a href="#universities">For careers teams</a></li>
+          <li><a href="contact.html">Start a conversation</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Platform</h3>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="#guests">Voices from the series</a></li>
+          <li><a href="contact.html">Be a guest</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Follow</h3>
+        <ul>
+          <li><a href="#subscribe">Newsletter</a></li>
+          <li><a href="#series">Watch &amp; listen</a></li>
+        </ul>
+        <div class="socials">
+          <a href="#" aria-label="X"><svg aria-hidden="true"><use href="#i-x"/></svg></a>
+          <a href="#" aria-label="LinkedIn"><svg aria-hidden="true"><use href="#i-linkedin"/></svg></a>
+          <a href="#" aria-label="YouTube"><svg aria-hidden="true"><use href="#i-youtube"/></svg></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <span>&copy; 2026 The Access Exchange. All rights reserved.</span>
+      <span><a href="#">Privacy Policy</a> &nbsp;&middot;&nbsp; <a href="#">Terms of Service</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// mobile menu
+(function () {
+  var burger = document.querySelector('.burger');
+  var menu = document.getElementById('mobile-nav');
+  burger.addEventListener('click', function () {
+    var open = burger.getAttribute('aria-expanded') === 'true';
+    burger.setAttribute('aria-expanded', String(!open));
+    menu.classList.toggle('is-open', !open);
+  });
+  menu.addEventListener('click', function (e) {
+    if (e.target.tagName === 'A') {
+      burger.setAttribute('aria-expanded', 'false');
+      menu.classList.remove('is-open');
+    }
+  });
+})();
+
+// carousel arrows — scroll by one visible page
+document.querySelectorAll('[data-rail-nav]').forEach(function (nav) {
+  var rail = nav.closest('.section-head').parentNode.querySelector('[data-rail]');
+  nav.addEventListener('click', function (e) {
+    var btn = e.target.closest('button');
+    if (!btn) return;
+    rail.scrollBy({ left: rail.clientWidth * 0.9 * Number(btn.dataset.dir), behavior: 'smooth' });
+  });
+});
+
+// newsletter — fake submit, honeypot + email check (matches site convention)
+document.querySelectorAll('form[data-validate]').forEach(function (form) {
+  var msg = form.parentNode.querySelector('[data-msg]');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (form.elements['hp-field'].value) return;            // bot
+    var email = form.elements.email;
+    if (!email.checkValidity()) { msg.textContent = 'Enter a valid email address.'; email.focus(); return; }
+    msg.textContent = 'Thanks — check your inbox to confirm.';
+    form.reset();
+  });
+});
+</script>
+
+</body>
+</html>
