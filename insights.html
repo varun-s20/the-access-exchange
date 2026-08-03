@@ -65,10 +65,10 @@
 }
 
 *,*::before,*::after{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;overflow-x:clip}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;overflow-x:hidden;overflow-x:clip}
 body{margin:0;background:var(--paper);color:var(--ink);
   font-family:var(--leif);font-size:clamp(.98rem,1.05vw,1.06rem);line-height:1.6;
-  -webkit-font-smoothing:antialiased;overflow-x:clip}
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;overflow-x:clip}
 img{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
 h1,h2,h3,h4,p,figure,blockquote,dl,dd{margin:0}
@@ -107,6 +107,7 @@ input,select,textarea{font:inherit;color:inherit}
   pointer-events:none}
 .mast-l,.mast-r{display:flex;align-items:center;gap:clamp(14px,2vw,30px);
   pointer-events:auto}
+.mast-l button{display:inline-flex;align-items:center;justify-content:center;padding:0}
 .mast-l button,.mast-r .txt{color:var(--ink-2);transition:color .35s var(--ease)}
 .mast-l button:hover,.mast-r .txt:hover{color:var(--ink)}
 .mast-r .txt{display:none}
@@ -130,12 +131,11 @@ input,select,textarea{font:inherit;color:inherit}
 .mast.compact .mark{font-size:var(--fs-mark-sm)}
 @media(max-width:759px){
   :root{--mast-tall:60px;--mast-short:60px}
+  .mast{--mark-top:calc(var(--mast-short) / 2);box-shadow:0 1px 0 var(--rule)}
   .mast-l .srchbtn{display:none}
   .mast-rule{display:none}
-  .mast-r .cta{min-height:34px;padding:0 12px;font-size:.6rem;letter-spacing:.11em}
-  .mast-r .cta .lg{display:none}
-  .mark{left:clamp(52px,14vw,64px);translate:0 -50%;
-    background:none;padding:0;letter-spacing:-.03em;font-size:clamp(.98rem,4.2vw,1.24rem)}
+  .mast-r .cta{display:none}
+  .mark{background:none;padding:0;letter-spacing:-.03em;font-size:clamp(.98rem,4.2vw,1.24rem)}
   .mast.compact .mark{font-size:clamp(.98rem,4.2vw,1.24rem)}
   .mast-in{gap:12px}
 }
@@ -187,11 +187,15 @@ input,select,textarea{font:inherit;color:inherit}
 .veil-side li + li{margin-top:7px}
 .veil-side a{color:var(--ink-2);font-size:.93rem}
 .veil-side a:hover{color:var(--ink)}
+.veil-cta{display:none}
+@media(max-width:759px){
+  .veil-cta{display:flex;gap:10px}
+  .veil-cta .btn{padding:0 14px;white-space:nowrap}
+}
 
 /* ── platform marks: official artwork, official colours ── */
 .bi{width:26px;height:26px;display:block}
 .plat-row{display:flex;align-items:center;gap:clamp(12px,1.6vw,18px);flex-wrap:wrap}
-.foot .plat-row{justify-content:center}
 .plat-row a{display:block;opacity:.92;
   transition:transform .35s var(--ease),opacity .3s var(--ease)}
 .plat-row a:hover{transform:translateY(-2px);opacity:1}
@@ -366,11 +370,10 @@ input,select,textarea{font:inherit;color:inherit}
    ═══════════════════════════════════════════════════════════════════ */
 .foot{background:var(--ink);color:var(--paper);padding:clamp(38px,4.4vw,70px) 0 26px}
 .foot > .shell{max-width:var(--chrome-shell);padding-inline:var(--chrome-pad)}
-.foot-cols{display:flex;flex-wrap:wrap;justify-content:center;text-align:center;
-  gap:clamp(26px,3.6vw,74px);
+.foot-cols{display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(26px,3.6vw,74px);
   padding-bottom:clamp(32px,4vw,60px);
   border-bottom:var(--hair) solid color-mix(in srgb,var(--paper) 16%,transparent)}
-.foot-cols > div{flex:0 1 auto;min-width:132px}
+.foot-cols > div{flex:0 1 auto;min-width:144px}
 .foot h4{color:color-mix(in srgb,var(--paper) 50%,transparent);margin-bottom:15px}
 .foot li + li{margin-top:9px}
 .foot li a{color:color-mix(in srgb,var(--paper) 70%,transparent);font-size:.92rem;
@@ -450,7 +453,7 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
 
 <header class="mast" id="mast">
   <span class="mast-rule" aria-hidden="true"></span>
-  <a class="mark" href="draft-index.html">The Access <i>Exchange</i></a>
+  <a class="mark" href="index.html">The Access <i>Exchange</i></a>
   <div class="mast-in">
     <div class="mast-l">
       <button type="button" id="menuBtn" aria-expanded="false" aria-controls="veil" aria-label="Open menu">
@@ -461,8 +464,8 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
       </button>
     </div>
     <div class="mast-r lab">
-      <a href="draft-interview-series.html" class="txt">Interviews</a>
-      <a href="draft-university-partnerships.html" class="cta"><span class="lg">For&nbsp;</span>Universities</a>
+      <a href="interview-series.html" class="txt">Interviews</a>
+      <a href="university-partnerships.html" class="cta"><span class="lg">For&nbsp;</span>Universities</a>
     </div>
   </div>
   <span class="prog" aria-hidden="true"></span>
@@ -472,28 +475,28 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
 <div class="veil" id="veil" role="dialog" aria-modal="true" aria-label="Menu" hidden>
   <div class="veil-panel">
     <div class="veil-top">
-      <a class="veil-mark" href="draft-index.html">The Access <i>Exchange</i></a>
+      <a class="veil-mark" href="index.html">The Access <i>Exchange</i></a>
       <button type="button" id="veilClose" aria-label="Close menu">
         <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-close"/></svg>
       </button>
     </div>
     <nav aria-label="Main">
       <ul class="veil-nav">
-        <li style="--i:0"><a href="draft-index.html">Home</a></li>
-        <li style="--i:1"><a href="draft-interview-series.html">The Interview Series</a></li>
-        <li style="--i:2"><a href="draft-university-partnerships.html">University Partnerships</a></li>
-        <li style="--i:3"><a href="draft-insights.html" aria-current="page">Insights</a></li>
-        <li style="--i:4"><a href="draft-about.html">About</a></li>
-        <li style="--i:5"><a href="draft-contact.html">Contact</a></li>
+        <li style="--i:0"><a href="index.html">Home</a></li>
+        <li style="--i:1"><a href="interview-series.html">The Interview Series</a></li>
+        <li style="--i:2"><a href="university-partnerships.html">University Partnerships</a></li>
+        <li style="--i:3"><a href="insights.html" aria-current="page">Insights</a></li>
+        <li style="--i:4"><a href="about.html">About</a></li>
+        <li style="--i:5"><a href="contact.html">Contact</a></li>
       </ul>
     </nav>
     <div class="veil-sides">
       <div class="veil-side">
         <h4 class="lab">Get involved</h4>
         <ul>
-          <li><a href="draft-interview-series.html#be-a-guest">Be a guest</a></li>
-          <li><a href="draft-university-partnerships.html#enquire">Partner with us</a></li>
-          <li><a href="draft-contact.html">General enquiries</a></li>
+          <li><a href="interview-series.html#be-a-guest">Be a guest</a></li>
+          <li><a href="university-partnerships.html#enquire">Partner with us</a></li>
+          <li><a href="contact.html">General enquiries</a></li>
         </ul>
       </div>
       <div class="veil-side">
@@ -502,6 +505,10 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
           <a href="#" aria-label="Watch on YouTube"><svg class="bi" viewBox="0 0 24 24" aria-hidden="true"><use href="#b-youtube"/></svg></a>
         </div>
       </div>
+    </div>
+    <div class="veil-cta">
+      <a href="interview-series.html" class="btn btn--ghost">Interviews</a>
+      <a href="university-partnerships.html" class="btn">For Universities</a>
     </div>
   </div>
 </div>
@@ -552,7 +559,7 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
 
     <div class="stream" id="stream">
 
-      <a class="it it--lead" href="#" data-topic="interview">
+      <a class="it it--lead" href="interview-series.html#episodes" data-topic="interview">
         <div class="ph"><img src="https://images.pexels.com/photos/1181519/pexels-photo-1181519.jpeg?auto=compress&cs=tinysrgb&w=1400&h=620&fit=crop" alt="Amara Osei" decoding="async"></div>
         <div class="it-in">
           <span class="kind lab">Interview · Jul 30</span>
@@ -562,7 +569,7 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
         </div>
       </a>
 
-      <a class="it" href="#" data-topic="breaking-in">
+      <a class="it" href="interview-series.html#episodes" data-topic="breaking-in">
         <div class="ph"><img src="https://images.pexels.com/photos/1181359/pexels-photo-1181359.jpeg?auto=compress&cs=tinysrgb&w=700&h=440&fit=crop" alt="" loading="lazy" decoding="async"></div>
         <div class="it-in">
           <span class="kind lab">Breaking in · Jul 20</span>
@@ -571,7 +578,7 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
         </div>
       </a>
 
-      <a class="it it--text" href="#" data-topic="levelling-up">
+      <a class="it it--text" href="interview-series.html#episodes" data-topic="levelling-up">
         <div class="it-in">
           <span class="kind lab">Levelling up · Jul 28</span>
           <h3>Asking for the promotion, in the words that worked</h3>
@@ -579,7 +586,7 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
         </div>
       </a>
 
-      <a class="it" href="#" data-topic="interview">
+      <a class="it" href="interview-series.html#episodes" data-topic="interview">
         <div class="ph"><img src="https://images.pexels.com/photos/1181675/pexels-photo-1181675.jpeg?auto=compress&cs=tinysrgb&w=700&h=440&fit=crop" alt="" loading="lazy" decoding="async"></div>
         <div class="it-in">
           <span class="kind lab">Interview · Jul 27</span>
@@ -588,7 +595,7 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
         </div>
       </a>
 
-      <a class="it" href="#" data-topic="on-campus">
+      <a class="it" href="university-partnerships.html#s1" data-topic="on-campus">
         <div class="ph"><img src="https://images.pexels.com/photos/5940841/pexels-photo-5940841.jpeg?auto=compress&cs=tinysrgb&w=700&h=440&fit=crop" alt="" loading="lazy" decoding="async"></div>
         <div class="it-in">
           <span class="kind lab">On campus · Jul 26</span>
@@ -597,7 +604,7 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
         </div>
       </a>
 
-      <a class="it" href="#" data-topic="interview">
+      <a class="it" href="interview-series.html#episodes" data-topic="interview">
         <div class="ph"><img src="https://images.pexels.com/photos/1181605/pexels-photo-1181605.jpeg?auto=compress&cs=tinysrgb&w=700&h=440&fit=crop" alt="" loading="lazy" decoding="async"></div>
         <div class="it-in">
           <span class="kind lab">Interview · Jul 25</span>
@@ -607,7 +614,7 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
       </a>
 
 
-      <a class="it it--text" href="#" data-topic="breaking-in">
+      <a class="it it--text" href="interview-series.html#episodes" data-topic="breaking-in">
         <div class="it-in">
           <span class="kind lab">Breaking in · Jul 24</span>
           <h3>How to read a job spec you are not qualified for</h3>
@@ -615,7 +622,7 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
         </div>
       </a>
 
-      <a class="it" href="#" data-topic="interview">
+      <a class="it" href="interview-series.html#episodes" data-topic="interview">
         <div class="ph"><img src="https://images.pexels.com/photos/1181316/pexels-photo-1181316.jpeg?auto=compress&cs=tinysrgb&w=700&h=440&fit=crop" alt="" loading="lazy" decoding="async"></div>
         <div class="it-in">
           <span class="kind lab">Interview · Jul 23</span>
@@ -624,7 +631,7 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
         </div>
       </a>
 
-      <a class="it" href="#" data-topic="levelling-up">
+      <a class="it" href="interview-series.html#episodes" data-topic="levelling-up">
         <div class="ph"><img src="https://images.pexels.com/photos/1181712/pexels-photo-1181712.jpeg?auto=compress&cs=tinysrgb&w=700&h=440&fit=crop" alt="" loading="lazy" decoding="async"></div>
         <div class="it-in">
           <span class="kind lab">Levelling up · Jul 22</span>
@@ -633,7 +640,7 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
         </div>
       </a>
 
-      <a class="it it--text" href="#" data-topic="on-campus">
+      <a class="it it--text" href="university-partnerships.html#s1" data-topic="on-campus">
         <div class="it-in">
           <span class="kind lab">On campus · Jul 21</span>
           <h3>A portfolio workshop that fits inside one seminar slot</h3>
@@ -641,7 +648,7 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
         </div>
       </a>
 
-      <a class="it" href="#" data-topic="breaking-in">
+      <a class="it" href="interview-series.html#episodes" data-topic="breaking-in">
         <div class="ph"><img src="https://images.pexels.com/photos/1454360/pexels-photo-1454360.jpeg?auto=compress&cs=tinysrgb&w=700&h=440&fit=crop" alt="" loading="lazy" decoding="async"></div>
         <div class="it-in">
           <span class="kind lab">Breaking in · Jul 19</span>
@@ -650,7 +657,7 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
         </div>
       </a>
 
-      <a class="it" href="#" data-topic="levelling-up">
+      <a class="it" href="interview-series.html#episodes" data-topic="levelling-up">
         <div class="ph"><img src="https://images.pexels.com/photos/1181677/pexels-photo-1181677.jpeg?auto=compress&cs=tinysrgb&w=700&h=440&fit=crop" alt="" loading="lazy" decoding="async"></div>
         <div class="it-in">
           <span class="kind lab">Levelling up · Jul 17</span>
@@ -659,7 +666,7 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
         </div>
       </a>
 
-      <a class="it" href="#" data-topic="interview">
+      <a class="it" href="interview-series.html#episodes" data-topic="interview">
         <div class="ph"><img src="https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg?auto=compress&cs=tinysrgb&w=700&h=440&fit=crop" alt="" loading="lazy" decoding="async"></div>
         <div class="it-in">
           <span class="kind lab">Interview · Jul 11</span>
@@ -668,7 +675,7 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
         </div>
       </a>
 
-      <a class="it it--text" href="#" data-topic="on-campus">
+      <a class="it it--text" href="university-partnerships.html#s1" data-topic="on-campus">
         <div class="it-in">
           <span class="kind lab">On campus · Jul 08</span>
           <h3>Keeping the recordings: how departments reuse the library</h3>
@@ -693,11 +700,11 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
       <p class="lede">The five pieces people send to someone else most often.</p>
     </div>
     <div class="five">
-      <a href="#"><span class="n">01</span><h3>The five job titles most people have never heard of</h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-      <a href="#"><span class="n">02</span><h3>How to read a job spec you are not qualified for</h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-      <a href="#"><span class="n">03</span><h3>Cold outreach that people actually reply to</h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-      <a href="#"><span class="n">04</span><h3>Your first ninety days, from four people who remember them</h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-      <a href="#"><span class="n">05</span><h3>Do you need the degree? Four people answer differently</h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      <a href="#stream"><span class="n">01</span><h3>The five job titles most people have never heard of</h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      <a href="#stream"><span class="n">02</span><h3>How to read a job spec you are not qualified for</h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      <a href="#stream"><span class="n">03</span><h3>Cold outreach that people actually reply to</h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      <a href="#stream"><span class="n">04</span><h3>Your first ninety days, from four people who remember them</h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      <a href="#stream"><span class="n">05</span><h3>Do you need the degree? Four people answer differently</h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></a>
     </div>
   </div>
 </section>
@@ -708,21 +715,21 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
   <div class="shell">
     <div class="foot-cols">
       <div><h4 class="lab">Interviews</h4><ul>
-        <li><a href="draft-interview-series.html">Latest</a></li>
-        <li><a href="draft-interview-series.html#episodes">Engineering</a></li>
-        <li><a href="draft-interview-series.html#episodes">Product</a></li>
-        <li><a href="draft-interview-series.html#episodes">Data &amp; AI</a></li>
-        <li><a href="draft-interview-series.html#episodes">Design</a></li>
-        <li><a href="draft-interview-series.html#episodes">Breaking in</a></li></ul></div>
+        <li><a href="interview-series.html">Latest</a></li>
+        <li><a href="interview-series.html#episodes">Engineering</a></li>
+        <li><a href="interview-series.html#episodes">Product</a></li>
+        <li><a href="interview-series.html#episodes">Data &amp; AI</a></li>
+        <li><a href="interview-series.html#episodes">Design</a></li>
+        <li><a href="interview-series.html#episodes">Breaking in</a></li></ul></div>
       <div><h4 class="lab">Universities</h4><ul>
-        <li><a href="draft-university-partnerships.html">How it works</a></li>
-        <li><a href="draft-university-partnerships.html">What is included</a></li>
-        <li><a href="draft-university-partnerships.html">For careers teams</a></li></ul></div>
+        <li><a href="university-partnerships.html">How it works</a></li>
+        <li><a href="university-partnerships.html">What is included</a></li>
+        <li><a href="university-partnerships.html">For careers teams</a></li></ul></div>
       <div><h4 class="lab">Platform</h4><ul>
-        <li><a href="draft-index.html">Home</a></li><li><a href="draft-about.html">About</a></li>
-        <li><a href="draft-insights.html">Insights</a></li>
-        <li><a href="draft-interview-series.html#be-a-guest">Be a guest</a></li>
-        <li><a href="draft-contact.html">Contact</a></li></ul></div>
+        <li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li>
+        <li><a href="insights.html">Insights</a></li>
+        <li><a href="interview-series.html#be-a-guest">Be a guest</a></li>
+        <li><a href="contact.html">Contact</a></li></ul></div>
       <div><h4 class="lab">Watch</h4>
         <div class="plat-row">
           <a href="#" aria-label="Watch on YouTube"><svg class="bi" viewBox="0 0 24 24" aria-hidden="true"><use href="#b-youtube"/></svg></a>
@@ -777,25 +784,25 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
 
   /* ── search: filters a small static index of the site ── */
   var INDEX = [
-    {t:'Home', d:'The platform and its two vehicles', u:'draft-index.html'},
-    {t:'The Interview Series', d:'Format, archive and how to be a guest', u:'draft-interview-series.html'},
-    {t:'University Partnerships', d:'How a partnership is scoped, what it costs', u:'draft-university-partnerships.html'},
-    {t:'Insights', d:'Everything we have published', u:'draft-insights.html'},
-    {t:'About', d:'Why this exists and what we refuse to do', u:'draft-about.html'},
-    {t:'Contact', d:'Guests, universities, press or anything else', u:'draft-contact.html'},
-    {t:'Be a guest', d:'Guest inquiry form', u:'draft-interview-series.html#be-a-guest'},
-    {t:'Partner with us', d:'University inquiry form', u:'draft-university-partnerships.html#enquire'},
-    {t:'The archive', d:'Every episode in full', u:'draft-interview-series.html#episodes'},
-    {t:'A term, mapped', d:'What a partnership looks like across twelve weeks', u:'draft-university-partnerships.html#s4'},
-    {t:'Cost and commitment', d:'What a partnership costs, lead times, procurement', u:'draft-university-partnerships.html#s7'},
-    {t:'From bootcamp to staff engineer in five years', d:'Amara Osei, Staff Engineer', u:'draft-interview-series.html'},
-    {t:'What a backend interview loop actually tests', d:'Ravi Menon, Engineering Manager', u:'draft-interview-series.html'},
-    {t:'Moving from support into product without a technical degree', d:'Fiona Bright, Senior Product Manager', u:'draft-interview-series.html'},
-    {t:'The parts of a data science job nobody puts in the job spec', d:'Dr Leila Haddad, Lead Data Scientist', u:'draft-interview-series.html'},
-    {t:'Forty applications, two offers', d:'Tobi Adeyinka, Junior Developer', u:'draft-interview-series.html'},
-    {t:'Building a portfolio when you have never shipped anything', d:'Marta Kowalska, Product Designer', u:'draft-interview-series.html'},
-    {t:'Switching from civil engineering at thirty-one', d:'Callum Reid, Platform Engineer', u:'draft-interview-series.html'},
-    {t:'Internships, placements and the routes people forget exist', d:'Grace Nwosu, Early Careers Lead', u:'draft-interview-series.html'}
+    {t:'Home', d:'The platform and its two vehicles', u:'index.html'},
+    {t:'The Interview Series', d:'Format, archive and how to be a guest', u:'interview-series.html'},
+    {t:'University Partnerships', d:'How a partnership is scoped, what it costs', u:'university-partnerships.html'},
+    {t:'Insights', d:'Everything we have published', u:'insights.html'},
+    {t:'About', d:'Why this exists and what we refuse to do', u:'about.html'},
+    {t:'Contact', d:'Guests, universities, press or anything else', u:'contact.html'},
+    {t:'Be a guest', d:'Guest inquiry form', u:'interview-series.html#be-a-guest'},
+    {t:'Partner with us', d:'University inquiry form', u:'university-partnerships.html#enquire'},
+    {t:'The archive', d:'Every episode in full', u:'interview-series.html#episodes'},
+    {t:'A term, mapped', d:'What a partnership looks like across twelve weeks', u:'university-partnerships.html#s4'},
+    {t:'Cost and commitment', d:'What a partnership costs, lead times, procurement', u:'university-partnerships.html#s7'},
+    {t:'From bootcamp to staff engineer in five years', d:'Amara Osei, Staff Engineer', u:'interview-series.html'},
+    {t:'What a backend interview loop actually tests', d:'Ravi Menon, Engineering Manager', u:'interview-series.html'},
+    {t:'Moving from support into product without a technical degree', d:'Fiona Bright, Senior Product Manager', u:'interview-series.html'},
+    {t:'The parts of a data science job nobody puts in the job spec', d:'Dr Leila Haddad, Lead Data Scientist', u:'interview-series.html'},
+    {t:'Forty applications, two offers', d:'Tobi Adeyinka, Junior Developer', u:'interview-series.html'},
+    {t:'Building a portfolio when you have never shipped anything', d:'Marta Kowalska, Product Designer', u:'interview-series.html'},
+    {t:'Switching from civil engineering at thirty-one', d:'Callum Reid, Platform Engineer', u:'interview-series.html'},
+    {t:'Internships, placements and the routes people forget exist', d:'Grace Nwosu, Early Careers Lead', u:'interview-series.html'}
   ];
   var find = document.getElementById('find'), findq = document.getElementById('findq'),
       findout = document.getElementById('findout'), srch = document.querySelector('.srchbtn'), sel = -1;
