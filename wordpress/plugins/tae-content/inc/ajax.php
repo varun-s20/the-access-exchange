@@ -21,7 +21,7 @@ function tae_ajax_load_interviews() {
 	check_ajax_referer( 'tae_archive', 'nonce' );
 
 	$view = isset( $_POST['view'] ) ? sanitize_key( wp_unslash( $_POST['view'] ) ) : 'archive';
-	if ( ! in_array( $view, array( 'archive', 'wall' ), true ) ) {
+	if ( 'archive' !== $view ) {
 		$view = 'archive';
 	}
 
@@ -40,19 +40,8 @@ function tae_ajax_load_interviews() {
 	);
 
 	$html = '';
-	foreach ( $query->posts as $i => $item ) {
-		if ( 'wall' === $view ) {
-			$html .= tae_template(
-				'interview-wall-item',
-				array(
-					'item'  => $item,
-					// Keep the 0/60/120/180ms stagger continuous across pages.
-					'index' => ( ( $page - 1 ) * $count ) + $i,
-				)
-			);
-		} else {
-			$html .= tae_template( 'interview-archive-item', array( 'item' => $item ) );
-		}
+	foreach ( $query->posts as $item ) {
+		$html .= tae_template( 'interview-archive-item', array( 'item' => $item ) );
 	}
 
 	wp_send_json_success(

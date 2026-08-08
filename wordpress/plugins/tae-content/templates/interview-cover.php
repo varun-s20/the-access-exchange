@@ -1,6 +1,6 @@
 <?php
 /**
- * Interview Series §01 — the cover: story, two minors, most-watched rail.
+ * Interview Series §01 - the cover: story, two minors, most-watched rail.
  *
  * Replaces interview-series.html lines 75-126.
  *
@@ -50,10 +50,11 @@ if ( ! $story && ! $minors && ! $rail ) {
 			<article class="story">
 				<?php echo tae_vid( $story, 'story-vid', 'tae-cover', true ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				<?php if ( $tae_bits ) : ?>
-					<?php // Non-breaking spaces around the separator, as the prototype has them — they stop the meta line breaking mid-token. ?>
+					<?php // Non-breaking spaces around the separator, as the prototype has them - they stop the meta line breaking mid-token. ?>
 					<p class="lab dim" style="margin-bottom:12px"><?php echo implode( ' &nbsp;·&nbsp; ', array_map( 'esc_html', $tae_bits ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
 				<?php endif; ?>
-				<h1 id="cover-h"><?php echo esc_html( get_the_title( $story ) ); ?></h1>
+				<?php // h2, not h1: the page hero owns the h1 since Phase 2. ?>
+				<h2 id="cover-h"><?php echo esc_html( get_the_title( $story ) ); ?></h2>
 				<?php if ( $tae_stand ) : ?>
 					<p class="stand"><?php echo esc_html( $tae_stand ); ?></p>
 				<?php endif; ?>
@@ -69,7 +70,7 @@ if ( ! $story && ! $minors && ! $rail ) {
 				<ul class="watched">
 					<?php foreach ( $rail as $tae_i => $tae_watched ) : ?>
 						<li>
-							<a href="#episodes">
+							<a href="<?php echo esc_url( tae_destination( $tae_watched ) ); ?>">
 								<span class="n"><?php echo esc_html( str_pad( (string) ( $tae_i + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
 								<p><?php echo esc_html( get_the_title( $tae_watched ) ); ?></p>
 							</a>

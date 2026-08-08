@@ -128,7 +128,7 @@ function tae_importer_page() {
 			(int) $report['updated'],
 			$report['image_failures']
 				? sprintf(
-					'<span style="color:#b32d2e">%d of %d images failed to download.</span> Sideloading needs outbound HTTP from this host — check that images.pexels.com is reachable, then set the featured images by hand.',
+					'<span style="color:#b32d2e">%d of %d images failed to download.</span> Sideloading needs outbound HTTP from this host - check that images.pexels.com is reachable, then set the featured images by hand.',
 					(int) $report['image_failures'],
 					(int) $report['image_attempts']
 				)
@@ -160,9 +160,9 @@ function tae_importer_page() {
 	echo '<li><strong>The body.</strong> The seed has no article text, so overwriting a body could only ever destroy something somebody wrote.</li>';
 	echo '<li><strong>An existing featured image.</strong> Swap an image in wp-admin and a re-run leaves it alone. Remove the image and the next run puts the original back.</li>';
 	echo '</ul>';
-	echo '<p>Rename a post in wp-admin and the link is severed — a re-run will then create it again under its original title. Rename freely once you have stopped re-importing.</p>';
+	echo '<p>Rename a post in wp-admin and the link is severed - a re-run will then create it again under its original title. Rename freely once you have stopped re-importing.</p>';
 
-	echo '<p><em>Five of the fourteen insight tiles in the prototype are interviews wearing an "Interview" label, and two more repeat an interview title under a different topic. None of those seven are imported as insights — the stream queries both post types, so they would appear twice.</em></p>';
+	echo '<p><em>Five of the fourteen insight tiles in the prototype are interviews wearing an "Interview" label, and two more repeat an interview title under a different topic. None of those seven are imported as insights - the stream queries both post types, so they would appear twice.</em></p>';
 
 	echo '<form method="post">';
 	wp_nonce_field( 'tae_import', 'tae_import_nonce' );
@@ -170,7 +170,7 @@ function tae_importer_page() {
 	echo '</form>';
 
 	echo '<hr><h2>Start over</h2>';
-	echo '<p>Deletes every post this importer created, permanently — including any body text added to them since. Images stay in the Media Library. Anything you created by hand is untouched.</p>';
+	echo '<p>Deletes every post this importer created, permanently - including any body text added to them since. Images stay in the Media Library. Anything you created by hand is untouched.</p>';
 	echo '<form method="post">';
 	wp_nonce_field( 'tae_import', 'tae_import_nonce' );
 	echo '<p><label><input type="checkbox" name="tae_wipe_confirm" value="1"> Yes, delete the imported posts.</label></p>';
@@ -185,7 +185,7 @@ function tae_importer_page() {
 /**
  * Delete everything a previous run created.
  *
- * Attachments are deliberately left behind — they may have been reused elsewhere
+ * Attachments are deliberately left behind - they may have been reused elsewhere
  * by now, and an image in the Media Library costs nothing.
  *
  * @return int How many posts were deleted.
@@ -236,7 +236,7 @@ function tae_run_import() {
 	// data/seed.php is disposable and the docs tell you to delete it. Say so
 	// rather than fataling on a require of a file somebody correctly removed.
 	if ( ! file_exists( TAE_DIR . 'data/seed.php' ) ) {
-		$report['errors'][] = 'data/seed.php has been deleted. Nothing to import — you can delete inc/importer.php too.';
+		$report['errors'][] = 'data/seed.php has been deleted. Nothing to import - you can delete inc/importer.php too.';
 		return $report;
 	}
 
@@ -298,7 +298,7 @@ function tae_run_import() {
 /**
  * Create the post, or update the one a previous run made.
  *
- * post_content is set on create and never on update — see the file header.
+ * post_content is set on create and never on update - see the file header.
  *
  * @param string $post_type  Post type.
  * @param array  $row        Seed row.
@@ -394,7 +394,7 @@ function tae_attach_photo( $post_id, $row, &$report ) {
 
 	if ( is_wp_error( $tmp ) ) {
 		++$report['image_failures'];
-		$report['errors'][] = $row['title'] . ' — image: ' . $tmp->get_error_message();
+		$report['errors'][] = $row['title'] . ' - image: ' . $tmp->get_error_message();
 		return;
 	}
 
@@ -416,7 +416,7 @@ function tae_attach_photo( $post_id, $row, &$report ) {
 		// it on success.
 		wp_delete_file( $tmp );
 		++$report['image_failures'];
-		$report['errors'][] = $row['title'] . ' — image: ' . $attachment_id->get_error_message();
+		$report['errors'][] = $row['title'] . ' - image: ' . $attachment_id->get_error_message();
 		return;
 	}
 

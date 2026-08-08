@@ -1,4 +1,4 @@
-# The Access Exchange — content plugin design
+# The Access Exchange - content plugin design
 
 Date: 2026-08-05
 Status: approved, ready for implementation planning
@@ -12,16 +12,16 @@ HTML widgets. Every interview, every insight tile, every count and every entry i
 the site-search index is hardcoded markup. Publishing one interview today means
 editing four files by hand:
 
-| File | What has to change |
-|---|---|
-| `wordpress/index.html` | §04 feature block, §05 wall grid, §08 guest rail, §11 watch poster |
-| `wordpress/interview-series.html` | §01 cover + minors + most-watched, §03 archive tiles |
-| `wordpress/insights.html` | §02 stream tile, §01 tally, §02 sidebar counts |
-| `wordpress/assets/global.js` | `SITE_INDEX` array at line 100 |
+| File                              | What has to change                                                 |
+| --------------------------------- | ------------------------------------------------------------------ |
+| `wordpress/index.html`            | §04 feature block, §05 wall grid, §08 guest rail, §11 watch poster |
+| `wordpress/interview-series.html` | §01 cover + minors + most-watched, §03 archive tiles               |
+| `wordpress/insights.html`         | §02 stream tile, §01 tally, §02 sidebar counts                     |
+| `wordpress/assets/global.js`      | `SITE_INDEX` array at line 100                                     |
 
 That last one is the sharpest edge: site search is driven by a JavaScript literal
 that already contains eight interview titles. Nobody will remember to update it,
-and there is no failure signal when they do not — search just quietly goes stale.
+and there is no failure signal when they do not - search just quietly goes stale.
 
 The client needs to publish content without touching code.
 
@@ -76,18 +76,18 @@ deactivating it hides the content without destroying it.
 `page-attributes` is what exposes the Order field, which drives every curated
 sequence in this spec.
 
-| Meta key | Type | Renders as |
-|---|---|---|
-| `tae_guest_name` | text | `.who`, `.epc-who`, `.g`, `.face h3`, `.byline` |
-| `tae_guest_role` | text | appended after the name; alone in `.role` |
-| `tae_episode` | int | `Ep 41` in `.epc-meta`, `Episode 42` in the cover |
-| `tae_duration` | text, `MM:SS` | `.vid-dur`, `.dur`, cover meta line |
-| `tae_youtube` | text, video ID | `data-yt` attribute |
-| `tae_standfirst` | textarea | `.stand` on the cover and the home feature |
-| `tae_rail_line` | text | the one-line summary in `.face p` (home §08) |
-| `tae_chapters` | repeating rows: `time` + `label` | `.chapters ul` (home §04) |
-| `tae_slot` | select: `—`, `cover`, `minor`, `feature`, `watch` | which hero slot this occupies |
-| `tae_most_watched` | checkbox | interview-series §01 right rail |
+| Meta key           | Type                                              | Renders as                                        |
+| ------------------ | ------------------------------------------------- | ------------------------------------------------- |
+| `tae_guest_name`   | text                                              | `.who`, `.epc-who`, `.g`, `.face h3`, `.byline`   |
+| `tae_guest_role`   | text                                              | appended after the name; alone in `.role`         |
+| `tae_episode`      | int                                               | `Ep 41` in `.epc-meta`, `Episode 42` in the cover |
+| `tae_duration`     | text, `MM:SS`                                     | `.vid-dur`, `.dur`, cover meta line               |
+| `tae_youtube`      | text, video ID                                    | `data-yt` attribute                               |
+| `tae_standfirst`   | textarea                                          | `.stand` on the cover and the home feature        |
+| `tae_rail_line`    | text                                              | the one-line summary in `.face p` (home §08)      |
+| `tae_chapters`     | repeating rows: `time` + `label`                  | `.chapters ul` (home §04)                         |
+| `tae_slot`         | select: `-`, `cover`, `minor`, `feature`, `watch` | which hero slot this occupies                     |
+| `tae_most_watched` | checkbox                                          | interview-series §01 right rail                   |
 
 Derived, never entered:
 
@@ -98,8 +98,8 @@ Derived, never entered:
 
 **`tae_slot` semantics.** At most one interview may hold `cover`, `feature` and
 `watch`; the template takes the first by `menu_order` and ignores the rest. `minor`
-is the pair in the interview-series left rail — the template takes the first two.
-An interview with slot `—` still appears in the wall, archive and stream.
+is the pair in the interview-series left rail - the template takes the first two.
+An interview with slot `-` still appears in the wall, archive and stream.
 
 ### 4.2 `tae_insight`
 
@@ -112,17 +112,17 @@ An interview with slot `—` still appears in the wall, archive and stream.
 
 `has_archive` is false because `/insights/` is an Elementor page, not an archive.
 
-| Meta key | Type | Renders as |
-|---|---|---|
-| `tae_dek` | textarea | `.sub` on the lead tile only |
-| `tae_byline` | text | `.who` |
-| `tae_link` | URL, optional | the tile's `href` |
-| `tae_start_here` | checkbox | insights §03 |
+| Meta key         | Type          | Renders as                   |
+| ---------------- | ------------- | ---------------------------- |
+| `tae_dek`        | textarea      | `.sub` on the lead tile only |
+| `tae_byline`     | text          | `.who`                       |
+| `tae_link`       | URL, optional | the tile's `href`            |
+| `tae_start_here` | checkbox      | insights §03                 |
 
 Two layout variants are derived, not entered:
 
-- `it--text` — applied when the post has no featured image
-- `it--lead` — applied to the first item in the stream
+- `it--text` - applied when the post has no featured image
+- `it--lead` - applied to the first item in the stream
 
 **Link resolution.** `tae_link` set → the tile links there. Empty → the tile links
 to the insight's own permalink, `/insights/<slug>/`.
@@ -132,20 +132,20 @@ to the insight's own permalink, `/insights/<slug>/`.
 **`tae_category`** on `tae_interview`. Terms seeded on activation, with slugs that
 must match the existing `data-cat` values in the markup:
 
-| Slug | Name |
-|---|---|
+| Slug          | Name        |
+| ------------- | ----------- |
 | `engineering` | Engineering |
-| `product` | Product |
-| `data` | Data & AI |
-| `design` | Design |
+| `product`     | Product     |
+| `data`        | Data & AI   |
+| `design`      | Design      |
 | `breaking-in` | Breaking in |
 
-Names are freely editable in wp-admin. Slugs are load-bearing — see §6.1.
+Names are freely editable in wp-admin. Slugs are load-bearing - see §6.1.
 
 **`tae_topic`** on `tae_insight`. Terms: `breaking-in` (Breaking in),
 `levelling-up` (Levelling up), `on-campus` (On campus).
 
-The insights sidebar has five buttons — All, Interviews, Breaking in, Levelling up,
+The insights sidebar has five buttons - All, Interviews, Breaking in, Levelling up,
 On campus. "Interviews" is not a term; it is `post_type = tae_interview`. The stream
 template stamps `data-topic="interview"` on every interview tile so `global.js` §09
 filters it without knowing the difference.
@@ -169,7 +169,7 @@ All hard crops, centred. The 16:9 → 3:4 jump for `tae-rail` is the one that ca
 off a head; the fix is WordPress's built-in featured-image crop editor, per image,
 not another upload field.
 
-Templates emit `wp_get_attachment_image()` so `srcset` and `sizes` come for free —
+Templates emit `wp_get_attachment_image()` so `srcset` and `sizes` come for free -
 an improvement on the current fixed-width Pexels URLs.
 
 ---
@@ -181,21 +181,21 @@ an improvement on the current fixed-width Pexels URLs.
 [tae_insights   view="stream|start" count="14"]
 ```
 
-| Shortcode | Replaces |
-|---|---|
-| `[tae_interviews view="featured"]` | `index.html` §04, lines 125–150 |
-| `[tae_interviews view="wall"]` | `index.html` §05, lines 153–254 |
-| `[tae_interviews view="rail"]` | `index.html` §08, lines 314–363 |
-| `[tae_interviews view="watch"]` | `index.html` §11, lines 399–415 |
-| `[tae_interviews view="cover"]` | `interview-series.html` §01, lines 75–126 |
-| `[tae_interviews view="archive"]` | `interview-series.html` §03, lines 160–362 |
-| `[tae_insights view="stream"]` | `insights.html` §01 tally + §02, lines 46–208 |
-| `[tae_insights view="start"]` | `insights.html` §03, lines 211–225 |
+| Shortcode                          | Replaces                                      |
+| ---------------------------------- | --------------------------------------------- |
+| `[tae_interviews view="featured"]` | `index.html` §04, lines 125–150               |
+| `[tae_interviews view="wall"]`     | `index.html` §05, lines 153–254               |
+| `[tae_interviews view="rail"]`     | `index.html` §08, lines 314–363               |
+| `[tae_interviews view="watch"]`    | `index.html` §11, lines 399–415               |
+| `[tae_interviews view="cover"]`    | `interview-series.html` §01, lines 75–126     |
+| `[tae_interviews view="archive"]`  | `interview-series.html` §03, lines 160–362    |
+| `[tae_insights view="stream"]`     | `insights.html` §01 tally + §02, lines 46–208 |
+| `[tae_insights view="start"]`      | `insights.html` §03, lines 211–225            |
 
 Attributes:
 
-- `count` — posts per page. Default 12 for interview views, 14 for the stream.
-- `category` — restrict to one `tae_category` slug. Empty means all.
+- `count` - posts per page. Default 12 for interview views, 14 for the stream.
+- `category` - restrict to one `tae_category` slug. Empty means all.
 
 Elementor HTML widgets do not run shortcodes by default. The
 `elementor/widget/render_content` filter documented in `CF7-SMTP.md` §3 is already
@@ -247,13 +247,13 @@ printf( '<style>%s{display:none}</style>', implode( ',', $rules ) );
 for the wall, `.tae-interviews .sorts` / `.eps li` for the archive.
 
 `$radio_id()` resolves through the same instance counter as §5.1. On the first
-instance it returns the legacy ID for a seeded slug — `engineering` → `c-eng` on the
-wall, `f-eng` on the archive — so the generated rules are character-for-character
+instance it returns the legacy ID for a seeded slug - `engineering` → `c-eng` on the
+wall, `f-eng` on the archive - so the generated rules are character-for-character
 identical to the stylesheet's own. A term the map does not know, or any instance
 after the first, gets a generated ID instead.
 
-The stylesheet's own hardcoded rules stay where they are. They are harmless — they
-target the same slugs and generate identical behaviour for the five seeded terms —
+The stylesheet's own hardcoded rules stay where they are. They are harmless - they
+target the same slugs and generate identical behaviour for the five seeded terms -
 and they keep working if the plugin is ever deactivated.
 
 ### 6.2 Load-more, and why the filter had to change
@@ -269,7 +269,7 @@ Resolution, agreed during design:
   active.
 - The button hides itself when `has_more` comes back false.
 - The generated CSS rules stay in place as the no-JS fallback. Without JavaScript a
-  visitor still gets a working filter over the first 12 tiles — degraded, not broken.
+  visitor still gets a working filter over the first 12 tiles - degraded, not broken.
 
 Endpoint: `wp_ajax_tae_load_interviews` and `wp_ajax_nopriv_tae_load_interviews`.
 Returns `{ html: '<li>…</li>…', has_more: bool, found: int }`. Nonce passed through
@@ -277,7 +277,7 @@ Returns `{ html: '<li>…</li>…', has_more: bool, found: int }`. Nonce passed 
 `IntersectionObserver` so scroll reveals still fire on them.
 
 **Home wall search box.** `index.html:171` has an `#q` search input that binds to
-nothing — `global.js` §09 guards on `#stream`, which the home page does not have. It
+nothing - `global.js` §09 guards on `#stream`, which the home page does not have. It
 has never worked. Since the AJAX endpoint exists anyway, the wall template wires it
 to the same endpoint with a `s` parameter and a 110 ms debounce, matching the
 insights search feel. Assumption, not a request; say so if you would rather it be
@@ -298,13 +298,17 @@ per published interview and insight, built from title, guest name and role.
 This requires the **only** edit to `global.js`. Line 100 becomes:
 
 ```js
-var SITE_INDEX = window.TAE_INDEX || [ /* …existing literal, unchanged… */ ];
+var SITE_INDEX =
+  window.TAE_INDEX ||
+  [
+    /* …existing literal, unchanged… */
+  ];
 ```
 
 Keeping the literal as the fallback means the site search still works if the plugin
-is deactivated. Everything else in `global.js` — masthead, menu, search overlay,
+is deactivated. Everything else in `global.js` - masthead, menu, search overlay,
 scroll reveals, click-to-load YouTube, the insights FLIP filter, contact segments,
-partnership rails — is untouched.
+partnership rails - is untouched.
 
 Load-more and the wall search live in the plugin's own `assets/tae-archive.js`,
 enqueued with `tae-global` as a dependency.
@@ -316,7 +320,7 @@ enqueued with `tae-global` as a dependency.
 Choosing "link field, falling back to a single page" means insights need an article
 template the prototype never designed.
 
-It already exists. `global.css:1035` onward defines the About broadsheet —
+It already exists. `global.css:1035` onward defines the About broadsheet -
 `.sheet`, `.sheet-head`, `.spread`, `.copy`, `.margin`, `.dateline`.
 `single-insight.php` reuses that markup:
 
@@ -336,7 +340,7 @@ It already exists. `global.css:1035` onward defines the About broadsheet —
 </div>
 ```
 
-The `.margin` aside is omitted — it has no source field, and the layout holds
+The `.margin` aside is omitted - it has no source field, and the layout holds
 without it. Zero new CSS.
 
 The template must render inside the theme's `get_header()` / `get_footer()`, so the
@@ -350,7 +354,7 @@ Elementor Theme Builder header and footer still apply.
 a `tae_seeded` option so it cannot run twice.
 
 Source data is `data/seed.php`, returning a PHP array of 26 records transcribed from
-the current markup — 12 interviews and 14 insights, every field filled. A PHP array,
+the current markup - 12 interviews and 14 insights, every field filled. A PHP array,
 not an HTML parser: the markup it would parse is the markup this plugin is about to
 replace.
 
@@ -360,7 +364,7 @@ as featured images.
 **Failure reporting.** Sideloading needs outbound HTTP from the host. On a locked-
 down host every image silently fails and the importer would otherwise report 26
 successful imports with no pictures. It must count image failures separately and
-print them: `26 posts created, 26 images failed — check outbound HTTP`.
+print them: `26 posts created, 26 images failed - check outbound HTTP`.
 
 The file is disposable. Delete `inc/importer.php` and `data/seed.php` after the run.
 
@@ -399,7 +403,7 @@ tae-content/
 AJAX response must produce identical markup, and one file is the only way to
 guarantee that.
 
-`query.php` exists for the same reason — the wall, archive, cover, stream and AJAX
+`query.php` exists for the same reason - the wall, archive, cover, stream and AJAX
 handler all build nearly the same query, and the ordering and `tae_slot` exclusion
 rules should be written once.
 
@@ -424,9 +428,9 @@ Non-trivial logic, so it leaves runnable checks behind:
 1. **`/insights/` page versus the CPT rewrite slug.** A page at `/insights/` and a
    CPT rewriting to `insights/<slug>/` do coexist in WordPress, but this is the
    classic place it goes wrong. Verify immediately after the CPT registers and
-   before any template work — if it conflicts, the whole `tae_link` fallback design
+   before any template work - if it conflicts, the whole `tae_link` fallback design
    changes and it is cheaper to know on day one.
-2. **`media_sideload_image()` outbound HTTP** — see §8.
+2. **`media_sideload_image()` outbound HTTP** - see §8.
 3. **Elementor shortcode filter.** Without the `elementor/widget/render_content`
    filter the pages print `[tae_interviews …]` as literal text. Already required for
    the CF7 forms, but it is the first thing to check if a page renders shortcode
@@ -436,7 +440,7 @@ Non-trivial logic, so it leaves runnable checks behind:
    `tae-archive.js`. `README-WORDPRESS.md` §7b already documents the exclusion list
    for `global.js`; `tae-archive.js` needs the same treatment.
 
-## 12. Built — where the implementation departs from this spec
+## 12. Built - where the implementation departs from this spec
 
 Written after the build. The design above is the decision record; these are the
 places reality argued back.
@@ -445,13 +449,13 @@ places reality argued back.
 occupies one hero slot. It does not: Amara Osei is simultaneously the Interview
 Series cover story, the home featured interview and the home watch poster. The
 field became `tae_slot_cover`, `tae_slot_minor`, `tae_slot_feature`,
-`tae_slot_watch` — four independent booleans.
+`tae_slot_watch` - four independent booleans.
 
 **`menu_order` means curation rank only.** §4.1 had it ordering everything. That
 breaks: ranking five interviews 1–5 for the Most watched rail would push all five
 below every unranked interview in the archive, the wall and the stream, because
 `menu_order ASC` puts 0 first. General listings now sort by date descending, and
-`menu_order` is read only by the curated queries — Most watched, Start here, and
+`menu_order` is read only by the curated queries - Most watched, Start here, and
 which of two claimants wins a contested hero slot.
 
 **The archive filter scope is `.index-head`, not `.sorts`.** §6.1 planned to
@@ -460,7 +464,7 @@ regenerate the stylesheet's selector shape. That selector has never matched:
 `.sorts ~ .eps` finds nothing and the Interview Series filter has never worked.
 Regenerating it faithfully would have reproduced the bug. `tests/test-tae.php`
 asserts both that the wall rules match `global.css:677-681` character for character
-and that the archive rules do *not* copy the broken shape.
+and that the archive rules do _not_ copy the broken shape.
 
 **Nine image sizes, not seven.** §4.4 missed the home watch poster (1200×675) and
 the home feature's full-bleed image (1800×1013).
@@ -478,16 +482,16 @@ standfirsts above them are prose and stayed in the Elementor widget, per §3.
 one paste.
 
 **Verification.** §10's four checks became 26 in
-`plugins/tae-content/tests/test-tae.php` — no framework, no WordPress, runs under
+`plugins/tae-content/tests/test-tae.php` - no framework, no WordPress, runs under
 plain `php`. All pass. The markup-fidelity diff in §10.1 was not built: the outputs
 cannot be byte-identical anyway once `srcset` and Media Library URLs replace fixed
 Pexels ones, so it would have been a diff nobody could read. Structural fidelity
 was checked by eye against the original blocks instead.
 
-## 13. Insights page — decided after first install (2026-08-05)
+## 13. Insights page - decided after first install (2026-08-05)
 
 The seeded Destination values made the tile links look wrong on the live site,
-which surfaced a question the spec had left implicit: what *is* an insight?
+which surfaced a question the spec had left implicit: what _is_ an insight?
 
 **An insight is a pointer or an article, decided per piece.** Destination filled
 and no body → a pointer, no page of its own. Body written and Destination cleared →
@@ -495,7 +499,7 @@ an article at `/insights/<slug>/`. The `tae_link`-with-page-fallback design in �
 already implemented this; nothing needed building. It means launch is not gated on
 writing eleven articles, and each piece can graduate on its own.
 
-**Every insight has a real page — first attempt reverted.** The first fix for the
+**Every insight has a real page - first attempt reverted.** The first fix for the
 eleven thin URLs was a 302 away from any bodiless insight, exempting users who
 could edit it. That made the site behave differently for logged-out visitors than
 for the person building it, which is not a functioning website; it was rejected on
@@ -517,13 +521,13 @@ the pages do not change either way.
 **The lead tile is explicit.** `tae_lead` on both post types. Unticked everywhere
 falls back to newest-first, the old behaviour. `.it--lead` spans four of the
 stream's six grid columns, so `tae_lead_first()` moves the flagged post to the
-front of the array — out of position it would leave a hole in the grid.
+front of the array - out of position it would leave a hole in the grid.
 
 **The stream caps at 60.** Not `-1`. `global.js` §09 filters and counts from the
 DOM, so anything past the cap would be invisible to search, to the topic filter and
 to the counters alike. A cap is a number to raise; an uncapped page is a cliff.
 
-**Seed correction.** Four insights were seeded with `Destination = /insights/` —
+**Seed correction.** Four insights were seeded with `Destination = /insights/` -
 links back to the page the tile is on. There was no prototype href to copy for
 those four and `/insights/` was the wrong stand-in. Removed; they now fall through
 to their own pages.
@@ -534,7 +538,7 @@ Stated here rather than blocking; flag any that are wrong:
 
 - The home wall search box gets wired up rather than removed (§6.2).
 - The interview-series "Subscribe" button and the YouTube channel URL stay
-  hardcoded — they are chrome, not content.
+  hardcoded - they are chrome, not content.
 - The insights `.band` newsletter element referenced at `global.js:520` does not
   exist in the current markup and is not being added.
 - Interviews with no `tae_category` term still render in the wall and archive, and

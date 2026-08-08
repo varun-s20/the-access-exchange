@@ -8,257 +8,217 @@
 
      SET IN WORDPRESS (Settings → Reading → "Your homepage displays" → this page)
 
-     SEO — enter these in Yoast / Rank Math / SEOPress, NOT here.
-       SEO title       The Access Exchange — Career advice in tech, from the
-                       people already doing the job
-       Meta desc       Long-form interviews with people working in tech, and
-                       university partnership programmes that bring those
-                       conversations onto campus. Free, always.  (152 chars)
-       Focus keyphrase career advice in tech
+     SECTION ORDER follows the handoff §8 exactly:
+       01 Hero · 02 Why The Exchange · 03 Interview Series · 04 What Moves
+       Through The Exchange · 05 Universities · 06 Leaders & Corporate Partners
+       · 07 Live Experiences + Coaching · 08 Email capture
+
+     LAUNCH STATE
+       §03 prints [tae_coming_soon], which disappears by itself the moment an
+       interview is given the "Slot · Featured interview" tick - the featured
+       module underneath it takes over the same position. Nothing to rebuild and
+       nothing to delete by hand; publishing the interview is the whole action.
+
+     SEO - enter these in Yoast / Rank Math / SEOPress, NOT here.
+       SEO title       The Access Exchange - Connecting you to the people,
+                       knowledge and opportunities that make a difference
+       Meta desc       Access to accomplished leaders through our Interview
+                       Series, university engagements, live experiences and
+                       professional coaching.  (147 chars)
+       Focus keyphrase the access exchange
        Canonical       https://theaccessexchange.com/
        OG title        The Access Exchange
-       OG description  The best career advice in tech is not secret. It is just
-                       unevenly distributed.
-       OG image        1200×630 — the recording-setup still works well
+       OG description  Get closer to the people and ideas shaping what's next.
+       OG image        1200×630
        Twitter card    summary_large_image
        Robots          index, follow
        Breadcrumb      Home
 
      PERFORMANCE NOTES
-       · The hero has no image, so the LCP element is the H1 — it renders from
-         CSS alone and needs no preload.
-       · Every photograph below is loading="lazy" except the two split-panel
-         images, which sit near the fold.
-       · The YouTube embed is click-to-load (global.js §06). Nothing is
-         requested from youtube.com until someone presses play.
-       · Preconnect to images.pexels.com in the <head> via the theme if you
-         keep the Pexels URLs; swap them for Media Library uploads before
-         launch and the preconnect is no longer needed.
+       · LCP is the hero H1, which renders from CSS alone and needs no preload.
+       · The hero band is the one image above the fold - it is NOT lazy and
+         carries fetchpriority="high". Everything below it is loading="lazy".
+       · The hero band is sized by aspect-ratio, so swapping the <img> for a
+         <video> of production footage cannot shift the fold.
+       · Stock URLs are Pexels hotlinks, as everywhere else in this build. They
+         move to the Media Library at Phase 7; the preconnect goes with them.
      ═══════════════════════════════════════════════════════════════════════════ -->
 
-<!-- NO JSON-LD ON THIS PAGE — Yoast owns it.
+<!-- NO JSON-LD ON THIS PAGE - Yoast owns it.
      Organization, WebSite, WebPage and BreadcrumbList all come from Yoast's
      graph once you complete Site Representation (see SEO-YOAST.md §1).
      Emitting our own copies here would ship duplicate entities. -->
 
 <div class="tae tae-home">
 
-  <!-- ═══ 01 · THESIS ═══════════════════════════════════════════════════ -->
+  <!-- ═══ 01 · HERO ═════════════════════════════════════════════════════ -->
   <section class="thesis" aria-labelledby="thesis-h">
     <div class="shell">
       <div class="thesis-rule" aria-hidden="true"></div>
 
       <div class="thesis-grid">
-        <h1 id="thesis-h">Career advice in tech is not secret. <em>It is just unevenly distributed.</em></h1>
+        <h1 id="thesis-h">Get closer to the people and ideas <em>shaping what's next.</em></h1>
 
         <div class="thesis-side">
-          <p>Honest, long-form interviews with people working in tech, and partnership programmes that bring those conversations onto campus.</p>
+          <p>The Access Exchange brings people closer to the knowledge, perspective and opportunities that are often hardest to access.</p>
           <div class="thesis-cta">
-            <a href="/interview-series/" class="btn">Watch the interviews</a>
-            <a href="/university-partnerships/" class="btn btn--ghost">For universities</a>
+            <a href="/interview-series/" class="btn">Enter The Exchange</a>
+            <a href="/guests-partners/#corporate" class="btn btn--ghost">Partner with us</a>
           </div>
         </div>
       </div>
 
-      <div class="thesis-strip">
-        <a class="ts" href="/interview-series/">
-          <span class="ts-n lab">01 / Media</span>
-          <span class="ts-t">The Interview Series</span>
-          <span class="ts-d">New interview every Thursday</span>
-        </a>
-        <a class="ts" href="/university-partnerships/">
-          <span class="ts-n lab">02 / Professional development</span>
-          <span class="ts-t">University Partnerships</span>
-          <span class="ts-d">Scoped around your term dates</span>
-        </a>
-        <a class="ts" href="/insights/">
-          <span class="ts-n lab">03 / Archive</span>
-          <span class="ts-t">Insights</span>
-          <span class="ts-d">Everything we have published</span>
-        </a>
+      <!-- SWAP FOR FOOTAGE: replace this <img> with
+           <video autoplay muted loop playsinline poster="…"><source src="…" type="video/mp4"></video>
+           once production footage exists. The band keeps its shape either way. -->
+      <div class="hero-visual">
+        <img src="https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?auto=format&fit=crop&w=2100&h=900&q=72" alt="A speaker alone on a lit stage in a darkened auditorium" decoding="async" fetchpriority="high">
       </div>
     </div>
   </section>
 
-  <!-- ═══ 02 · PROXIMITY GAP ════════════════════════════════════════════ -->
-  <section class="gap">
+  <!-- ═══ 02 · WHY THE EXCHANGE ═════════════════════════════════════════ -->
+  <section class="gap" aria-label="Why The Exchange">
     <div class="shell">
       <div class="gap-in">
-        <p data-rv>Two people leave the same course with the same grades.</p>
-        <p class="soft" data-rv style="--d:100ms">One of them sat next to someone's older sibling at a dinner, and knows which teams are hiring, what the interview loop looks like, and that the job title they have been ignoring is the one they would be good at.</p>
-        <p data-rv style="--d:200ms">The other applies into a void.</p>
-        <p class="hard" data-rv style="--d:300ms">That is not a talent problem. It is a proximity problem.</p>
+        <p data-rv>Some of the most valuable things people know never make it into a textbook, a search result or a job description.</p>
+        <p class="soft" data-rv style="--d:100ms">They live in experience - in what someone learned getting there, the decisions that shaped them, and the lessons worth passing forward.</p>
+        <p class="hard" data-rv style="--d:200ms">Knowledge becomes more powerful when it moves.</p>
       </div>
-      <hr data-rule style="--d:380ms">
-      <p class="turn" data-rv style="--d:460ms">Access is a conversation<br>somebody else already had.</p>
+      <hr data-rule style="--d:280ms">
+      <p class="turn" data-rv style="--d:360ms">The Exchange gives that<br>experience somewhere to travel.</p>
     </div>
   </section>
 
-  <!-- ═══ 03 · THE EXCHANGE ═════════════════════════════════════════════ -->
-  <section class="exchange" aria-label="What we do">
-    <div class="split">
-      <article class="side">
-        <div class="ph">
-          <img src="https://images.pexels.com/photos/7586662/pexels-photo-7586662.jpeg?auto=compress&cs=tinysrgb&w=1200&h=900&fit=crop" alt="A remote interview being recorded for The Access Exchange" decoding="async" fetchpriority="high">
-        </div>
-        <span class="num lab">01 / Media</span>
-        <h2>The Interview Series</h2>
-        <p>Long-form conversations with engineers, product managers, designers, data scientists and the people who hire them. What the job actually involves, how they got in, and what they would do differently.</p>
-        <span class="proof lab">New interview every week</span>
-        <a href="/interview-series/" class="ln">Browse interviews <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-      </article>
+  <!-- ═══ 03 · INTERVIEW SERIES ═════════════════════════════════════════
+       Near the top by instruction - this is the launch priority.
+       [tae_coming_soon] holds the position until an interview is featured;
+       [tae_interviews view="featured"] takes it from there. Exactly one of the
+       two ever renders. -->
+  <section class="series" aria-labelledby="series-h">
+    <div class="shell">
+      <div class="tag lab"><span class="s">03</span><span>Interview Series</span></div>
+      <h2 class="h2" id="series-h" data-rv>Go beyond the biography.</h2>
+      <p class="lede" data-rv style="--d:80ms">Titles tell us where someone arrived. We're interested in what they learned getting there - the decisions, turning points, lessons, relationships and ideas that shaped the journey.</p>
 
-      <article class="side">
-        <div class="ph">
-          <img src="https://images.pexels.com/photos/5940841/pexels-photo-5940841.jpeg?auto=compress&cs=tinysrgb&w=1200&h=900&fit=crop" alt="A careers session running with university students" decoding="async">
-        </div>
-        <span class="num lab">02 / Professional development</span>
-        <h2>University Partnerships</h2>
-        <p>Structured programmes built with careers services and departments: guest sessions, cohort workshops and a content library your institution keeps. Scoped around your calendar, not ours.</p>
-        <span class="proof lab">No procurement cycle to start</span>
-        <a href="/university-partnerships/" class="ln">See how partnerships work <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-      </article>
+      [tae_coming_soon until="feature" line="First interview coming soon." body="Join The Exchange and you will hear about it before it goes out." cta="Join The Exchange" href="#join"]
     </div>
   </section>
 
-  <!-- ═══ 04 · THE FEATURE ══════════════════════════════════════════
-       Plugin-driven. Tick "Slot · Featured interview" on the interview you
-       want here; the chapter rows come from its Chapters field. -->
   [tae_interviews view="featured"]
 
-  <!-- ═══ 05 · THE WALL ═════════════════════════════════════════════════ -->
-  <section class="wall" aria-labelledby="wall-h">
-    <div class="shell">
-      <div class="tag lab"><span class="s">05</span><span>The archive</span></div>
-      <div class="wall-head">
-        <h2 class="h2" id="wall-h" data-rv>Every conversation,<br>in full.</h2>
-        <a href="/interview-series/#episodes" class="ln" data-rv style="--d:80ms">View all 40+ <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-      </div>
-
-      <!-- Plugin-driven. Chips are generated from the Categories taxonomy, and
-           both the chips and the search field refetch server-side — so a
-           filtered view is never a partial count of what is loaded. -->
-      [tae_interviews view="wall" count="12"]
-    </div>
-  </section>
-
-  <!-- ═══ 06 · THE STANDARD ═════════════════════════════════════════════ -->
+  <!-- ═══ 04 · WHAT MOVES THROUGH THE EXCHANGE ══════════════════════════ -->
   <section class="standard" aria-labelledby="standard-h">
     <div class="shell">
-      <div class="tag lab"><span class="s">06</span><span>How we work</span></div>
-      <h2 class="h2" id="standard-h" data-rv>What we hold every interview to.</h2>
+      <div class="tag lab"><span class="s">04</span><span>What moves through The Exchange</span></div>
+      <h2 class="h2" id="standard-h" data-rv>Four things worth getting closer to.</h2>
       <div class="tenets">
         <div class="tenet" data-rv>
-          <span class="n">01</span><h3>Specific over inspiring</h3>
-          <p>Every interview is pushed toward detail: the actual timeline, the actual rejection, the actual conversation that changed something. If a story only works as encouragement, it does not make the edit.</p>
+          <span class="n">01</span><h3>Knowledge</h3>
+          <p>What experience teaches. The parts of a career, a decision or an industry that only become clear once someone has lived through them.</p>
         </div>
         <div class="tenet" data-rv style="--d:80ms">
-          <span class="n">02</span><h3>Mid-career, not just the summit</h3>
-          <p>Founders and executives are well covered elsewhere. Most of our guests are two to ten years in, close enough to the start that they still remember what was confusing.</p>
+          <span class="n">02</span><h3>Perspective</h3>
+          <p>How people who have lived it see it. Not the summary version, but the thinking behind the choices and what they would weigh differently now.</p>
         </div>
         <div class="tenet" data-rv style="--d:160ms">
-          <span class="n">03</span><h3>Guests choose what stays in</h3>
-          <p>People are honest when honesty is safe. Every guest reviews their cut before it goes out, and anything they want removed is removed, no negotiation.</p>
+          <span class="n">03</span><h3>Access</h3>
+          <p>Closer proximity to people, ideas and rooms that matter - the conversations that are usually reached by knowing somebody already.</p>
         </div>
         <div class="tenet" data-rv style="--d:240ms">
-          <span class="n">04</span><h3>Free at the point of use</h3>
-          <p>The interviews stay open. Institutions pay for the programmes we run with them, not for their students to watch a conversation.</p>
+          <span class="n">04</span><h3>Opportunity</h3>
+          <p>What becomes possible when the right things connect. Access changes what a person can see, and what they can see changes what they do next.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ═══ 07 · CAMPUS ═══════════════════════════════════════════════════ -->
+  <!-- ═══ 05 · UNIVERSITIES ═════════════════════════════════════════════ -->
   <section class="campus" aria-labelledby="campus-h">
     <div class="shell campus-grid">
       <div class="ph" data-rv>
-        <img src="https://images.pexels.com/photos/1454360/pexels-photo-1454360.jpeg?auto=compress&cs=tinysrgb&w=900&h=1200&fit=crop" alt="Students crossing campus between sessions" loading="lazy" decoding="async">
+        <img src="https://images.unsplash.com/photo-1663162550938-60f70fab5d31?auto=format&fit=crop&w=900&h=1200&q=72" alt="Students walking together across a university campus" loading="lazy" decoding="async">
       </div>
       <div>
-        <div class="tag lab"><span class="s">07</span><span>University partnerships</span></div>
-        <h2 class="h2" id="campus-h" data-rv>Bring the industry onto campus.</h2>
-        <p class="lede" data-rv style="--d:80ms">We work with careers services, departments and student societies to turn the interview series into something students can actually take part in: live sessions, guided workshops, and a library your institution keeps.</p>
+        <div class="tag lab"><span class="s">05</span><span>Universities &amp; institutions</span></div>
+        <h2 class="h2" id="campus-h" data-rv>Bring The Exchange into the room.</h2>
+        <p class="lede" data-rv style="--d:80ms">Give students direct access to experienced leaders, industry perspective and conversations that take learning beyond the classroom.</p>
 
         <ol class="steps">
-          <li data-rv><span class="n lab">01</span><p>Scope a programme together. Term dates, cohort size, the gaps you already know about.</p></li>
-          <li data-rv style="--d:70ms"><span class="n lab">02</span><p>We bring the guests. Practitioners from the series, matched to your course mix.</p></li>
-          <li data-rv style="--d:140ms"><span class="n lab">03</span><p>Run it on campus or online. Talks, Q&amp;A, portfolio and interview workshops.</p></li>
-          <li data-rv style="--d:210ms"><span class="n lab">04</span><p>Keep the content. Recordings and materials stay with your careers team afterwards.</p></li>
+          <li data-rv><span class="n lab">01</span><p><strong>Leadership Talk + Q&amp;A.</strong> A focused leadership session, followed by direct student questions.</p></li>
+          <li data-rv style="--d:70ms"><span class="n lab">02</span><p><strong>Moderated Leadership Discussion.</strong> A deeper discussion around experience, perspective and the thinking behind the work.</p></li>
+          <li data-rv style="--d:140ms"><span class="n lab">03</span><p><strong>Industry Session.</strong> A topic-driven programme with experienced practitioners.</p></li>
+          <li data-rv style="--d:210ms"><span class="n lab">04</span><p><strong>Custom Campus Experience.</strong> Programming shaped around your students, academic programmes, industry themes or institutional objectives.</p></li>
         </ol>
 
         <div class="tag lab"><span>Who we work with</span></div>
         <ul class="whos">
-          <li>Careers services</li><li>Computing &amp; engineering</li><li>Data science</li>
-          <li>Business schools</li><li>Widening participation</li><li>Student societies</li>
-          <li>Alumni relations</li>
+          <li>Colleges</li><li>Academic programmes</li><li>Student organisations</li>
+          <li>Professional associations</li><li>Careers services</li><li>Alumni relations</li>
         </ul>
 
-        <p class="reassure" data-rv>No cost to ask. The first call is a scoping conversation, not a pitch.</p>
-        <a href="/university-partnerships/" class="btn">Talk to us about a programme</a>
+        <p class="reassure" data-rv>Bring the experience of industry closer to the people preparing to shape it.</p>
+        <a href="/universities/" class="btn">Bring The Exchange to campus</a>
       </div>
     </div>
   </section>
 
-  <!-- ═══ 08 · THE ROOM ═════════════════════════════════════════════════ -->
-  <section class="room" aria-labelledby="room-h">
-    <div class="shell">
-      <div class="tag lab"><span class="s">08</span><span>Voices from the series</span></div>
-      <div class="room-head">
-        <h2 class="h2" id="room-h" data-rv>Who is already<br>in the room.</h2>
-        <div class="room-nav">
-          <button type="button" id="railPrev" aria-label="Previous guests"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-left"/></svg></button>
-          <button type="button" id="railNext" aria-label="More guests"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-right"/></svg></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="shell">
-      <!-- Plugin-driven: the five most recent interviews, then the fixed
-           invitation tile. -->
-      [tae_interviews view="rail" count="5"]
-    </div>
-  </section>
-
-  <!-- ═══ 09 · FOUNDER ══════════════════════════════════════════════════ -->
-  <section class="founder" aria-label="Why we started this">
-    <div class="shell founder-grid">
-      <div class="ph" data-rv>
-        <img src="https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=560&h=700&fit=crop" alt="The founder of The Access Exchange" loading="lazy" decoding="async">
-      </div>
-      <div>
-        <div class="tag lab"><span class="s">09</span><span>Why we started this</span></div>
-        <blockquote data-rv>"I kept watching the same conversation change someone's career, and it was always a conversation they got by accident."</blockquote>
-        <div class="sign lab" data-rv style="--d:90ms">Founder, The Access Exchange</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ═══ 10 · TWO DOORS ════════════════════════════════════════════════ -->
-  <section class="doors" aria-label="Get involved">
+  <!-- ═══ 06 · LEADERS &amp; CORPORATE PARTNERS ═════════════════════════ -->
+  <section class="doors" aria-label="Leaders and corporate partners">
     <div class="doors-in">
       <div class="door">
-        <div class="tag lab"><span class="s">01</span><span>For guests</span></div>
-        <h2>Have a story worth telling?</h2>
-        <p>You work in tech and you will be honest about how you got there. Remote, about an hour, and a short call beforehand to agree the ground we cover.</p>
-        <a href="/interview-series/#be-a-guest" class="btn">Be a guest</a>
+        <div class="tag lab"><span>For leaders</span></div>
+        <h2>Experience should not disappear inside the people who earned it.</h2>
+        <p>Bring your perspective, lessons and ideas into The Exchange. Your title tells us where you are - we're interested in what you know now.</p>
+        <a href="/guests-partners/#guest" class="btn">Be considered as a guest</a>
       </div>
       <div class="door">
-        <div class="tag lab"><span class="s">02</span><span>For institutions</span></div>
-        <h2>Have a cohort who needs one?</h2>
-        <p>Universities, careers services, departments and student societies. We scope a programme around your term dates and the gaps you already know your students have.</p>
-        <a href="/university-partnerships/" class="btn btn--ghost">Partner with us</a>
+        <div class="tag lab"><span>For organisations</span></div>
+        <h2>Some of your strongest voices are already inside your organisation.</h2>
+        <p>Sponsor an interview. Nominate a leader. Build something meaningful with The Exchange.</p>
+        <a href="/guests-partners/#corporate" class="btn btn--ghost">Explore partnerships</a>
       </div>
     </div>
-    <p class="doors-foot lab">Neither of those? <a href="/contact/">Contact us</a></p>
+    <p class="doors-foot lab">Something else in mind? <a href="/get-involved/">Get involved</a></p>
   </section>
 
-  <!-- ═══ 11 · WATCH ════════════════════════════════════════════════════ -->
-  <section class="signal" aria-labelledby="signal-h">
+  <!-- ═══ 07 · LIVE EXPERIENCES + COACHING ══════════════════════════════ -->
+  <section class="exchange" aria-label="Experiences and coaching">
+    <div class="split">
+      <article class="side">
+        <div class="ph">
+          <img src="https://images.unsplash.com/photo-1544531586-fde5298cdd40?auto=format&fit=crop&w=1200&h=900&q=72" alt="A speaker facing a full auditorium" loading="lazy" decoding="async">
+        </div>
+        <span class="num lab">Live experiences</span>
+        <h2>The Exchange goes beyond the screen.</h2>
+        <p>Leadership discussions, industry panels, learning experiences and events that bring people, ideas and opportunity together in the same room.</p>
+        <a href="/experiences/" class="ln">Explore experiences <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      </article>
+
+      <article class="side">
+        <div class="ph">
+          <img src="https://images.unsplash.com/photo-1573496546038-82f9c39f6365?auto=format&fit=crop&w=1200&h=900&q=72" alt="Two people in a quiet one-to-one conversation by a window" loading="lazy" decoding="async">
+        </div>
+        <span class="num lab">Coaching</span>
+        <h2>Turn insight into action.</h2>
+        <p>Personalised guidance to help people gain clarity, strengthen their positioning, navigate important decisions and move forward with greater intention.</p>
+        <a href="/coaching/" class="ln">Explore coaching <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      </article>
+    </div>
+  </section>
+
+  <!-- ═══ 08 · EMAIL CAPTURE ════════════════════════════════════════════
+       CF7 form. Create it per CF7-SMTP.md, then replace REPLACE_ID_JOIN with
+       the real id. The form needs Mail(2) enabled - the handoff asks for a
+       welcome/confirmation autoresponder on the opt-in specifically. -->
+  <section class="signal" id="join" aria-labelledby="signal-h">
     <div class="shell">
-      <h2 class="h2" id="signal-h" data-rv>Every conversation, in full.</h2>
-      <p class="lede" data-rv style="--d:80ms">New interview every Thursday. Watch the whole thing, or jump to the chapter you need.</p>
-      <!-- Plugin-driven: the interview with "Slot · Watch poster" ticked. -->
-      [tae_interviews view="watch"]
+      <h2 class="h2" id="signal-h" data-rv>Stay close to what's coming.</h2>
+      <p class="lede" data-rv style="--d:80ms">New interviews. New perspectives. New rooms.</p>
+
+      [contact-form-7 id="REPLACE_ID_JOIN" title="TAE - Join The Exchange" html_class="form form--join"]
+
+      <span class="fine lab">No more than one email a week. Unsubscribe in one click.</span>
     </div>
   </section>
 

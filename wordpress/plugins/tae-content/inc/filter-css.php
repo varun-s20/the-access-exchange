@@ -1,6 +1,6 @@
 <?php
 /**
- * The category filter is pure CSS — :has() plus a sibling combinator, no JS and no
+ * The category filter is pure CSS - :has() plus a sibling combinator, no JS and no
  * layout thrash. That only works if every term has its own rule, so the rules have
  * to be generated from the live taxonomy rather than hardcoded.
  *
@@ -20,7 +20,7 @@ defined( 'ABSPATH' ) || exit;
  *
  *     .tae-interviews .sorts:has(#f-eng:checked) ~ .eps li
  *
- * .sorts sits inside .index-head, and .eps is a sibling of .index-head — not of
+ * .sorts sits inside .index-head, and .eps is a sibling of .index-head - not of
  * .sorts. The sibling combinator therefore never matches and the Interview Series
  * filter has never worked. Scoping to .index-head fixes it without moving markup.
  *
@@ -33,12 +33,12 @@ function tae_filter_config() {
 			'target' => '.grid .card',
 			'name'   => 'cat',
 			'ids'    => array(
-				''            => 'c-all',
-				'engineering' => 'c-eng',
-				'product'     => 'c-prod',
-				'data'        => 'c-data',
-				'design'      => 'c-des',
-				'breaking-in' => 'c-brk',
+				''           => 'c-all',
+				'leadership' => 'c-lead',
+				'founders'   => 'c-fnd',
+				'industry'   => 'c-ind',
+				'career'     => 'c-car',
+				'campus'     => 'c-cam',
 			),
 		),
 		'archive' => array(
@@ -46,12 +46,12 @@ function tae_filter_config() {
 			'target' => '.eps li',
 			'name'   => 'cat',
 			'ids'    => array(
-				''            => 'f-all',
-				'engineering' => 'f-eng',
-				'product'     => 'f-prod',
-				'data'        => 'f-data',
-				'design'      => 'f-des',
-				'breaking-in' => 'f-brk',
+				''           => 'f-all',
+				'leadership' => 'f-lead',
+				'founders'   => 'f-fnd',
+				'industry'   => 'f-ind',
+				'career'     => 'f-car',
+				'campus'     => 'f-cam',
 			),
 		),
 	);
@@ -119,7 +119,7 @@ function tae_filter_markup( $view, $instance ) {
 		return 'tae-' . substr( md5( $config['name'] . $slug ), 0, 6 ) . $suffix;
 	};
 
-	// "All" first, then every term. data-cat is for tae-archive.js — the CSS filter
+	// "All" first, then every term. data-cat is for tae-archive.js - the CSS filter
 	// keys off the ID, but JavaScript needs the slug and a label only carries a name.
 	$chips = sprintf(
 		'<input type="radio" name="%s" id="%s" data-cat="" checked><label class="chip" for="%2$s">All</label>',

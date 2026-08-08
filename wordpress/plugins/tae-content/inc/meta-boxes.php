@@ -19,12 +19,17 @@ function tae_fields() {
 			'tae_guest_name'   => array(
 				'label' => 'Guest name',
 				'type'  => 'text',
-				'help'  => 'Amara Osei',
+				'help'  => 'The name as it should appear publicly.',
 			),
 			'tae_guest_role'   => array(
-				'label' => 'Guest role',
+				'label' => 'Professional title',
 				'type'  => 'text',
-				'help'  => 'Staff Engineer',
+				'help'  => 'Chief Operating Officer',
+			),
+			'tae_org'          => array(
+				'label' => 'Organization',
+				'type'  => 'text',
+				'help'  => 'Where the guest does that job. Printed after the title on the episode page.',
 			),
 			'tae_episode'      => array(
 				'label' => 'Episode number',
@@ -49,12 +54,18 @@ function tae_fields() {
 			'tae_rail_line'    => array(
 				'label' => 'Guest rail line',
 				'type'  => 'text',
-				'help'  => 'The short line under the portrait on the home page: "On five years from bootcamp to staff."',
+				'help'  => 'The short line under the portrait on the home page: "On what twenty years of hiring taught her."',
+			),
+			'tae_takeaways'    => array(
+				'label' => 'Key takeaways',
+				'type'  => 'textarea',
+				'help'  => 'One per line. The standout ideas from the conversation, shown as a numbered list on the episode page. Plain sentences, no bullets - the list numbers itself.',
+				'rows'  => 6,
 			),
 			'tae_chapters'     => array(
 				'label' => 'Chapters',
 				'type'  => 'textarea',
-				'help'  => 'One per line, as <code>time|label</code>. Example: <code>03:10|The bootcamp year, and the job it did not get her</code>. Only the home feature shows these.',
+				'help'  => 'One per line, as <code>time|label</code>. Example: <code>12:40|The decision that changed the company</code>. Shown on the episode page and on the home feature; each one jumps the video to that timestamp.',
 				'rows'  => 6,
 			),
 			// Four independent checkboxes rather than one select: the cover story is
@@ -63,7 +74,7 @@ function tae_fields() {
 			'tae_slot_cover'   => array(
 				'label' => 'Slot · Cover story (Interview Series)',
 				'type'  => 'checkbox',
-				'help'  => 'If two interviews claim the same slot the lower Order wins. An interview in no slot still appears in the wall, archive and insights stream.',
+				'help'  => 'If two interviews claim the same slot the lower Order wins. An interview in no slot still appears in the archive and the takeaways stream.',
 			),
 			'tae_slot_minor'   => array(
 				'label' => 'Slot · Left rail (Interview Series)',
@@ -86,16 +97,22 @@ function tae_fields() {
 				'help'  => 'The numbered list on the Interview Series page. Sequence comes from the Order field.',
 			),
 			'tae_lead'         => array(
-				'label' => 'Use as lead tile (Insights)',
+				'label' => 'Use as lead tile (Takeaways)',
 				'type'  => 'checkbox',
-				'help'  => 'The wide tile at the top of the Insights stream. Leave every item unticked and the newest one leads, which is the old behaviour. If two are ticked the lower Order wins.',
+				'help'  => 'The wide tile at the top of the Takeaways stream on the Interview Series page. Leave every item unticked and the newest one leads. If two are ticked the lower Order wins.',
 			),
 		),
 		'tae_insight'   => array(
+			'tae_parent'     => array(
+				'label' => 'Came from which interview',
+				'type'  => 'post_select',
+				'help'  => 'The interview this takeaway, clip or write-up came out of. Shown as a way back to the full conversation, and used to place it under "From this interview" on the episode page. Leave empty for a piece that stands on its own.',
+				'none'  => '- Stands on its own -',
+			),
 			'tae_dek'        => array(
 				'label' => 'Dek',
 				'type'  => 'textarea',
-				'help'  => 'Shown on the lead tile only — the first item in the stream.',
+				'help'  => 'Shown on the lead tile only - the first item in the stream.',
 			),
 			'tae_byline'     => array(
 				'label' => 'Byline',
@@ -105,20 +122,52 @@ function tae_fields() {
 			'tae_link'       => array(
 				'label' => 'Onward link',
 				'type'  => 'url',
-				'help'  => 'Where this piece sends the reader next — the interview it came from, an external write-up, anything. Shown as a button on the insight\'s own page, labelled to match where it goes. Leave it empty if the piece stands on its own. Tiles in the stream always open the insight\'s page; this is what they find when they get there.',
+				'help'  => 'Where this piece sends the reader next - the interview it came from, an external write-up, anything. Shown as a button on the insight\'s own page, labelled to match where it goes. Leave it empty if the piece stands on its own. Tiles in the stream always open the insight\'s page; this is what they find when they get there.',
 			),
 			'tae_start_here' => array(
 				'label' => 'Show in "Start here"',
 				'type'  => 'checkbox',
-				'help'  => 'The five numbered links at the foot of the Insights page. Sequence comes from the Order field.',
+				'help'  => 'The five numbered links at the foot of the Takeaways section. Sequence comes from the Order field.',
 			),
 			'tae_lead'       => array(
 				'label' => 'Use as lead tile',
 				'type'  => 'checkbox',
-				'help'  => 'The wide tile at the top of the Insights stream. Leave every item unticked and the newest one leads. If two are ticked the lower Order wins.',
+				'help'  => 'The wide tile at the top of the Takeaways stream. Leave every item unticked and the newest one leads. If two are ticked the lower Order wins.',
 			),
 		),
 	);
+}
+
+/**
+ * Published interviews as id => label, for the post_select field.
+ *
+ * Cached per request: the render pass and the save pass both ask for it.
+ *
+ * @return array<int,string>
+ */
+function tae_interview_choices() {
+	static $cache = null;
+	if ( null !== $cache ) {
+		return $cache;
+	}
+
+	$cache = array();
+	foreach ( get_posts(
+		array(
+			'post_type'        => 'tae_interview',
+			'post_status'      => 'publish',
+			'posts_per_page'   => 200,
+			'orderby'          => 'date',
+			'order'            => 'DESC',
+			'suppress_filters' => false,
+		)
+	) as $item ) {
+		$who                  = tae_guest( $item );
+		$cache[ $item->ID ] = $who
+			? get_the_title( $item ) . ' - ' . $who
+			: get_the_title( $item );
+	}
+	return $cache;
 }
 
 add_action( 'add_meta_boxes', 'tae_add_meta_boxes' );
@@ -187,6 +236,26 @@ function tae_render_meta_box( $post ) {
 				echo '</select>';
 				break;
 
+			case 'post_select':
+				// Built here rather than in tae_fields() so the query only runs
+				// when a box is actually being drawn, not on every save.
+				printf( '<select id="%1$s" name="%1$s">', esc_attr( $key ) );
+				printf(
+					'<option value=""%s>%s</option>',
+					selected( $value, '', false ),
+					esc_html( isset( $f['none'] ) ? $f['none'] : '- None -' )
+				);
+				foreach ( tae_interview_choices() as $opt_id => $opt_label ) {
+					printf(
+						'<option value="%s"%s>%s</option>',
+						esc_attr( $opt_id ),
+						selected( (int) $value, $opt_id, false ),
+						esc_html( $opt_label )
+					);
+				}
+				echo '</select>';
+				break;
+
 			case 'checkbox':
 				printf(
 					'<input type="checkbox" id="%1$s" name="%1$s" value="1"%2$s>',
@@ -205,7 +274,7 @@ function tae_render_meta_box( $post ) {
 		}
 
 		if ( ! empty( $f['help'] ) ) {
-			// Help strings are authored here, not user input — <code> is intentional.
+			// Help strings are authored here, not user input - <code> is intentional.
 			printf( '<p class="description">%s</p>', wp_kses( $f['help'], array( 'code' => array() ) ) );
 		}
 
@@ -266,6 +335,14 @@ function tae_save_meta( $post_id, $post ) {
 			case 'number':
 				$value = '' === trim( $raw ) ? '' : (string) absint( $raw );
 				break;
+			case 'post_select':
+				// Only an id that really is a published interview. Anything else
+				// posted into this field is discarded rather than stored.
+				$candidate = absint( $raw );
+				$value     = array_key_exists( $candidate, tae_interview_choices() )
+					? (string) $candidate
+					: '';
+				break;
 			case 'textarea':
 				$value = sanitize_textarea_field( $raw );
 				break;
@@ -288,7 +365,7 @@ function tae_save_meta( $post_id, $post ) {
  * Parse the chapters textarea into rows.
  *
  * ponytail: a textarea of "time|label" lines instead of a drag-and-drop repeater.
- * Four rows, edited once per interview — a jQuery repeater would be more code than
+ * Four rows, edited once per interview - a jQuery repeater would be more code than
  * the feature is worth. Swap it if chapters ever get their own fields.
  *
  * @param int $post_id Interview ID.
@@ -314,6 +391,32 @@ function tae_chapters( $post_id ) {
 			'time'  => $time,
 			'label' => $label,
 		);
+	}
+	return $rows;
+}
+
+/**
+ * Split the key-takeaways textarea into lines.
+ *
+ * ponytail: one sentence per line, same shape as tae_chapters, for the same
+ * reason - a repeater UI would be more code than the feature is worth.
+ *
+ * @param int $post_id Interview ID.
+ * @return string[]
+ */
+function tae_takeaways( $post_id ) {
+	$raw = (string) get_post_meta( $post_id, 'tae_takeaways', true );
+	if ( '' === trim( $raw ) ) {
+		return array();
+	}
+
+	$rows = array();
+	foreach ( preg_split( '/\R/', $raw ) as $line ) {
+		// Tolerate a pasted list that still has its bullet characters.
+		$line = trim( ltrim( trim( $line ), "-*•\t " ) );
+		if ( '' !== $line ) {
+			$rows[] = $line;
+		}
 	}
 	return $rows;
 }

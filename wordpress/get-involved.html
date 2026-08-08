@@ -1,0 +1,125 @@
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     PAGE · GET INVOLVED                          WordPress slug: get-involved
+     ───────────────────────────────────────────────────────────────────────────
+     PASTE INTO   Elementor → Pages → Get Involved → single full-width Container
+                  → one "HTML" widget → everything below.
+                  Page Layout: Elementor Full Width. Container padding 0, gap 0.
+
+     REPLACES /contact/. This is the destination of the persistent GET INVOLVED
+     CTA in the masthead, so it is the most-linked page on the site after Home.
+     Add a 301 from /contact/ at migration.
+
+     A ROUTING HUB, NOT A CONTACT PAGE (handoff §15). Five of the six routes lead
+     to the form that already answers them, on the page that owns that
+     conversation. Only General Inquiry has nowhere else to go, so it is the only
+     form here. The brief asks for a page that is "clean, visual and easy to
+     scan" - six equal cards and one form is that; six accordions of forms is not.
+
+     SEO - enter these in Yoast / Rank Math / SEOPress, NOT here.
+       SEO title       Get Involved - How do you want to enter The Exchange? |
+                       The Access Exchange
+       Meta desc       Share your perspective, partner with The Exchange, bring
+                       it to your campus, explore coaching or coach training, or
+                       ask us anything else.  (145 chars)
+       Focus keyphrase contact the access exchange
+       Canonical       https://theaccessexchange.com/get-involved/
+       OG title        How do you want to enter The Exchange?
+       OG description  Every route in, in one place.
+       Twitter card    summary_large_image
+       Robots          index, follow
+       Breadcrumb      Home › Get Involved
+
+     PERFORMANCE NOTES
+       · No images by design - the LCP element is the H1 and needs no preload.
+     ═══════════════════════════════════════════════════════════════════════════ -->
+
+<!-- NO JSON-LD ON THIS PAGE - Yoast owns it. Set Schema tab → Page type =
+     "Contact Page". ContactPoint belongs on the Organization node in Yoast's
+     Site Representation, not here, or the site ends up with two of them. -->
+
+<div class="tae tae-involved">
+
+  <!-- ═══ 01 · HERO ═══════════════════════════════════════════════════════ -->
+  <section class="gi-lead" aria-labelledby="gi-h">
+    <div class="shell">
+      <p class="kicker lab">Get involved</p>
+      <h1 id="gi-h">How do you want to enter The Exchange?</h1>
+      <p class="lede">Six ways in. Pick the one that fits and it will take you straight to the right place - no switchboard, no general enquiry form standing in for a real conversation.</p>
+    </div>
+  </section>
+
+  <!-- ═══ 02 · THE SIX ROUTES ═════════════════════════════════════════════
+       The six from handoff §15, in its order. Five are links; the sixth drops
+       to the form below because it has nowhere else to go. -->
+  <section class="routes" aria-labelledby="routes-h">
+    <div class="shell">
+      <h2 class="sr" id="routes-h">Ways to enter The Exchange</h2>
+
+      <div class="routes-grid">
+        <div class="route" data-rv>
+          <span class="n lab">01</span>
+          <h3>Share your perspective</h3>
+          <p>You have experience worth passing on and you are willing to be specific about it. Put yourself forward as a guest on the Interview Series.</p>
+          <a href="/guests-partners/#guest" class="ln">Guest consideration <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        </div>
+
+        <div class="route" data-rv style="--d:70ms">
+          <span class="n lab">02</span>
+          <h3>Partner with The Exchange</h3>
+          <p>Sponsor an interview, nominate a leader from your organisation, or build something broader with us.</p>
+          <a href="/guests-partners/#corporate" class="ln">Corporate partnerships <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        </div>
+
+        <div class="route" data-rv style="--d:140ms">
+          <span class="n lab">03</span>
+          <h3>Bring The Exchange to campus</h3>
+          <p>A leadership talk, a moderated discussion, an industry session, or programming shaped around your institution.</p>
+          <a href="/universities/#enquire" class="ln">Request an engagement <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        </div>
+
+        <div class="route" data-rv style="--d:210ms">
+          <span class="n lab">04</span>
+          <h3>Explore coaching</h3>
+          <p>Personalised guidance for clarity, positioning, development and the decisions that change direction.</p>
+          <a href="/coaching/#coaching" class="ln">Request coaching <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        </div>
+
+        <div class="route" data-rv style="--d:280ms">
+          <span class="n lab">05</span>
+          <h3>Explore coach training</h3>
+          <p>Structured training and certification for people who help others move forward, using The Access Exchange methodology.</p>
+          <a href="/coaching/#training" class="ln">Coach training <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        </div>
+
+        <div class="route" data-rv style="--d:350ms">
+          <span class="n lab">06</span>
+          <h3>General inquiry</h3>
+          <p>Press, speaking, collaboration, or something that does not fit any of the above. The form is just below.</p>
+          <a href="#general" class="ln">Send a message <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 03 · GENERAL INQUIRY ════════════════════════════════════════════ -->
+  <section class="general" id="general" aria-labelledby="general-h">
+    <div class="shell general-in">
+      <h2 id="general-h">Everything else.</h2>
+      <p class="lede">If one of the five routes above fits, use it - it reaches the right person faster. This is for everything that does not.</p>
+
+      <!-- CF7 form "TAE - General inquiry" - CF7-SMTP.md §4.13. -->
+      [contact-form-7 id="REPLACE_ID_GENERAL" title="TAE - General inquiry" html_class="form form--general"]
+    </div>
+  </section>
+
+  <!-- ═══ 04 · DIRECT ═════════════════════════════════════════════════════
+       BLOCKED: the business email has not been supplied. Replace the mailto and
+       delete this comment. Until then the address below is a placeholder and
+       must not go live. -->
+  <section class="direct" aria-label="Reach us directly">
+    <div class="shell">
+      <p>Would rather just email? <a href="mailto:hello@theaccessexchange.com">hello@theaccessexchange.com</a> · Houston, Texas</p>
+    </div>
+  </section>
+
+</div>

@@ -1,0 +1,191 @@
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     PAGE · GUESTS & PARTNERS                  WordPress slug: guests-partners
+     ───────────────────────────────────────────────────────────────────────────
+     PASTE INTO   Elementor → Pages → Guests & Partners → single full-width
+                  Container → one "HTML" widget → everything below.
+                  Page Layout: Elementor Full Width. Container padding 0, gap 0.
+
+     TWO AUDIENCES, ONE PAGE (handoff §10). A leader putting themselves forward,
+     and an organisation sponsoring, nominating or partnering. The hero routes
+     each to its own anchor so neither has to read the other's section.
+
+     IN-PAGE ANCHORS  (linked from the header, footer, home and Interview Series
+     - do not rename without updating those)
+       #guest       guest consideration + form
+       #corporate   sponsorship / nomination / partnership + form
+
+     FORMS  Two CF7 forms, specified in CF7-SMTP.md §4.8 and §4.9. Create them,
+     then replace the two REPLACE_ID_ placeholders below. They must route to
+     SEPARATE notification categories - the handoff asks for that explicitly, so
+     guest submissions and corporate inquiries do not land in one undifferentiated
+     inbox. Both need Mail(2) on for the confirmation autoresponder.
+
+     SEO - enter these in Yoast / Rank Math / SEOPress, NOT here.
+       SEO title       Guests & Partners - Bring a perspective worth hearing |
+                       The Access Exchange
+       Meta desc       Be considered as a guest on the Interview Series, sponsor
+                       an interview, nominate a leader, or build a partnership
+                       with The Access Exchange.  (149 chars)
+       Focus keyphrase be a guest interview series
+       Canonical       https://theaccessexchange.com/guests-partners/
+       OG title        Bring a perspective worth hearing
+       OG description  Your title tells us where you are. We're interested in
+                       what you know now.
+       Twitter card    summary_large_image
+       Robots          index, follow
+       Breadcrumb      Home › Guests & Partners
+
+     PERFORMANCE NOTES
+       · No images on this page by design. The LCP element is the H1, which
+         renders from CSS alone and needs no preload.
+     ═══════════════════════════════════════════════════════════════════════════ -->
+
+<!-- NO JSON-LD ON THIS PAGE - Yoast owns it. Set Schema tab → Page type =
+     "Web Page". The two forms are not schema-worthy entities on their own. -->
+
+<div class="tae tae-guests">
+
+  <!-- ═══ 01 · HERO ═══════════════════════════════════════════════════════
+       Full-bleed image with the copy over it. The key line is composed INTO the
+       hero rather than stacked under it — as a separate block under the lede it
+       read as a third paragraph instead of the statement it is.
+
+       The parallax is CSS-only, via scroll-driven animation. There is no
+       background-attachment:fixed here on purpose: it janks badly on Windows
+       and iOS ignores it outright. Browsers without animation-timeline get a
+       still image, which is a fine hero. -->
+  <section class="gp-hero" aria-labelledby="gp-h">
+    <div class="gp-hero-media" aria-hidden="true">
+      <img src="https://images.unsplash.com/photo-1559523161-0fc0d8b38a7a?auto=format&fit=crop&w=2400&h=1600&q=72" alt="" decoding="async" fetchpriority="high">
+    </div>
+
+    <div class="shell gp-hero-in">
+      <p class="kicker lab">Guests &amp; Partners</p>
+      <h1 id="gp-h">Bring a perspective worth hearing.</h1>
+      <p class="lede">We look for leaders, practitioners and thinkers with experience that can help others see something differently.</p>
+
+      <div class="gp-routes">
+        <a href="#guest" class="btn">Be considered as a guest</a>
+        <a href="#corporate" class="btn btn--ghost">Corporate partnerships</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 01b · THE KEY LINE ═════════════════════════════════════════════
+       Handoff §10 calls this the key line, and it is the sharpest sentence on
+       the page. It was inside the hero and read badly there twice — under the
+       lede it was a third paragraph, beside it in a second column it floated
+       against nothing. The problem was never where it sat: a hero already
+       carrying a kicker, a headline, a lede and two buttons has no room left
+       for a second statement.
+
+       So it gets its own ground. One sentence, nothing else on screen with it,
+       and a cream band that also breaks the dark hero before the white page
+       below. -->
+  <section class="gp-statement" aria-label="What we look for">
+    <div class="shell">
+      <span class="gp-statement-mark" aria-hidden="true"></span>
+      <p>Your title tells us where you are.
+        <span>We're interested in what you know now.</span></p>
+    </div>
+  </section>
+
+  <!-- ═══ 02 · WHAT TAKING PART IS WORTH ══════════════════════════════════ -->
+  <section class="worth" aria-labelledby="worth-h">
+    <div class="shell">
+      <p class="kicker lab">What taking part is worth</p>
+      <h2 class="h2" id="worth-h" data-rv>Experience should not disappear inside the people who earned it.</h2>
+
+      <div class="worth-grid">
+        <div data-rv>
+          <span class="n lab">01</span>
+          <h3>Thought leadership</h3>
+          <p>A considered, in-depth conversation rather than a soundbite - the reasoning behind the decisions, not just the outcome.</p>
+        </div>
+        <div data-rv style="--d:70ms">
+          <span class="n lab">02</span>
+          <h3>Legacy</h3>
+          <p>What you have learned, recorded properly and kept somewhere it can go on being useful to people you will never meet.</p>
+        </div>
+        <div data-rv style="--d:140ms">
+          <span class="n lab">03</span>
+          <h3>Reach</h3>
+          <p>Published in full, with the standout ideas written up alongside it so the thinking travels further than the conversation.</p>
+        </div>
+        <div data-rv style="--d:210ms">
+          <span class="n lab">04</span>
+          <h3>Impact</h3>
+          <p>Students, emerging professionals and people mid-decision get access to experience that is usually reached by knowing somebody already.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 03 · BE CONSIDERED AS A GUEST ═══════════════════════════════════ -->
+  <section class="panelled" id="guest" aria-labelledby="guest-h">
+    <div class="shell panel-grid">
+
+      <div class="panel-say">
+        <p class="kicker lab">Share your perspective</p>
+        <h2 id="guest-h">Put yourself forward.</h2>
+        <p>Senior executives, accomplished practitioners, founders, subject-matter experts and other compelling voices with experience worth sharing. If that describes you, tell us what you would bring.</p>
+        <p>We read every submission ourselves. If there is a fit, we will come back to arrange a short call to agree the ground the conversation would cover.</p>
+      </div>
+
+      <div class="panel-form">
+        <h3>Guest consideration</h3>
+        <!-- CF7 form "TAE - Guest consideration" - CF7-SMTP.md §4.8.
+             Replace the id with the one CF7 gives you, and make sure the
+             Elementor HTML-widget shortcode filter (CF7-SMTP.md §3.1) is in
+             place or this prints as literal text. -->
+        [contact-form-7 id="REPLACE_ID_GUEST" title="TAE - Guest consideration" html_class="form form--guest"]
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ 04 · CORPORATE ══════════════════════════════════════════════════ -->
+  <section class="panelled panelled--tint" id="corporate" aria-labelledby="corp-h">
+    <div class="shell panel-grid">
+
+      <div class="panel-say">
+        <p class="kicker lab">Partner with The Exchange</p>
+        <h2 id="corp-h">Some of your strongest voices are already inside your organisation.</h2>
+        <p>Sponsor an interview. Nominate a leader. Build something meaningful with The Exchange.</p>
+
+        <ul class="options">
+          <li>
+            <span class="n lab">01</span>
+            <div>
+              <b>Sponsor an Interview</b>
+              <span>Back a conversation and be associated with the thinking in it, not with an ad break around it.</span>
+            </div>
+          </li>
+          <li>
+            <span class="n lab">02</span>
+            <div>
+              <b>Nominate a Leader</b>
+              <span>Put someone from your organisation forward as a guest, and give their experience a wider audience.</span>
+            </div>
+          </li>
+          <li>
+            <span class="n lab">03</span>
+            <div>
+              <b>Build a Partnership</b>
+              <span>Broader collaboration across the Interview Series, live experiences and campus programming.</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="panel-form">
+        <h3>Corporate inquiry</h3>
+        <!-- CF7 form "TAE - Corporate partnership" - CF7-SMTP.md §4.9.
+             Separate notification category from the guest form above. -->
+        [contact-form-7 id="REPLACE_ID_CORPORATE" title="TAE - Corporate partnership" html_class="form form--corporate"]
+      </div>
+
+    </div>
+  </section>
+
+</div>

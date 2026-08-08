@@ -168,7 +168,7 @@ function tae_start_here( $limit = 5 ) {
  * What to read next after an insight.
  *
  * Insights sharing a topic first, then recent interviews to fill the row. Always
- * returns something as long as anything else is published — an article page that
+ * returns something as long as anything else is published - an article page that
  * dead-ends is worse than one whose suggestions are only loosely related.
  *
  * @param WP_Post $post  The insight being read.

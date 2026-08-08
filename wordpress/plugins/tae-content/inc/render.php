@@ -9,7 +9,7 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * "Amara Osei, Staff Engineer" — or just the name if there is no role.
+ * "Amara Osei, Staff Engineer" - or just the name if there is no role.
  *
  * @param int|WP_Post $post Interview.
  * @return string
@@ -97,9 +97,9 @@ function tae_topic_name( $post ) {
  * design, so they always land on the archive.
  *
  * This used to send an insight straight to its tae_link when one was set, which
- * dated from when a bodiless insight had no page worth visiting. It has one now —
+ * dated from when a bodiless insight had no page worth visiting. It has one now -
  * headline, dateline, dek, image, a labelled route onward, three things to read
- * next — so skipping past it only cost the reader context and left every insight
+ * next - so skipping past it only cost the reader context and left every insight
  * page unreachable from the site itself.
  *
  * tae_link is still honoured; it is the onward button ON that page rather than a
@@ -110,9 +110,8 @@ function tae_topic_name( $post ) {
  * @return string
  */
 function tae_destination( $post ) {
-	if ( 'tae_interview' === $post->post_type ) {
-		return '/interview-series/#episodes';
-	}
+	// Interviews used to have no page of their own, so everything pointed at the
+	// archive anchor. They are public now - every card links to the episode.
 	return get_permalink( $post );
 }
 
@@ -132,11 +131,12 @@ function tae_onward_label( $url, $home = null ) {
 		return '';
 	}
 
-	if ( false !== strpos( $url, '/interview-series/' ) ) {
+	// /interviews/ is an episode page; /interview-series/ is still the index.
+	if ( false !== strpos( $url, '/interviews/' ) || false !== strpos( $url, '/interview-series/' ) ) {
 		return 'Watch the interview';
 	}
 
-	if ( false !== strpos( $url, '/university-partnerships/' ) ) {
+	if ( false !== strpos( $url, '/universities/' ) ) {
 		return 'Read the partnership guide';
 	}
 
@@ -184,7 +184,7 @@ function tae_img( $post, $size, $eager = false ) {
 /**
  * The click-to-load YouTube poster button.
  *
- * Nothing is requested from youtube.com until this is pressed — global.js §06
+ * Nothing is requested from youtube.com until this is pressed - global.js §06
  * swaps the poster for the player. That is the single biggest reason these pages
  * hit their PageSpeed target, so the data-yt contract must not drift.
  *

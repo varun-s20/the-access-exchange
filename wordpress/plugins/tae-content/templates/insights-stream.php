@@ -1,17 +1,19 @@
 <?php
 /**
- * Insights §01 + §02 — the search header, the topic sidebar and the stream.
+ * Insights §01 + §02 - the search header, the topic sidebar and the stream.
  *
  * Replaces insights.html lines 46-208.
  *
  * The whole stream renders at once. global.js §09 caches the card list on boot,
  * measures a FLIP transition around one synchronous mutation and filters the DOM,
- * so there is nothing here to paginate against — and the counters have to be able
+ * so there is nothing here to paginate against - and the counters have to be able
  * to tell the truth about the full set.
  *
  * @var WP_Query $query
  * @var int      $instance
  * @var string   $heading
+ * @var bool     $search   Print the h1/tally/search header. False when the
+ *                         stream is embedded as a section on another page.
  *
  * @package TAE_Content
  */
@@ -60,11 +62,13 @@ if ( ! is_wp_error( $tae_terms ) ) {
 		);
 	}
 }
+$search = isset( $search ) ? $search : true;
 ?>
+<?php if ( $search ) : ?>
 <section class="top">
 	<div class="shell">
 		<div class="top-row">
-			<h1><?php echo esc_html( $heading ? $heading : 'Insights' ); ?></h1>
+			<h1><?php echo esc_html( $heading ? $heading : 'Takeaways' ); ?></h1>
 			<p class="tally lab">
 				<b id="tally<?php echo esc_attr( $tae_suffix ); ?>"><?php echo esc_html( $tae_total ); ?></b>
 				<span id="tallyWord<?php echo esc_attr( $tae_suffix ); ?>"><?php echo esc_html( 1 === $tae_total ? 'piece published' : 'pieces published' ); ?></span>
@@ -81,6 +85,7 @@ if ( ! is_wp_error( $tae_terms ) ) {
 		</div>
 	</div>
 </section>
+<?php endif; ?>
 
 <section class="body" aria-label="All published pieces">
 	<div class="shell body-grid">

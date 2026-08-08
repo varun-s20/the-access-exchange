@@ -1,6 +1,6 @@
 <?php
 /**
- * Insights §03 — the five numbered links.
+ * Insights §03 - the five numbered links.
  *
  * Replaces the .five div in insights.html lines 217-223. The .start-head above it
  * is prose and stays in the Elementor widget.

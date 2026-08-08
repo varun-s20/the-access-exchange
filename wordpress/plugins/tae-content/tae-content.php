@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       The Access Exchange — Content
+ * Plugin Name:       The Access Exchange - Content
  * Description:       Interviews and insights as editable content, rendered through shortcodes into the existing Elementor HTML widgets. Emits markup identical to the static prototype, so global.css never changes.
  * Version:           1.0.0
  * Requires at least: 6.0
@@ -36,7 +36,7 @@ if ( is_admin() && file_exists( TAE_DIR . 'inc/importer.php' ) ) {
  * print "[tae_interviews ...]" as literal text.
  *
  * The same filter is required for the six Contact Form 7 forms (CF7-SMTP.md §3),
- * so if that is already in place this is a harmless no-op — do_shortcode on
+ * so if that is already in place this is a harmless no-op - do_shortcode on
  * already-expanded output finds nothing left to expand.
  */
 add_filter(

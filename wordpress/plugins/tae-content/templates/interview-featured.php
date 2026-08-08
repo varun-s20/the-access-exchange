@@ -1,8 +1,10 @@
 <?php
 /**
- * Home §04 — the featured interview, with chapter jumps.
+ * Home §03 - the featured interview, with chapter jumps.
  *
- * Replaces index.html lines 125-150.
+ * Renders only when an interview holds the "Slot · Featured interview" tick.
+ * Until then [tae_coming_soon] occupies the same position; the two are mutually
+ * exclusive by construction, so publishing the interview is the whole handover.
  *
  * @var WP_Post $post
  *
@@ -23,7 +25,7 @@ $tae_chapters = tae_chapters( $post->ID );
  * Engineer, on the three promotions that mattered…"). One field, two readings.
  *
  * ponytail: lowercase the join only when the standfirst opens with a word that is
- * safe to lowercase. Anything else — a name, an acronym — is left alone and joined
+ * safe to lowercase. Anything else - a name, an acronym - is left alone and joined
  * with an em dash instead. Give the standfirst its own field if this ever needs to
  * be smarter than a word list.
  */
@@ -34,7 +36,7 @@ if ( $tae_who && $tae_stand ) {
 
 	$tae_lead = in_array( $tae_first, $tae_safe, true )
 		? $tae_who . ', on ' . lcfirst( $tae_stand )
-		: $tae_who . ' — ' . $tae_stand;
+		: $tae_who . ' - ' . $tae_stand;
 }
 ?>
 <section class="feature" aria-labelledby="feature-h">
@@ -43,7 +45,8 @@ if ( $tae_who && $tae_stand ) {
 	</div>
 	<div class="feature-in">
 		<div class="feature-panel">
-			<div class="tag lab"><span class="s">04</span><span>Featured interview</span></div>
+			<?php // §03 on the home page - this module takes the slot .soon vacates. ?>
+			<div class="tag lab"><span class="s">03</span><span>Featured interview</span></div>
 			<div class="f-meta lab">
 				<?php if ( $tae_cat ) : ?>
 					<span class="b"><?php echo esc_html( $tae_cat ); ?></span>
@@ -57,7 +60,7 @@ if ( $tae_who && $tae_stand ) {
 			<?php if ( $tae_lead ) : ?>
 				<p class="stand"><?php echo esc_html( $tae_lead ); ?></p>
 			<?php endif; ?>
-			<a href="/interview-series/" class="ln">Watch the interview <?php echo tae_icon( 'arrow' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></a>
+			<a href="<?php echo esc_url( tae_destination( $post ) ); ?>" class="ln">Watch the interview <?php echo tae_icon( 'arrow' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></a>
 
 			<?php if ( $tae_chapters ) : ?>
 				<div class="chapters">
@@ -65,7 +68,7 @@ if ( $tae_who && $tae_stand ) {
 					<ul>
 						<?php foreach ( $tae_chapters as $tae_chapter ) : ?>
 							<li>
-								<a href="/interview-series/">
+								<a href="<?php echo esc_url( tae_destination( $post ) ); ?>#chapters">
 									<span class="t lab"><?php echo esc_html( $tae_chapter['time'] ); ?></span>
 									<span class="c"><?php echo esc_html( $tae_chapter['label'] ); ?></span>
 									<?php echo tae_icon( 'arrow' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>

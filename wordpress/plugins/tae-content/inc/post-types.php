@@ -13,17 +13,22 @@ defined( 'ABSPATH' ) || exit;
  * wp-admin, slugs are not.
  */
 const TAE_CATEGORIES = array(
-	'engineering' => 'Engineering',
-	'product'     => 'Product',
-	'data'        => 'Data & AI',
-	'design'      => 'Design',
-	'breaking-in' => 'Breaking in',
+	'leadership' => 'Leadership',
+	'founders'   => 'Founders & Builders',
+	'industry'   => 'Industry & Craft',
+	'career'     => 'Career & Transitions',
+	'campus'     => 'On Campus',
 );
 
+/**
+ * Topics classify takeaways - the interview-derived pieces the handoff asks to
+ * keep inside the Interview Series ecosystem rather than on a page of their own.
+ */
 const TAE_TOPICS = array(
-	'breaking-in'  => 'Breaking in',
-	'levelling-up' => 'Levelling up',
-	'on-campus'    => 'On campus',
+	'takeaway'  => 'Takeaways',
+	'framework' => 'Frameworks',
+	'clip'      => 'Clips',
+	'written'   => 'Written',
 );
 
 add_action( 'init', 'tae_register_post_types' );
@@ -48,18 +53,29 @@ function tae_register_post_types() {
 				'set_featured_image' => 'Set poster',
 				'menu_name'          => 'Interviews',
 			),
-			// No single page by design — cards link to /interview-series/#episodes
-			// and the video plays inline through global.js §06.
-			'public'             => false,
-			'publicly_queryable' => false,
+			// Each interview is a page of its own at /interviews/{slug}/. The
+			// handoff's episode template - takeaways, chapters, sharing, related
+			// interview - needs somewhere to live, and an episode nobody can link
+			// to cannot be shared or indexed.
+			//
+			// has_archive stays false: /interview-series/ is an Elementor page
+			// that composes the cover, archive and takeaways, which a generated
+			// archive could not do.
+			'public'             => true,
+			'publicly_queryable' => true,
 			'show_ui'            => true,
 			'show_in_menu'       => true,
 			'has_archive'        => false,
 			'menu_position'      => 21,
 			'menu_icon'          => 'dashicons-video-alt3',
+			'rewrite'            => array(
+				'slug'       => 'interviews',
+				'with_front' => false,
+			),
 			// page-attributes is what exposes the Order field, which drives every
-			// curated sequence in this plugin.
-			'supports'           => array( 'title', 'thumbnail', 'page-attributes' ),
+			// curated sequence in this plugin. editor + excerpt arrived with the
+			// episode page: the body is the write-up, the excerpt feeds sharing.
+			'supports'           => array( 'title', 'editor', 'excerpt', 'thumbnail', 'page-attributes' ),
 		)
 	);
 
@@ -78,11 +94,14 @@ function tae_register_post_types() {
 			'public'             => true,
 			'publicly_queryable' => true,
 			'show_in_menu'       => true,
-			'has_archive'        => false, // /insights/ is an Elementor page, not an archive.
+			// There is no /insights/ page any more - the handoff puts takeaways
+			// inside the Interview Series ecosystem, so the stream is a section on
+			// /interview-series/ and each piece sits under /takeaways/.
+			'has_archive'        => false,
 			'menu_position'      => 22,
 			'menu_icon'          => 'dashicons-media-text',
 			'rewrite'            => array(
-				'slug'       => 'insights',
+				'slug'       => 'takeaways',
 				'with_front' => false,
 			),
 			'supports'           => array( 'title', 'editor', 'thumbnail', 'excerpt', 'page-attributes' ),
@@ -151,7 +170,7 @@ function tae_seed_terms() {
  * One upload per post; WordPress generates the crops the markup asks for.
  *
  * Every size is a hard centre crop. The 16:9 -> 3:4 jump for tae-rail is the one
- * that can cut off a head — fix that per image with the featured-image crop
+ * that can cut off a head - fix that per image with the featured-image crop
  * editor rather than by adding another upload field.
  */
 function tae_register_image_sizes() {
@@ -167,16 +186,21 @@ function tae_register_image_sizes() {
 }
 
 /**
- * Insight single pages reuse the About broadsheet layout, which already exists in
- * global.css §1035 onward. No new CSS.
+ * Single templates.
+ *
+ * Insights reuse the About broadsheet layout. Interviews get the episode page -
+ * every field the handoff's episode template lists, in one place.
  */
 add_filter(
 	'single_template',
 	function ( $template ) {
-		if ( is_singular( 'tae_insight' ) ) {
-			$candidate = TAE_DIR . 'templates/single-insight.php';
-			if ( file_exists( $candidate ) ) {
-				return $candidate;
+		$map = array(
+			'tae_insight'   => 'templates/single-insight.php',
+			'tae_interview' => 'templates/single-tae_interview.php',
+		);
+		foreach ( $map as $type => $file ) {
+			if ( is_singular( $type ) && file_exists( TAE_DIR . $file ) ) {
+				return TAE_DIR . $file;
 			}
 		}
 		return $template;

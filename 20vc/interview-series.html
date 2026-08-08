@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Interview Series | The Access Exchange</title>
-<meta name="description" content="Long-form interviews with people working in tech — engineers, product managers, designers, data scientists and the people who hire them.">
+<meta name="description" content="Long-form interviews with people working in tech - engineers, product managers, designers, data scientists and the people who hire them.">
 <style>
 /* ---------- Helvetica (local files in assets/fonts/helvetica-255) ---------- */
 @font-face{font-family:"Helvetica LT";src:url("../assets/fonts/helvetica-255/Helvetica.ttf") format("truetype");
@@ -89,7 +89,7 @@ h1,h2,h3,p{margin:0}
 .btn svg{width:14px;height:14px}
 
 /* ---------- sections ---------- */
-/* padding-block only — a `padding` shorthand here would clobber .shell's padding-inline */
+/* padding-block only - a `padding` shorthand here would clobber .shell's padding-inline */
 .section{padding-block:64px}
 .section-title{font-weight:700;text-transform:uppercase;font-size:var(--fs-h2);
   line-height:1.2;margin-bottom:32px}
@@ -618,7 +618,7 @@ form{display:grid;gap:20px}
 </footer>
 
 <script>
-// fake submit — honeypot + native validity, matching the prototype convention elsewhere
+// fake submit - honeypot + native validity, matching the prototype convention elsewhere
 document.querySelectorAll('form[data-validate]').forEach(function (form) {
   var status = form.querySelector('[data-status]');
   form.addEventListener('submit', function (e) {
@@ -626,7 +626,7 @@ document.querySelectorAll('form[data-validate]').forEach(function (form) {
     if (form.elements['hp-field'].value) return;              // bot
     var bad = form.querySelector(':invalid');
     if (bad) { status.textContent = 'Please complete the required fields.'; bad.focus(); return; }
-    status.textContent = 'Thanks — we will be in touch if it is a fit.';
+    status.textContent = 'Thanks - we will be in touch if it is a fit.';
     form.reset();
   });
 });

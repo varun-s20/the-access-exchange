@@ -1,6 +1,6 @@
 <?php
 /**
- * Interview Series §03 — the archive, with filter chips and load-more.
+ * Interview Series §03 - the archive, with filter chips and load-more.
  *
  * Replaces interview-series.html lines 160-362.
  *

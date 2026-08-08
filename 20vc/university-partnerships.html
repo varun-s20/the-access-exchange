@@ -89,7 +89,7 @@ h1,h2,h3,p{margin:0}
 .btn svg{width:14px;height:14px}
 
 /* ---------- sections ---------- */
-/* padding-block only — a `padding` shorthand here would clobber .shell's padding-inline */
+/* padding-block only - a `padding` shorthand here would clobber .shell's padding-inline */
 .section{padding-block:64px}
 .section-title{font-weight:700;text-transform:uppercase;font-size:var(--fs-h2);
   line-height:1.2;margin-bottom:32px}
@@ -400,7 +400,7 @@ form{display:grid;gap:20px}
     </div>
   </section>
 
-  <!-- ponytail: partner-logo strip deliberately omitted — an empty trust section reads worse than none.
+  <!-- ponytail: partner-logo strip deliberately omitted - an empty trust section reads worse than none.
        Add it once real institutions have signed. -->
 
   <!-- ---------- inquiry form ---------- -->
@@ -493,7 +493,7 @@ form{display:grid;gap:20px}
 </footer>
 
 <script>
-// fake submit — honeypot + native validity, matching the prototype convention elsewhere
+// fake submit - honeypot + native validity, matching the prototype convention elsewhere
 document.querySelectorAll('form[data-validate]').forEach(function (form) {
   var status = form.querySelector('[data-status]');
   form.addEventListener('submit', function (e) {
@@ -501,7 +501,7 @@ document.querySelectorAll('form[data-validate]').forEach(function (form) {
     if (form.elements['hp-field'].value) return;              // bot
     var bad = form.querySelector(':invalid');
     if (bad) { status.textContent = 'Please complete the required fields.'; bad.focus(); return; }
-    status.textContent = 'Thanks — someone from our team will follow up shortly.';
+    status.textContent = 'Thanks - someone from our team will follow up shortly.';
     form.reset();
   });
 });

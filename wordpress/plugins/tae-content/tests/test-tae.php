@@ -4,7 +4,7 @@
  *
  *     php tests/test-tae.php
  *
- * No framework, no WordPress — just enough stubs to exercise the pure functions.
+ * No framework, no WordPress - just enough stubs to exercise the pure functions.
  * What it covers is deliberately narrow: generated CSS, instance ID collisions,
  * chapter parsing and link resolution. Everything else is markup, and markup is
  * checked by looking at the page.
@@ -36,12 +36,13 @@ function get_the_terms( $id, $tax ) {
 }
 function get_terms( $args ) {
 	$out = array();
+	// Mirrors TAE_CATEGORIES in inc/post-types.php. Change one, change both.
 	foreach ( array(
-		'engineering' => 'Engineering',
-		'product'     => 'Product',
-		'data'        => 'Data & AI',
-		'design'      => 'Design',
-		'breaking-in' => 'Breaking in',
+		'leadership' => 'Leadership',
+		'founders'   => 'Founders & Builders',
+		'industry'   => 'Industry & Craft',
+		'career'     => 'Career & Transitions',
+		'campus'     => 'On Campus',
 	) as $slug => $name ) {
 		$out[] = (object) array(
 			'slug'  => $slug,
@@ -101,17 +102,18 @@ function squash( $css ) {
 
 echo "\nGenerated filter CSS\n";
 
-// Copied verbatim from wordpress/assets/global.css:677-681.
-$stylesheet = '.tae-home .filters:has(#c-eng:checked)  ~ .grid .card:not([data-cat="engineering"]),
-.tae-home .filters:has(#c-prod:checked) ~ .grid .card:not([data-cat="product"]),
-.tae-home .filters:has(#c-data:checked) ~ .grid .card:not([data-cat="data"]),
-.tae-home .filters:has(#c-des:checked)  ~ .grid .card:not([data-cat="design"]),
-.tae-home .filters:has(#c-brk:checked)  ~ .grid .card:not([data-cat="breaking-in"]){display:none}';
+// Copied verbatim from the hand-written fallback in global.css. If the seeded
+// category slugs change, that block and this string change together.
+$stylesheet = '.tae-home .filters:has(#c-lead:checked) ~ .grid .card:not([data-cat="leadership"]),
+.tae-home .filters:has(#c-fnd:checked)  ~ .grid .card:not([data-cat="founders"]),
+.tae-home .filters:has(#c-ind:checked)  ~ .grid .card:not([data-cat="industry"]),
+.tae-home .filters:has(#c-car:checked)  ~ .grid .card:not([data-cat="career"]),
+.tae-home .filters:has(#c-cam:checked)  ~ .grid .card:not([data-cat="campus"]){display:none}';
 
 $wall = tae_filter_markup( 'wall', 1 );
 
 check(
-	'first instance reproduces global.css:677-681 exactly',
+	'first instance reproduces the global.css fallback exactly',
 	squash( $stylesheet ),
 	squash( str_replace( array( '<style>', '</style>' ), '', $wall['style'] ) )
 );
@@ -121,13 +123,13 @@ check( 'first instance adds no scoping class', '', $wall['class'] );
 check(
 	'chips carry the legacy IDs global.js expects',
 	true,
-	false !== strpos( $wall['chips'], 'id="c-eng"' ) && false !== strpos( $wall['chips'], 'id="c-all"' )
+	false !== strpos( $wall['chips'], 'id="c-lead"' ) && false !== strpos( $wall['chips'], 'id="c-all"' )
 );
 
 check(
 	'chips carry the slug for tae-archive.js',
 	true,
-	false !== strpos( $wall['chips'], 'data-cat="breaking-in"' )
+	false !== strpos( $wall['chips'], 'data-cat="campus"' )
 );
 
 /* ── 2 · the archive scope must NOT copy the stylesheet's broken selector ─ */
@@ -206,7 +208,7 @@ $GLOBALS['tae_test_meta'][11]['tae_link'] = 'https://example.org/piece';
 
 check( 'interviews always land on the archive', '/interview-series/#episodes', tae_destination( $interview ) );
 check( 'an insight goes to its own page', '/insights/cold-outreach/', tae_destination( $unlinked ) );
-// The onward link is a button ON the insight's page, not a replacement for it —
+// The onward link is a button ON the insight's page, not a replacement for it -
 // otherwise every insight page is unreachable from the site that owns it.
 check( 'an onward link does not divert the tile', '/insights/promotion/', tae_destination( $linked ) );
 
@@ -287,7 +289,7 @@ $home = 'https://theaccessexchange.com';
 
 check( 'no destination, no label', '', tae_onward_label( '', $home ) );
 check( 'an interview', 'Watch the interview', tae_onward_label( '/interview-series/#episodes', $home ) );
-check( 'the partnership guide', 'Read the partnership guide', tae_onward_label( '/university-partnerships/#s1', $home ) );
+check( 'the partnership guide', 'Read the partnership guide', tae_onward_label( '/universities/#s1', $home ) );
 check( 'somewhere else entirely', 'Read it in full', tae_onward_label( 'https://example.org/piece', $home ) );
 check( 'an absolute link back to this site is not external', 'Continue', tae_onward_label( $home . '/about/', $home ) );
 check( 'an unrecognised internal path', 'Continue', tae_onward_label( '/contact/', $home ) );

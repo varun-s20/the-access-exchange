@@ -2,7 +2,7 @@
 /**
  * One archive tile.
  *
- * Shared by templates/interview-archive.php and the AJAX handler — the initial
+ * Shared by templates/interview-archive.php and the AJAX handler - the initial
  * render and the load-more response must produce identical markup, and one file is
  * the only way to guarantee that.
  *
@@ -30,7 +30,7 @@ $tae_who  = tae_guest( $item );
 				echo tae_time( $item ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			?></span>
 		</div>
-		<h3><a href="#episodes"><?php echo esc_html( get_the_title( $item ) ); ?></a></h3>
+		<h3><a href="<?php echo esc_url( tae_destination( $item ) ); ?>"><?php echo esc_html( get_the_title( $item ) ); ?></a></h3>
 		<?php if ( $tae_who ) : ?>
 			<p class="epc-who"><?php echo esc_html( $tae_who ); ?></p>
 		<?php endif; ?>

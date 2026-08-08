@@ -1,60 +1,44 @@
 <!-- ═══════════════════════════════════════════════════════════════════════════
-     PAGE · ABOUT                                      WordPress slug: about
+     PAGE · ABOUT                                         WordPress slug: about
      ───────────────────────────────────────────────────────────────────────────
      PASTE INTO   Elementor → Pages → About → single full-width Container →
                   one "HTML" widget → everything below.
                   Page Layout: Elementor Full Width. Container padding 0, gap 0.
 
-     SEO — enter these in Yoast / Rank Math / SEOPress, NOT here.
-       SEO title       About — A proximity problem, not a talent problem |
+     THE CLASS VOCABULARY HERE IS LOAD-BEARING. templates/single-insight.php
+     renders takeaway pages inside .tae-about and borrows .sheet, .sheet-head,
+     .spread, .copy, .plate, .facts and .ends from this page's stylesheet. Rename
+     one of those and takeaway pages lose their layout silently. Add freely;
+     rename nothing.
+
+     BLOCKED ON CLIENT CONTENT. Handoff §14 asks for "a concise professional
+     biography and portrait" and says the company should feel larger than one
+     individual. The founder's name, bio and portrait have not been supplied, so
+     §03 below carries clearly-marked placeholders. Do not launch with them.
+
+     SEO - enter these in Yoast / Rank Math / SEOPress, NOT here.
+       SEO title       About - Access changes what becomes possible |
                        The Access Exchange
-       Meta desc       Why The Access Exchange exists, how the interviews are
-                       made, and the five things we will not do however
-                       tempting. Free at the point of use, always. (150 chars)
+       Meta desc       Why The Access Exchange exists: to help knowledge,
+                       perspective and lived experience move between the people
+                       who have it and the people who need it.  (152 chars)
        Focus keyphrase about the access exchange
        Canonical       https://theaccessexchange.com/about/
-       OG title        About — The Access Exchange
-       OG description  Access is a conversation somebody else already had.
+       OG title        Access changes what becomes possible
+       OG description  Experience should not disappear inside the people who
+                       earned it.
        Twitter card    summary_large_image
        Robots          index, follow
        Breadcrumb      Home › About
 
-     NOTE ON THE HEADING
-       The original prototype opened this page with an H2 and had no H1 at
-       all. It is an H1 here — same size, same rule (.tae-about .sheet-head h1),
-       but the page now has exactly one top-level heading, which is what both
-       screen readers and search engines expect.
-
      PERFORMANCE NOTES
-       · LCP is the H1 — the broadsheet opens on type, not on an image.
-       · The full-bleed plate and the pair below it are all lazy.
+       · Type-led - the LCP element is the H1 and needs no image.
+       · All three photographs are below the fold and lazy.
      ═══════════════════════════════════════════════════════════════════════════ -->
 
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "AboutPage",
-      "@id": "https://theaccessexchange.com/about/#webpage",
-      "url": "https://theaccessexchange.com/about/",
-      "name": "About The Access Exchange",
-      "description": "Why The Access Exchange exists, how the interviews are made, and what we refuse to do.",
-      "isPartOf": { "@id": "https://theaccessexchange.com/#site" },
-      "publisher": { "@id": "https://theaccessexchange.com/#org" },
-      "mainEntity": { "@id": "https://theaccessexchange.com/#org" },
-      "inLanguage": "en-GB"
-    },
-    {
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://theaccessexchange.com/" },
-        { "@type": "ListItem", "position": 2, "name": "About", "item": "https://theaccessexchange.com/about/" }
-      ]
-    }
-  ]
-}
-</script>
+<!-- NO JSON-LD ON THIS PAGE - Yoast owns it. Set Schema tab → Page type =
+     "About Page". The Organization node comes from Yoast's Site Representation;
+     emitting one here would ship a duplicate. -->
 
 <div class="tae tae-about">
 
@@ -62,37 +46,37 @@
   <section class="sheet">
     <div class="shell">
       <div class="sheet-head">
-        <h1>A proximity problem, not a talent problem.</h1>
-        <p class="dateline lab">Written by the founder · London · 2026</p>
+        <h1>Access changes what becomes possible.</h1>
+        <p class="dateline lab">The Access Exchange · Houston, Texas</p>
       </div>
 
       <div class="spread">
         <div class="copy">
-          <p>The Access Exchange started with an observation that is not subtle once you have seen it. The best career advice in tech is not secret. It is just unevenly distributed, and the people with the clearest answers tend to only reach whoever already knows them.</p>
+          <p>The right conversation can change how someone sees an industry. The right person can open a world they didn't know existed. The right piece of knowledge can shorten years of trial and error.</p>
 
-          <p>Two people can leave the same course with the same grades. The one who happened to sit next to somebody's older sibling at a dinner knows which teams are hiring, what the interview loop is actually scoring, and that the job title they had been scrolling past is the one they would be good at. <strong>The other applies into a void.</strong></p>
+          <p><strong>The Access Exchange exists to help more of those connections happen.</strong></p>
 
-          <p>That gap is not about ability and it is not about effort. It is about who was in the room. A careers fair cannot manufacture that conversation. A newsletter cannot either. What closes it is a specific person being specific about a route they actually took, including the parts that went badly.</p>
+          <p>We create access to the experience and perspective that are often hardest to reach - what leaders have learned, how they think, the decisions that shaped them, the relationships that mattered, the opportunities they recognised, and the lessons worth passing forward.</p>
 
-          <p>So we do two things. We record long-form interviews with people across the industry, pushed relentlessly toward detail: real timelines, real rejections, the salary conversation, the promotion that did not come. And we partner directly with universities who would rather bring that access to their students than hope it reaches them.</p>
+          <p>Almost none of that is written down. It is held by the people who lived it, and it usually reaches whoever already happens to know them. That is not a talent problem on either side. It is a proximity problem, and proximity is something you can deliberately build.</p>
 
-          <p>Nothing here is motivational. Advice you can act on this week is worth more than advice you agree with and forget by Thursday. If a story only works as encouragement, it does not make the edit.</p>
+          <p>So we build it in several directions at once. Through the Interview Series, university and institutional engagements, corporate partnerships, live experiences, professional coaching, and coach training and certification, we create different ways for people to learn directly from experience, engage with the right people, gain useful perspective, and turn access into meaningful progress.</p>
 
-          <p>We are small, the interviews are free, and they will stay that way. Institutions pay for the programmes we run with them. Nobody pays to watch a conversation.</p>
+          <p>At its core, The Access Exchange brings people, knowledge and opportunity closer together - creating environments, experiences and guidance that help those connections make a difference.</p>
         </div>
 
         <aside class="margin" aria-label="Notes in the margin">
           <div class="note">
-            <b class="lab">The line we keep coming back to</b>
-            <q>Access is a conversation somebody else already had.</q>
+            <b class="lab">The idea underneath all of it</b>
+            <q>Experience should not disappear inside the people who earned it.</q>
           </div>
           <div class="note">
-            <b class="lab">Who we interview</b>
-            <p>Mostly people two to ten years in. Founders and executives are covered everywhere else, and they are far enough from the start that they have stopped remembering what was confusing.</p>
+            <b class="lab">Who we look for</b>
+            <p>Senior executives, accomplished practitioners, founders, subject-matter experts and other compelling voices - people whose experience gives them something worth saying.</p>
           </div>
           <div class="note">
-            <b class="lab">Why guests say yes</b>
-            <p>Every guest watches their own cut before anybody else does, and anything they want removed is removed without a negotiation. People are honest when honesty is safe.</p>
+            <b class="lab">Who it is for</b>
+            <p>Students, emerging and established professionals, career changers, entrepreneurs, leaders, builders, and intellectually curious people looking for useful access to knowledge and opportunity.</p>
           </div>
         </aside>
       </div>
@@ -100,54 +84,53 @@
   </section>
 
   <figure class="plate">
-    <img src="https://images.pexels.com/photos/6953876/pexels-photo-6953876.jpeg?auto=compress&cs=tinysrgb&w=1800&h=760&fit=crop" alt="An interview being recorded remotely" loading="lazy" decoding="async">
-    <figcaption class="lab">Recorded remotely, lightly edited, and never published before the guest has seen it</figcaption>
+    <img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?auto=format&fit=crop&w=1800&h=760&q=72" alt="A microphone in a recording studio" loading="lazy" decoding="async">
+    <figcaption class="lab">A conversation, recorded properly, so what is said in it can travel</figcaption>
   </figure>
 
-  <!-- ═══ 02 · WHAT WE REFUSE TO DO ═══════════════════════════════════════ -->
+  <!-- ═══ 02 · PHILOSOPHY ═════════════════════════════════════════════════ -->
   <section class="creed" aria-labelledby="creed-h">
     <div class="shell creed-in">
-      <h2 id="creed-h">Five things we will not do, however tempting.</h2>
+      <h2 id="creed-h">Experience should not disappear inside the people who earned it.</h2>
+
+      <p class="creed-lede">We create places for knowledge, perspective and lived experience to move - from leaders to audiences, industry to campus, one generation to another, and from insight to individualised guidance.</p>
+
       <ol>
-        <li>
+        <li data-rv>
           <span class="n lab">01</span>
-          <p class="say">We will not make a guest sound tidier than they were.
-            <small>Every interview is pushed toward the actual timeline and the actual rejection. A narrative that resolves neatly is usually one that has been rehearsed forty times.</small></p>
+          <div class="say">From leaders to audiences<small>In-depth interviews, published in full, with the standout ideas written up alongside them so the thinking travels further than the conversation.</small></div>
         </li>
-        <li>
+        <li data-rv style="--d:70ms">
           <span class="n lab">02</span>
-          <p class="say">We will not put the interviews behind a paywall.
-            <small>Free at the point of use, permanently. Institutions pay for the programmes we run with them, not for their students to watch a conversation.</small></p>
+          <div class="say">From industry to campus<small>Leadership talks, moderated discussions and industry sessions that put students in the room with people who have lived the decisions.</small></div>
         </li>
-        <li>
+        <li data-rv style="--d:140ms">
           <span class="n lab">03</span>
-          <p class="say">We will not argue with a guest about a removal.
-            <small>You review your cut before anyone else sees it. If something reads worse than it felt in the room, it goes, and we do not ask why.</small></p>
+          <div class="say">From one generation to another<small>Live experiences built so the conversation carries on in the room after the stage has emptied.</small></div>
         </li>
-        <li>
+        <li data-rv style="--d:210ms">
           <span class="n lab">04</span>
-          <p class="say">We will not charge anybody to be interviewed.
-            <small>Not for a slot, not for promotion, not for a better edit. If that ever changes it will be written here first.</small></p>
-        </li>
-        <li>
-          <span class="n lab">05</span>
-          <p class="say">We will not hand a university a one-off afternoon.
-            <small>Recordings, materials and a curated shortlist stay with the careers team, written so their own advisers can re-run the useful parts without us in the room.</small></p>
+          <div class="say">From insight to individual guidance<small>Coaching, so that what someone now understands turns into what they actually do next.</small></div>
         </li>
       </ol>
     </div>
   </section>
 
-  <!-- ═══ 03 · THE FOUNDER ════════════════════════════════════════════════ -->
+  <!-- ═══ 03 · THE FOUNDER ════════════════════════════════════════════════
+       PLACEHOLDER - the founder's name, biography and portrait have not been
+       supplied. Handoff §14: "concise professional biography and portrait. The
+       company should feel larger than one individual." Replace all three below
+       before launch. -->
   <section class="who" aria-labelledby="who-h">
     <div class="shell who-grid">
       <div class="ph" data-rv>
-        <img src="https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=620&h=775&fit=crop" alt="The founder of The Access Exchange" loading="lazy" decoding="async">
+        <img src="https://images.unsplash.com/photo-1745060594679-61578eb592f7?auto=format&fit=crop&w=620&h=775&q=72" alt="Portrait placeholder - replace with the founder's photograph" loading="lazy" decoding="async">
       </div>
       <div>
         <h2 class="lab" id="who-h" style="color:var(--ink-3);margin-bottom:18px">Who is behind it</h2>
-        <blockquote data-rv>"I kept watching the same conversation change someone's career, and it was always a conversation they got by accident. This is an attempt to stop leaving it to accident."</blockquote>
+        <blockquote data-rv>"I kept watching one conversation change the direction of someone's career, and it was almost always a conversation they got by accident. This is an attempt to stop leaving it to accident."</blockquote>
         <div class="sign lab" data-rv style="--d:80ms">Founder, The Access Exchange</div>
+        <p class="bio" data-rv style="--d:140ms">[FOUNDER BIOGRAPHY - two or three sentences: the professional background that makes the platform credible, and the reason for building it. Supplied by the client.]</p>
       </div>
     </div>
   </section>
@@ -157,26 +140,26 @@
     <div class="shell">
 
       <div class="plate-pair">
-        <figure><img src="https://images.pexels.com/photos/1454360/pexels-photo-1454360.jpeg?auto=compress&cs=tinysrgb&w=800&h=560&fit=crop" alt="Students on campus" loading="lazy" decoding="async">
-          <figcaption class="lab">On campus, with careers teams</figcaption></figure>
-        <figure><img src="https://images.pexels.com/photos/207691/pexels-photo-207691.jpeg?auto=compress&cs=tinysrgb&w=800&h=560&fit=crop" alt="A lecture theatre before a session" loading="lazy" decoding="async">
-          <figcaption class="lab">And in the rooms they already have</figcaption></figure>
+        <figure><img src="https://images.unsplash.com/photo-1641160616553-a9d21a846e49?auto=format&fit=crop&w=800&h=560&q=72" alt="A university campus building" loading="lazy" decoding="async">
+          <figcaption class="lab">On campus, with institutions</figcaption></figure>
+        <figure><img src="https://images.unsplash.com/photo-1675609459162-41621fb7bee3?auto=format&fit=crop&w=800&h=560&q=72" alt="Two people in conversation" loading="lazy" decoding="async">
+          <figcaption class="lab">And in the rooms where people gather</figcaption></figure>
       </div>
 
       <p class="lab" style="color:var(--ink-3);margin:clamp(30px,4vw,56px) 0 clamp(20px,2.6vw,34px)">The short version</p>
 
       <div class="facts-grid">
-        <div><b>2026</b><span class="lab">Founded</span></div>
-        <div><b>London</b><span class="lab">Where we record</span></div>
-        <div><b>Free</b><span class="lab">For everyone watching</span></div>
-        <div><b>Yours</b><span class="lab">Final cut, always</span></div>
+        <div><b>Houston</b><span class="lab">Where we are</span></div>
+        <div><b>Six</b><span class="lab">Ways to engage</span></div>
+        <div><b>Free</b><span class="lab">To watch, always</span></div>
+        <div><b>In full</b><span class="lab">Every conversation</span></div>
       </div>
 
       <div class="ends">
-        <a href="/interview-series/#be-a-guest" class="btn">Be a guest</a>
-        <a href="/university-partnerships/" class="btn btn--out">Partner with us</a>
-        <a href="/contact/" class="btn btn--out">Get in touch</a>
+        <a href="/guests-partners/#guest" class="btn">Be considered as a guest</a>
+        <a href="/get-involved/" class="btn btn--out">Get involved</a>
       </div>
+
     </div>
   </section>
 

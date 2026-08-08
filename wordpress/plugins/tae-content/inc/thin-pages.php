@@ -2,7 +2,7 @@
 /**
  * Insights that have not been written yet.
  *
- * Every insight has a page, and every visitor gets it — logged in or not. An
+ * Every insight has a page, and every visitor gets it - logged in or not. An
  * unwritten one is not a stub: templates/single-insight.php gives it a headline, a
  * dateline, the dek, the image, a labelled route to wherever the piece points, and
  * three things to read next. Nothing is invented to fill space, and the page never
@@ -10,7 +10,7 @@
  *
  * What is left here is the search engine's side. Until somebody writes a body, the
  * page is mostly assembled from fields that also appear on the Insights stream, so
- * it is noindexed and kept out of the sitemap — publishing a dozen near-identical
+ * it is noindexed and kept out of the sitemap - publishing a dozen near-identical
  * URLs on a new domain is a bad first impression to hand a crawler.
  *
  * Write a body and both lift, on their own. There is no switch to remember.

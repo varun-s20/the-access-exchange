@@ -1,0 +1,105 @@
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     PAGE · COACHING                                   WordPress slug: coaching
+     ───────────────────────────────────────────────────────────────────────────
+     PASTE INTO   Elementor → Pages → Coaching → single full-width Container →
+                  one "HTML" widget → everything below.
+                  Page Layout: Elementor Full Width. Container padding 0, gap 0.
+
+     TWO OFFERINGS, ONE PAGE (handoff §13): professional coaching, and coach
+     training and certification. Both have the same shape - a statement and the
+     form that answers it - so the page is almost entirely the shared
+     .tae .panelled pair from global.css §03.
+
+     IN-PAGE ANCHORS  (linked from the header, footer, home and Experiences -
+     do not rename without updating those)
+       #coaching   professional coaching + form
+       #training   coach training and certification + form
+
+     FORMS  Two CF7 forms, CF7-SMTP.md §4.11 and §4.12. Separate inquiry paths,
+     which the handoff asks for by name. Replace both REPLACE_ID_ placeholders.
+
+     SEO - enter these in Yoast / Rank Math / SEOPress, NOT here.
+       SEO title       Coaching - Professional coaching and coach training |
+                       The Access Exchange
+       Meta desc       Personalised professional coaching for clarity,
+                       positioning and transitions, plus structured coach
+                       training and certification.  (140 chars)
+       Focus keyphrase professional coaching
+       Canonical       https://theaccessexchange.com/coaching/
+       OG title        Turn access into action
+       OG description  Great information can change how you think. The right
+                       guidance can help change what you do next.
+       Twitter card    summary_large_image
+       Robots          index, follow
+       Breadcrumb      Home › Coaching
+
+     PERFORMANCE NOTES
+       · No images by design - the LCP element is the H1 and needs no preload.
+     ═══════════════════════════════════════════════════════════════════════════ -->
+
+<!-- NO JSON-LD ON THIS PAGE - Yoast owns it. Set Schema tab → Page type =
+     "Web Page". Do not add Course schema to coach training until it has a
+     published price, duration and provider detail; incomplete Course markup is
+     worse than none. -->
+
+<div class="tae tae-coaching">
+
+  <!-- ═══ 01 · HERO ═══════════════════════════════════════════════════════ -->
+  <section class="co-lead" aria-labelledby="co-h">
+    <div class="shell">
+      <p class="kicker lab">Coaching</p>
+      <h1 id="co-h">Turn access into action.</h1>
+      <p class="lede">Great information can change how you think. The right guidance can help change what you do next.</p>
+    </div>
+  </section>
+
+  <!-- ═══ 02 · PROFESSIONAL COACHING ══════════════════════════════════════ -->
+  <section class="panelled" id="coaching" aria-labelledby="pc-h">
+    <div class="shell panel-grid">
+
+      <div class="panel-say">
+        <p class="kicker lab">Professional coaching</p>
+        <h2 id="pc-h">Personalised guidance, not general advice.</h2>
+        <p>The Access Exchange provides professional coaching designed to help people clarify goals, navigate transitions, strengthen professional positioning, build relationships, identify development priorities and translate insight into practical strategy.</p>
+
+        <ul class="focus">
+          <li><span class="n lab">01</span><span>Career and professional clarity</span></li>
+          <li><span class="n lab">02</span><span>Transitions and advancement</span></li>
+          <li><span class="n lab">03</span><span>Professional positioning and visibility</span></li>
+          <li><span class="n lab">04</span><span>Relationship and network strategy</span></li>
+          <li><span class="n lab">05</span><span>Interview and opportunity preparation</span></li>
+          <li><span class="n lab">06</span><span>Development planning and accountability</span></li>
+        </ul>
+      </div>
+
+      <div class="panel-form">
+        <h3>Request coaching</h3>
+        <!-- CF7 form "TAE - Professional coaching" - CF7-SMTP.md §4.11. -->
+        [contact-form-7 id="REPLACE_ID_COACHING" title="TAE - Professional coaching" html_class="form form--coaching"]
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ 03 · COACH TRAINING & CERTIFICATION ═════════════════════════════ -->
+  <section class="panelled panelled--tint" id="training" aria-labelledby="ct-h">
+    <div class="shell panel-grid">
+
+      <div class="panel-say">
+        <p class="kicker lab">Coach training &amp; certification</p>
+        <h2 id="ct-h">Develop the people who help others move forward.</h2>
+        <p>The Access Exchange provides structured coach training and certification designed to develop thoughtful, practical and ethical coaches equipped to help others navigate professional growth and change using The Access Exchange standards and methodology.</p>
+        <p>Tell us where you are - already coaching, moving toward it, or building coaching capability inside an organisation - and we will come back with the detail relevant to you.</p>
+      </div>
+
+      <div class="panel-form">
+        <h3>Explore coach training</h3>
+        <!-- CF7 form "TAE - Coach training" - CF7-SMTP.md §4.12.
+             Separate inquiry path from the coaching form above. -->
+        [contact-form-7 id="REPLACE_ID_TRAINING" title="TAE - Coach training" html_class="form form--training"]
+      </div>
+
+    </div>
+  </section>
+
+</div>

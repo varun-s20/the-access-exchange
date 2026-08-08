@@ -1,11 +1,11 @@
 <?php
 /**
- * Single insight — a real page, for everybody.
+ * Single insight - a real page, for everybody.
  *
  * The prototype never designed one, and it did not need to: the About broadsheet
- * at global.css:1405 is already a long-form article layout — .sheet, .sheet-head,
- * .spread, .copy, .dateline, .plate, .ends — so this borrows the .tae-about
- * wrapper wholesale. "Read next" borrows .tae-insights .stream in a second
+ * at global.css:1405 is already a long-form article layout - .sheet, .sheet-head,
+ * .spread, .copy, .dateline, .plate, .ends - so this borrows the .tae-about
+ * wrapper wholesale. "Read next" borrows .tae-takeaways .stream in a second
  * wrapper, which is exactly how the page-scoped token system is meant to be used.
  *
  * The page renders for everyone, whether or not an article has been written. What
@@ -18,7 +18,7 @@
  * next and two ways to get involved. Nothing is invented to fill space, and the
  * page never dead-ends.
  *
- * A bodiless insight is still noindex and still out of the sitemap — see
+ * A bodiless insight is still noindex and still out of the sitemap - see
  * inc/thin-pages.php. That is a search-engine decision, not a visitor-facing one.
  *
  * @package TAE_Content
@@ -73,7 +73,7 @@ while ( have_posts() ) :
 				</div>
 
 				<?php if ( $tae_link ) : ?>
-					<?php // Shown whether or not an article has been written — a finished piece can still point somewhere next. ?>
+					<?php // Shown whether or not an article has been written - a finished piece can still point somewhere next. ?>
 					<div class="ends">
 						<a href="<?php echo esc_url( $tae_link ); ?>" class="btn"><?php echo esc_html( $tae_onward ); ?></a>
 					</div>
@@ -103,7 +103,7 @@ while ( have_posts() ) :
 			<div class="shell">
 				<div class="ends">
 					<a href="/insights/" class="btn btn--out">All insights</a>
-					<a href="/interview-series/#be-a-guest" class="btn btn--out">Be a guest</a>
+					<a href="/guests-partners/#guest" class="btn btn--out">Be considered as a guest</a>
 					<a href="/university-partnerships/" class="btn btn--out">Partner with us</a>
 				</div>
 			</div>
@@ -113,7 +113,7 @@ while ( have_posts() ) :
 
 	<?php if ( $tae_related ) : ?>
 		<?php // A second page wrapper, so the stream tiles get their own tokens without leaking into the article above. ?>
-		<div class="tae tae-insights">
+		<div class="tae tae-takeaways">
 			<section class="body" aria-labelledby="tae-next">
 				<div class="shell">
 					<p class="lab dim" id="tae-next" style="margin-bottom:clamp(18px,2vw,28px)">Read next</p>

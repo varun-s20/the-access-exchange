@@ -79,7 +79,7 @@ h1,h2,h3,p{margin:0}
 .route h2{font-weight:700;font-size:16px;text-transform:uppercase;margin-bottom:4px}
 .route p{font-size:15px;line-height:1.5;color:var(--muted)}
 
-/* right panel — form */
+/* right panel - form */
 .form-wrap{padding:48px var(--pad)}
 .form-inner{max-width:500px}
 .form-wrap h2{font-weight:700;font-size:var(--fs-h1);line-height:1.2;text-transform:uppercase;margin-bottom:12px}
@@ -216,7 +216,7 @@ form{display:grid;gap:20px}
 
 <main class="split">
   <section class="pitch">
-    <!-- ponytail: generic marks, not real partner logos — swap the colours/shapes for the real set -->
+    <!-- ponytail: generic marks, not real partner logos - swap the colours/shapes for the real set -->
     <div class="cloud" aria-hidden="true">
       <span class="mark" style="left:34%;top:2%;background:#3ddc97;color:#0b3b2b;width:11%"></span>
       <span class="mark sq" style="left:16%;top:12%;background:#eef0f3;color:#2e51d2"></span>
@@ -326,7 +326,7 @@ form{display:grid;gap:20px}
 </footer>
 
 <script>
-// fake submit — honeypot + native validity, matching the prototype convention elsewhere
+// fake submit - honeypot + native validity, matching the prototype convention elsewhere
 document.querySelectorAll('form[data-validate]').forEach(function (form) {
   var status = form.querySelector('[data-status]');
   form.addEventListener('submit', function (e) {
@@ -334,7 +334,7 @@ document.querySelectorAll('form[data-validate]').forEach(function (form) {
     if (form.elements['hp-field'].value) return;              // bot
     var bad = form.querySelector(':invalid');
     if (bad) { status.textContent = 'Please complete the required fields.'; bad.focus(); return; }
-    status.textContent = 'Thanks — we will reply within two working days.';
+    status.textContent = 'Thanks - we will reply within two working days.';
     form.reset();
   });
 });

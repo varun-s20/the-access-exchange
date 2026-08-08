@@ -1,21 +1,27 @@
 <!-- ═══════════════════════════════════════════════════════════════════════════
-     THE ACCESS EXCHANGE — SHARED HEADER
+     THE ACCESS EXCHANGE - SHARED HEADER
      Elementor → Templates → Theme Builder → Header → "Site Header"
        · Container: Full Width, no padding, no gap, HTML tag = header
        · Inside it, ONE "HTML" widget containing everything in this file
        · Display Conditions: Entire Site
-       · Do NOT let Elementor wrap this in a sticky/motion effect — the
+       · Do NOT let Elementor wrap this in a sticky/motion effect - the
          masthead does its own fixed positioning and collapse.
 
      WHAT IS IN HERE
        1. The SVG icon sprite. It must stay on every page because the page
           bodies reference it (<use href="#i-arrow">, #i-left, #i-right …).
        2. The masthead + the spacer that reserves its height.
-       3. The slide-in menu panel.
-       4. The search overlay.
+       3. The primary nav strip. Visible from 1080px up; below that it collapses
+          into the menu panel and the hamburger carries navigation.
+       4. The slide-in menu panel.
+       5. The search overlay.
 
-     The active menu item is set at runtime by global.js (it compares each
-     href to location.pathname), so this file stays byte-identical site-wide.
+     GET INVOLVED is the one persistent CTA and never leaves the bar, at any
+     width or scroll position (handoff §7).
+
+     The active nav item is set at runtime by global.js (it compares each href to
+     location.pathname, across both navs), so this file stays byte-identical
+     site-wide.
      ═══════════════════════════════════════════════════════════════════════════ -->
 
 <svg class="sr" aria-hidden="true" focusable="false"><defs>
@@ -42,10 +48,18 @@
       </button>
     </div>
     <div class="mast-r lab">
-      <a href="/interview-series/" class="txt">Interviews</a>
-      <a href="/university-partnerships/" class="cta"><span class="lg">For&nbsp;</span>Universities</a>
+      <a href="/get-involved/" class="cta">Get Involved</a>
     </div>
   </div>
+  <nav class="mast-nav" aria-label="Primary">
+    <a href="/">Home</a>
+    <a href="/interview-series/">Interview Series</a>
+    <a href="/guests-partners/">Guests &amp; Partners</a>
+    <a href="/universities/">Universities</a>
+    <a href="/experiences/">Experiences</a>
+    <a href="/coaching/">Coaching</a>
+    <a href="/about/">About</a>
+  </nav>
   <span class="prog" aria-hidden="true"></span>
 </div>
 <div class="mast-spacer" id="top"></div>
@@ -62,22 +76,15 @@
     <nav aria-label="Main">
       <ul class="veil-nav">
         <li style="--i:0"><a href="/">Home</a></li>
-        <li style="--i:1"><a href="/interview-series/">The Interview Series</a></li>
-        <li style="--i:2"><a href="/university-partnerships/">University Partnerships</a></li>
-        <li style="--i:3"><a href="/insights/">Insights</a></li>
-        <li style="--i:4"><a href="/about/">About</a></li>
-        <li style="--i:5"><a href="/contact/">Contact</a></li>
+        <li style="--i:1"><a href="/interview-series/">Interview Series</a></li>
+        <li style="--i:2"><a href="/guests-partners/">Guests &amp; Partners</a></li>
+        <li style="--i:3"><a href="/universities/">Universities</a></li>
+        <li style="--i:4"><a href="/experiences/">Experiences</a></li>
+        <li style="--i:5"><a href="/coaching/">Coaching</a></li>
+        <li style="--i:6"><a href="/about/">About</a></li>
       </ul>
     </nav>
-    <div class="veil-sides">
-      <div class="veil-side">
-        <h4 class="lab">Get involved</h4>
-        <ul>
-          <li><a href="/interview-series/#be-a-guest">Be a guest</a></li>
-          <li><a href="/university-partnerships/#enquire">Partner with us</a></li>
-          <li><a href="/contact/">General enquiries</a></li>
-        </ul>
-      </div>
+    <div class="veil-sides veil-sides--one">
       <div class="veil-side">
         <h4 class="lab">Watch</h4>
         <div class="plat-row">
@@ -87,7 +94,7 @@
     </div>
     <div class="veil-cta">
       <a href="/interview-series/" class="is-ghost">Interviews</a>
-      <a href="/university-partnerships/">For Universities</a>
+      <a href="/get-involved/">Get Involved</a>
     </div>
   </div>
 </div>

@@ -6,7 +6,7 @@
  * markup this plugin exists to replace.
  *
  * Five of the fourteen insight tiles in the prototype are interviews wearing an
- * "Interview" topic label — they are NOT repeated here, because the stream now
+ * "Interview" topic label - they are NOT repeated here, because the stream now
  * queries both post types and would otherwise show each of them twice. Two more
  * (Tobi's and Grace's) duplicate an interview title under a different topic, and
  * are dropped for the same reason. That leaves 13 interviews and 11 insights.
@@ -25,7 +25,7 @@ return array(
 		array(
 			'title'    => 'From bootcamp to staff engineer in five years',
 			'date'     => '2026-07-30 09:00:00',
-			'category' => 'engineering',
+			'category' => 'industry',
 			'guest'    => 'Amara Osei',
 			'role'     => 'Staff Engineer',
 			'episode'  => 42,
@@ -41,7 +41,7 @@ return array(
 		array(
 			'title'    => 'What a backend interview loop actually tests',
 			'date'     => '2026-07-27 09:00:00',
-			'category' => 'engineering',
+			'category' => 'industry',
 			'guest'    => 'Ravi Menon',
 			'role'     => 'Engineering Manager',
 			'episode'  => 41,
@@ -56,7 +56,7 @@ return array(
 		array(
 			'title'    => 'Moving from support into product without a technical degree',
 			'date'     => '2026-07-25 09:00:00',
-			'category' => 'product',
+			'category' => 'industry',
 			'guest'    => 'Fiona Bright',
 			'role'     => 'Senior Product Manager',
 			'episode'  => 40,
@@ -71,7 +71,7 @@ return array(
 		array(
 			'title'        => 'The parts of a data science job nobody puts in the job spec',
 			'date'         => '2026-07-23 09:00:00',
-			'category'     => 'data',
+			'category'     => 'industry',
 			'guest'        => 'Dr Leila Haddad',
 			'role'         => 'Lead Data Scientist',
 			'episode'      => 39,
@@ -86,7 +86,7 @@ return array(
 		array(
 			'title'        => "Forty applications, two offers: a graduate's honest account",
 			'date'         => '2026-07-20 09:00:00',
-			'category'     => 'breaking-in',
+			'category'     => 'career',
 			'guest'        => 'Tobi Adeyinka',
 			'role'         => 'Junior Developer',
 			'episode'      => 38,
@@ -101,7 +101,7 @@ return array(
 		array(
 			'title'        => 'Building a portfolio when you have never shipped anything',
 			'date'         => '2026-07-18 09:00:00',
-			'category'     => 'design',
+			'category'     => 'industry',
 			'guest'        => 'Marta Kowalska',
 			'role'         => 'Product Designer',
 			'episode'      => 37,
@@ -116,7 +116,7 @@ return array(
 		array(
 			'title'        => 'Switching from civil engineering at thirty-one',
 			'date'         => '2026-07-16 09:00:00',
-			'category'     => 'engineering',
+			'category'     => 'industry',
 			'guest'        => 'Callum Reid',
 			'role'         => 'Platform Engineer',
 			'episode'      => 36,
@@ -130,7 +130,7 @@ return array(
 		array(
 			'title'    => 'What a first-round product interview is really listening for',
 			'date'     => '2026-07-14 09:00:00',
-			'category' => 'product',
+			'category' => 'industry',
 			'guest'    => 'Sanjay Iyer',
 			'role'     => 'Director of Product',
 			'episode'  => 35,
@@ -143,7 +143,7 @@ return array(
 		array(
 			'title'    => 'Research to industry: what transfers and what does not',
 			'date'     => '2026-07-11 09:00:00',
-			'category' => 'data',
+			'category' => 'industry',
 			'guest'    => 'Dr Ines Costa',
 			'role'     => 'Machine Learning Engineer',
 			'episode'  => 34,
@@ -156,7 +156,7 @@ return array(
 		array(
 			'title'        => 'Internships, placements and the routes people forget exist',
 			'date'         => '2026-07-09 09:00:00',
-			'category'     => 'breaking-in',
+			'category'     => 'career',
 			'guest'        => 'Grace Nwosu',
 			'role'         => 'Early Careers Lead',
 			'episode'      => 33,
@@ -170,7 +170,7 @@ return array(
 		array(
 			'title'    => 'Design critique, and learning to hear it properly',
 			'date'     => '2026-07-06 09:00:00',
-			'category' => 'design',
+			'category' => 'industry',
 			'guest'    => 'Sofia Lindqvist',
 			'role'     => 'Staff Designer',
 			'episode'  => 32,
@@ -183,7 +183,7 @@ return array(
 		array(
 			'title'    => 'The on-call rota that changed how I write code',
 			'date'     => '2026-07-03 09:00:00',
-			'category' => 'engineering',
+			'category' => 'industry',
 			'guest'    => 'Priya Raman',
 			'role'     => 'Site Reliability Engineer',
 			'episode'  => 31,
@@ -196,7 +196,7 @@ return array(
 		array(
 			'title'    => 'Retraining at thirty-eight, with two children and a mortgage',
 			'date'     => '2026-07-01 09:00:00',
-			'category' => 'breaking-in',
+			'category' => 'career',
 			'guest'    => 'Daniel Okafor',
 			'role'     => 'Support Engineer',
 			'episode'  => 30,
@@ -212,14 +212,14 @@ return array(
 		array(
 			'title'  => 'Asking for the promotion, in the words that worked',
 			'date'   => '2026-07-28 09:00:00',
-			'topic'  => 'levelling-up',
+			'topic'  => 'framework',
 			'byline' => 'Written out in full, including the version that was turned down first',
 			'link'   => '/interview-series/#episodes',
 		),
 		array(
 			'title'  => 'Running a guest session that students stay behind after',
 			'date'   => '2026-07-26 09:00:00',
-			'topic'  => 'on-campus',
+			'topic'  => 'written',
 			'byline' => 'Notes from the first term of partnerships',
 			'link'   => '/university-partnerships/#s1',
 			'photo'  => 5940841,
@@ -228,7 +228,7 @@ return array(
 		array(
 			'title'      => 'How to read a job spec you are not qualified for',
 			'date'       => '2026-07-24 09:00:00',
-			'topic'      => 'breaking-in',
+			'topic'      => 'takeaway',
 			'byline'     => 'The four lines that actually matter, and the six that do not',
 			'link'       => '/interview-series/#episodes',
 			'start_here' => 2,
@@ -236,7 +236,7 @@ return array(
 		array(
 			'title'  => "Becoming the person who reviews other people's work",
 			'date'   => '2026-07-22 09:00:00',
-			'topic'  => 'levelling-up',
+			'topic'  => 'framework',
 			'byline' => 'The first six months of seniority',
 			'link'   => '/interview-series/#episodes',
 			'photo'  => 1181712,
@@ -245,21 +245,21 @@ return array(
 		array(
 			'title'  => 'A portfolio workshop that fits inside one seminar slot',
 			'date'   => '2026-07-21 09:00:00',
-			'topic'  => 'on-campus',
+			'topic'  => 'written',
 			'byline' => 'Fifty minutes, twelve students, no slides',
 			'link'   => '/university-partnerships/#s1',
 		),
 		array(
 			'title'      => 'The five job titles most people have never heard of',
 			'date'       => '2026-07-19 09:00:00',
-			'topic'      => 'breaking-in',
+			'topic'      => 'takeaway',
 			'byline'     => 'And what each one actually does all day',
 			'start_here' => 1,
 		),
 		array(
 			'title'  => 'Staying technical, or moving to management',
 			'date'   => '2026-07-17 09:00:00',
-			'topic'  => 'levelling-up',
+			'topic'  => 'framework',
 			'byline' => 'Two guests who chose opposite paths at the same point',
 			'link'   => '/interview-series/#episodes',
 			'photo'  => 1181677,
@@ -268,28 +268,28 @@ return array(
 		array(
 			'title'      => 'Cold outreach that people actually reply to',
 			'date'       => '2026-07-15 09:00:00',
-			'topic'      => 'breaking-in',
+			'topic'      => 'takeaway',
 			'byline'     => 'Three messages that worked, and why',
 			'start_here' => 3,
 		),
 		array(
 			'title'      => 'Your first ninety days, from four people who remember them',
 			'date'       => '2026-07-13 09:00:00',
-			'topic'      => 'levelling-up',
+			'topic'      => 'framework',
 			'byline'     => 'What they got wrong, in their own words',
 			'start_here' => 4,
 		),
 		array(
 			'title'      => 'Do you need the degree? Four people answer differently',
 			'date'       => '2026-07-10 09:00:00',
-			'topic'      => 'breaking-in',
+			'topic'      => 'takeaway',
 			'byline'     => 'Two say yes, two say no, and all four are right',
 			'start_here' => 5,
 		),
 		array(
 			'title'  => 'Keeping the recordings: how departments reuse the library',
 			'date'   => '2026-07-08 09:00:00',
-			'topic'  => 'on-campus',
+			'topic'  => 'written',
 			'byline' => 'What three careers teams did with theirs',
 			'link'   => '/university-partnerships/#s5',
 		),

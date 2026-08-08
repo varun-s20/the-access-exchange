@@ -4,7 +4,7 @@
  *
  * global.js:100 declares SITE_INDEX as a JavaScript literal, and eight of its rows
  * are interview titles. Publishing an interview therefore meant hand-editing a .js
- * file, with no failure signal when somebody forgot — search just went quietly
+ * file, with no failure signal when somebody forgot - search just went quietly
  * stale. This builds the same array from real posts.
  *
  * Requires one edit to global.js, and only one:
@@ -56,58 +56,78 @@ function tae_site_index_rows() {
 	$rows = array(
 		array(
 			't' => 'Home',
-			'd' => 'The platform and its two vehicles',
+			'd' => 'The platform and every way into it',
 			'u' => '/',
 		),
 		array(
-			't' => 'The Interview Series',
-			'd' => 'Format, archive and how to be a guest',
+			't' => 'Interview Series',
+			'd' => 'In-depth interviews, takeaways and the archive',
 			'u' => '/interview-series/',
 		),
 		array(
-			't' => 'University Partnerships',
-			'd' => 'How a partnership is scoped, what it costs',
-			'u' => '/university-partnerships/',
+			't' => 'Guests & Partners',
+			'd' => 'Guest consideration, sponsorship, nomination',
+			'u' => '/guests-partners/',
 		),
 		array(
-			't' => 'Insights',
-			'd' => 'Everything we have published',
-			'u' => '/insights/',
+			't' => 'Universities & Institutions',
+			'd' => 'Leadership talks, discussions, Q&A, custom programmes',
+			'u' => '/universities/',
+		),
+		array(
+			't' => 'Experiences',
+			'd' => 'Live panels, leadership discussions and events',
+			'u' => '/experiences/',
+		),
+		array(
+			't' => 'Coaching',
+			'd' => 'Professional coaching, coach training and certification',
+			'u' => '/coaching/',
 		),
 		array(
 			't' => 'About',
-			'd' => 'Why this exists and what we refuse to do',
+			'd' => 'Philosophy, mission and the founder story',
 			'u' => '/about/',
 		),
 		array(
-			't' => 'Contact',
-			'd' => 'Guests, universities, press or anything else',
-			'u' => '/contact/',
+			't' => 'Get Involved',
+			'd' => 'Every route into The Exchange',
+			'u' => '/get-involved/',
 		),
 		array(
-			't' => 'Be a guest',
-			'd' => 'Guest inquiry form',
-			'u' => '/interview-series/#be-a-guest',
+			't' => 'Share your perspective',
+			'd' => 'Guest consideration form',
+			'u' => '/guests-partners/#guest',
 		),
 		array(
-			't' => 'Partner with us',
-			'd' => 'University inquiry form',
-			'u' => '/university-partnerships/#enquire',
+			't' => 'Partner with The Exchange',
+			'd' => 'Corporate sponsorship and partnership form',
+			'u' => '/guests-partners/#corporate',
+		),
+		array(
+			't' => 'Bring The Exchange to campus',
+			'd' => 'University and institutional engagement form',
+			'u' => '/universities/#enquire',
+		),
+		array(
+			't' => 'Explore coaching',
+			'd' => 'Professional coaching inquiry',
+			'u' => '/coaching/#coaching',
+		),
+		array(
+			't' => 'Explore coach training',
+			'd' => 'Coach training and certification inquiry',
+			'u' => '/coaching/#training',
+		),
+		array(
+			't' => 'Takeaways',
+			'd' => 'Standout ideas and clips from the interviews',
+			'u' => '/interview-series/#takeaways',
 		),
 		array(
 			't' => 'The archive',
-			'd' => 'Every episode in full',
+			'd' => 'Every interview in full',
 			'u' => '/interview-series/#episodes',
-		),
-		array(
-			't' => 'A term, mapped',
-			'd' => 'What a partnership looks like across twelve weeks',
-			'u' => '/university-partnerships/#s4',
-		),
-		array(
-			't' => 'Cost and commitment',
-			'd' => 'What a partnership costs, lead times, procurement',
-			'u' => '/university-partnerships/#s7',
 		),
 	);
 

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Insights | The Access Exchange</title>
-<meta name="description" content="Career stories, interview write-ups and practical guidance from people working in tech — plus how we run partnership programmes with universities.">
+<meta name="description" content="Career stories, interview write-ups and practical guidance from people working in tech - plus how we run partnership programmes with universities.">
 <meta name="theme-color" content="#21fbac">
 
 <!-- Skandia (sans) + Leif (Times-derived serif) are licensed retail faces.
@@ -157,7 +157,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .section-head .more:hover{color:var(--gray-400)}
 
 /* ============================================================
-   featured area — [ left stack | lede | rail ]
+   featured area - [ left stack | lede | rail ]
    ============================================================ */
 .featured{padding-top:24px}
 .featured-in{display:flex;flex-direction:column;gap:32px}
@@ -307,7 +307,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   font-size:13px;color:var(--gray-200)}
 
 /* ============================================================
-   breakpoints — sm 640 / lg 1024 / xl 1280
+   breakpoints - sm 640 / lg 1024 / xl 1280
    ============================================================ */
 @media (min-width:640px){
   :root{--pad:24px;--fs-lede:36px;--fs-h2:36px}
@@ -329,7 +329,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   .logo{font-size:24px}
   .logo span{font-size:22px}
 
-  /* column ratio 312 / 658 / 312 — as fr so it never overflows at 1024 */
+  /* column ratio 312 / 658 / 312 - as fr so it never overflows at 1024 */
   .featured-in{display:grid;align-items:start;gap:0;
     grid-template-columns:minmax(0,var(--col-side)) minmax(0,var(--col-lede)) minmax(0,var(--col-rail))}
   .side-stack{min-width:0;padding-right:16px}
@@ -686,7 +686,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   </section>
 
   <!-- ============================================================
-       collection — start here
+       collection - start here
        ============================================================ -->
   <section class="collection tint-blue" id="start-here">
     <div class="shell">
@@ -769,7 +769,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   </section>
 
   <!-- ============================================================
-       collection — on campus
+       collection - on campus
        ============================================================ -->
   <section class="collection tint-green" id="on-campus">
     <div class="shell">
@@ -835,7 +835,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   </section>
 
   <!-- ============================================================
-       collection — for universities
+       collection - for universities
        ============================================================ -->
   <section class="collection tint-yellow" id="universities">
     <div class="shell">
@@ -985,7 +985,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   });
 })();
 
-// carousel arrows — scroll by one visible page
+// carousel arrows - scroll by one visible page
 document.querySelectorAll('[data-rail-nav]').forEach(function (nav) {
   var rail = nav.closest('.section-head').parentNode.querySelector('[data-rail]');
   nav.addEventListener('click', function (e) {
@@ -995,7 +995,7 @@ document.querySelectorAll('[data-rail-nav]').forEach(function (nav) {
   });
 });
 
-// newsletter — fake submit, honeypot + email check (matches site convention)
+// newsletter - fake submit, honeypot + email check (matches site convention)
 document.querySelectorAll('form[data-validate]').forEach(function (form) {
   var msg = form.parentNode.querySelector('[data-msg]');
   form.addEventListener('submit', function (e) {
@@ -1003,7 +1003,7 @@ document.querySelectorAll('form[data-validate]').forEach(function (form) {
     if (form.elements['hp-field'].value) return;            // bot
     var email = form.elements.email;
     if (!email.checkValidity()) { msg.textContent = 'Enter a valid email address.'; email.focus(); return; }
-    msg.textContent = 'Thanks — check your inbox to confirm.';
+    msg.textContent = 'Thanks - check your inbox to confirm.';
     form.reset();
   });
 });
