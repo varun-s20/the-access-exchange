@@ -1,0 +1,106 @@
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     THE ACCESS EXCHANGE — SHARED HEADER
+     Elementor → Templates → Theme Builder → Header → "Site Header"
+       · Container: Full Width, no padding, no gap, HTML tag = header
+       · Inside it, ONE "HTML" widget containing everything in this file
+       · Display Conditions: Entire Site
+       · Do NOT let Elementor wrap this in a sticky/motion effect — the
+         masthead does its own fixed positioning and collapse.
+
+     WHAT IS IN HERE
+       1. The SVG icon sprite. It must stay on every page because the page
+          bodies reference it (<use href="#i-arrow">, #i-left, #i-right …).
+       2. The masthead + the spacer that reserves its height.
+       3. The slide-in menu panel.
+       4. The search overlay.
+
+     The active menu item is set at runtime by global.js (it compares each
+     href to location.pathname), so this file stays byte-identical site-wide.
+     ═══════════════════════════════════════════════════════════════════════════ -->
+
+<svg class="sr" aria-hidden="true" focusable="false"><defs>
+  <g id="i-menu"><path d="M3 7h18M3 12h18M3 17h18"/></g>
+  <g id="i-close"><path d="M5 5l14 14M19 5L5 19"/></g>
+  <g id="i-search"><circle cx="10.8" cy="10.8" r="6.8"/><path d="M15.8 15.8L21 21"/></g>
+  <g id="i-arrow"><path d="M4 12h15M13 6l6 6-6 6"/></g>
+  <g id="i-left"><path d="M15 5l-7 7 7 7"/></g>
+  <g id="i-right"><path d="M9 5l7 7-7 7"/></g>
+  <g id="b-youtube"><path fill="#FF0000" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/><path fill="#fff" d="M9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></g>
+</defs></svg>
+
+<!-- ═══ MASTHEAD ═══════════════════════════════════════════════════════════ -->
+<div class="mast" id="mast">
+  <span class="mast-rule" aria-hidden="true"></span>
+  <a class="mark" href="/" rel="home">The Access <i>Exchange</i></a>
+  <div class="mast-in">
+    <div class="mast-l">
+      <button type="button" id="menuBtn" aria-expanded="false" aria-controls="veil" aria-label="Open menu">
+        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-menu"/></svg>
+      </button>
+      <button type="button" class="srchbtn" aria-label="Search">
+        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-search"/></svg>
+      </button>
+    </div>
+    <div class="mast-r lab">
+      <a href="/interview-series/" class="txt">Interviews</a>
+      <a href="/university-partnerships/" class="cta"><span class="lg">For&nbsp;</span>Universities</a>
+    </div>
+  </div>
+  <span class="prog" aria-hidden="true"></span>
+</div>
+<div class="mast-spacer" id="top"></div>
+
+<!-- ═══ MENU PANEL ═════════════════════════════════════════════════════════ -->
+<div class="veil" id="veil" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+  <div class="veil-panel">
+    <div class="veil-top">
+      <a class="veil-mark" href="/" rel="home">The Access <i>Exchange</i></a>
+      <button type="button" id="veilClose" class="veil-close" aria-label="Close menu">
+        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-close"/></svg>
+      </button>
+    </div>
+    <nav aria-label="Main">
+      <ul class="veil-nav">
+        <li style="--i:0"><a href="/">Home</a></li>
+        <li style="--i:1"><a href="/interview-series/">The Interview Series</a></li>
+        <li style="--i:2"><a href="/university-partnerships/">University Partnerships</a></li>
+        <li style="--i:3"><a href="/insights/">Insights</a></li>
+        <li style="--i:4"><a href="/about/">About</a></li>
+        <li style="--i:5"><a href="/contact/">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="veil-sides">
+      <div class="veil-side">
+        <h4 class="lab">Get involved</h4>
+        <ul>
+          <li><a href="/interview-series/#be-a-guest">Be a guest</a></li>
+          <li><a href="/university-partnerships/#enquire">Partner with us</a></li>
+          <li><a href="/contact/">General enquiries</a></li>
+        </ul>
+      </div>
+      <div class="veil-side">
+        <h4 class="lab">Watch</h4>
+        <div class="plat-row">
+          <a href="https://www.youtube.com/@theaccessexchange" rel="noopener" aria-label="Watch on YouTube"><svg class="bi" viewBox="0 0 24 24" aria-hidden="true"><use href="#b-youtube"/></svg></a>
+        </div>
+      </div>
+    </div>
+    <div class="veil-cta">
+      <a href="/interview-series/" class="is-ghost">Interviews</a>
+      <a href="/university-partnerships/">For Universities</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SEARCH OVERLAY ═════════════════════════════════════════════════════ -->
+<div class="find" id="find" role="dialog" aria-modal="true" aria-label="Search" hidden>
+  <div class="find-box">
+    <div class="find-in">
+      <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-search"/></svg>
+      <label class="sr" for="findq">Search the site</label>
+      <input id="findq" type="search" placeholder="Search interviews, pages, topics" autocomplete="off">
+      <kbd>ESC</kbd>
+    </div>
+    <div class="find-out" id="findout"></div>
+  </div>
+</div>

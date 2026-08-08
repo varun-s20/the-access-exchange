@@ -1,0 +1,70 @@
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     PAGE · INSIGHTS                                WordPress slug: insights
+     ───────────────────────────────────────────────────────────────────────────
+     PASTE INTO   Elementor → Pages → Insights → single full-width Container →
+                  one "HTML" widget → everything below.
+                  Page Layout: Elementor Full Width. Container padding 0, gap 0.
+
+     SEO — enter these in Yoast / Rank Math / SEOPress, NOT here.
+       SEO title       Insights — Everything we have published | The Access
+                       Exchange
+       Meta desc       Interview write-ups, breaking-in guides, levelling-up
+                       notes and what happens on campus. Search it, filter it,
+                       or start with the five people share most.  (154 chars)
+       Focus keyphrase tech career insights
+       Canonical       https://theaccessexchange.com/insights/
+       OG title        Insights — The Access Exchange
+       OG description  Everything we have published, in one place.
+       Twitter card    summary_large_image
+       Robots          index, follow
+       Breadcrumb      Home › Insights
+
+     THE STREAM IS A REAL QUERY NOW
+       [tae_insights view="stream"] renders it from the tae-content plugin, and
+       [tae_insights view="start"] renders the five links at the foot. Both are
+       edited in wp-admin under Insights and Interviews — nothing on this page
+       needs touching to publish.
+       The stream queries BOTH post types. An interview appears here without
+       being re-entered, carrying data-topic="interview", which is how the
+       sidebar's "Interviews" bucket works without a taxonomy term.
+       The tally and the five counters are counted from the posts actually
+       rendered, so they cannot claim more than the filter can reach.
+       The search field, the topic sidebar and the FLIP animation in global.js
+       §09 are untouched: they read the DOM, and the DOM still looks the same.
+
+     PERFORMANCE NOTES
+       · LCP is the lead tile's photograph — it is eager + fetchpriority="high".
+       · Filtering never touches the network and never re-renders innerHTML;
+         it toggles one class and replays the position delta with the Web
+         Animations API, so it stays on the compositor.
+     ═══════════════════════════════════════════════════════════════════════════ -->
+
+<!-- NO JSON-LD ON THIS PAGE — Yoast owns it.
+     Set Yoast → Schema tab → Page type = "Collection Page".
+     When the stream becomes a real WP query, Yoast will also emit the
+     ItemList automatically from the loop. -->
+
+<div class="tae tae-insights">
+
+  <!-- ═══ 01 · SEARCH HEADER ══════════════════════════════════════════════ -->
+  <!-- Plugin-driven. The stream queries interviews AND insights; interview
+       tiles carry data-topic="interview" so global.js §09 filters them without
+       knowing the difference. The tally and every sidebar counter are counted
+       from the posts actually rendered, so they cannot overstate what the
+       filter can reach. -->
+  [tae_insights view="stream" heading="Insights"]
+
+  <!-- ═══ 03 · START HERE ═════════════════════════════════════════════════ -->
+  <section class="start" aria-labelledby="start-h">
+    <div class="shell">
+      <div class="start-head">
+        <h2 id="start-h">New here? Start with these.</h2>
+        <p class="lede">The five pieces people send to someone else most often.</p>
+      </div>
+      <!-- Plugin-driven: insights with "Show in Start here" ticked, sequenced
+           by the Order field. -->
+      [tae_insights view="start" count="5"]
+    </div>
+  </section>
+
+</div>

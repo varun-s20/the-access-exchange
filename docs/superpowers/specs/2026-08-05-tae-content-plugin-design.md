@@ -436,7 +436,99 @@ Non-trivial logic, so it leaves runnable checks behind:
    `tae-archive.js`. `README-WORDPRESS.md` §7b already documents the exclusion list
    for `global.js`; `tae-archive.js` needs the same treatment.
 
-## 12. Open assumptions
+## 12. Built — where the implementation departs from this spec
+
+Written after the build. The design above is the decision record; these are the
+places reality argued back.
+
+**`tae_slot` is four checkboxes, not one select.** §4.1 assumed an interview
+occupies one hero slot. It does not: Amara Osei is simultaneously the Interview
+Series cover story, the home featured interview and the home watch poster. The
+field became `tae_slot_cover`, `tae_slot_minor`, `tae_slot_feature`,
+`tae_slot_watch` — four independent booleans.
+
+**`menu_order` means curation rank only.** §4.1 had it ordering everything. That
+breaks: ranking five interviews 1–5 for the Most watched rail would push all five
+below every unranked interview in the archive, the wall and the stream, because
+`menu_order ASC` puts 0 first. General listings now sort by date descending, and
+`menu_order` is read only by the curated queries — Most watched, Start here, and
+which of two claimants wins a contested hero slot.
+
+**The archive filter scope is `.index-head`, not `.sorts`.** §6.1 planned to
+regenerate the stylesheet's selector shape. That selector has never matched:
+`.sorts` sits inside `.index-head` and `.eps` is a sibling of `.index-head`, so
+`.sorts ~ .eps` finds nothing and the Interview Series filter has never worked.
+Regenerating it faithfully would have reproduced the bug. `tests/test-tae.php`
+asserts both that the wall rules match `global.css:677-681` character for character
+and that the archive rules do *not* copy the broken shape.
+
+**Nine image sizes, not seven.** §4.4 missed the home watch poster (1200×675) and
+the home feature's full-bleed image (1800×1013).
+
+**13 interviews and 11 insights, not 12 and 14.** §8 counted the prototype's tiles.
+Five of the fourteen insight tiles are interviews wearing an "Interview" topic
+label, and two more repeat an interview title under a different topic. The stream
+queries both post types, so importing those seven as insights would have shown each
+of them twice. The cover story is a thirteenth interview the archive grid omits.
+
+**Several shortcodes own less than §5 said.** `view="wall"`, `"watch"`, `"rail"`
+and `[tae_insights view="start"]` render only their content block; the headings and
+standfirsts above them are prose and stayed in the Elementor widget, per §3.
+`view="archive"` takes its heading as a shortcode attribute so the section is still
+one paste.
+
+**Verification.** §10's four checks became 26 in
+`plugins/tae-content/tests/test-tae.php` — no framework, no WordPress, runs under
+plain `php`. All pass. The markup-fidelity diff in §10.1 was not built: the outputs
+cannot be byte-identical anyway once `srcset` and Media Library URLs replace fixed
+Pexels ones, so it would have been a diff nobody could read. Structural fidelity
+was checked by eye against the original blocks instead.
+
+## 13. Insights page — decided after first install (2026-08-05)
+
+The seeded Destination values made the tile links look wrong on the live site,
+which surfaced a question the spec had left implicit: what *is* an insight?
+
+**An insight is a pointer or an article, decided per piece.** Destination filled
+and no body → a pointer, no page of its own. Body written and Destination cleared →
+an article at `/insights/<slug>/`. The `tae_link`-with-page-fallback design in §4.2
+already implemented this; nothing needed building. It means launch is not gated on
+writing eleven articles, and each piece can graduate on its own.
+
+**Every insight has a real page — first attempt reverted.** The first fix for the
+eleven thin URLs was a 302 away from any bodiless insight, exempting users who
+could edit it. That made the site behave differently for logged-out visitors than
+for the person building it, which is not a functioning website; it was rejected on
+sight and correctly so.
+
+The page now renders for everyone. `templates/single-insight.php` gives an
+unwritten insight a headline, a dateline, the dek, the featured image, a labelled
+route to wherever the piece points (`tae_onward_label()` names the destination
+rather than saying "Continue reading" over a link to a video), three read-next
+tiles from `tae_related()`, and the get-involved links. Nothing is invented to fill
+space and the page never dead-ends.
+
+What remains in `inc/thin-pages.php` is only the search-engine half: while there is
+no body the page is `noindex` and out of both core's and Yoast's sitemaps, because
+it is assembled largely from fields that also appear on the stream. Both lift
+automatically once a body exists. Deleting three filters indexes them from day one;
+the pages do not change either way.
+
+**The lead tile is explicit.** `tae_lead` on both post types. Unticked everywhere
+falls back to newest-first, the old behaviour. `.it--lead` spans four of the
+stream's six grid columns, so `tae_lead_first()` moves the flagged post to the
+front of the array — out of position it would leave a hole in the grid.
+
+**The stream caps at 60.** Not `-1`. `global.js` §09 filters and counts from the
+DOM, so anything past the cap would be invisible to search, to the topic filter and
+to the counters alike. A cap is a number to raise; an uncapped page is a cliff.
+
+**Seed correction.** Four insights were seeded with `Destination = /insights/` —
+links back to the page the tile is on. There was no prototype href to copy for
+those four and `/insights/` was the wrong stand-in. Removed; they now fall through
+to their own pages.
+
+## 14. Open assumptions
 
 Stated here rather than blocking; flag any that are wrong:
 
