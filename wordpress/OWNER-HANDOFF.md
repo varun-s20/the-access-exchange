@@ -21,7 +21,7 @@ list, something has gone wrong - tell us rather than working around it.
 | Guest name · Professional title · Organization | Printed together on the episode page and used across the site.                                         |
 | Episode number                                 | Optional. Prints as "Episode 12".                                                                      |
 | Duration                                       | `MM:SS`. Optional.                                                                                     |
-| **YouTube video ID**                           | The ID **only** - from `youtube.com/watch?v=`**`dQw4w9WgXcQ`**, just the bold part. Not the whole URL. |
+| **YouTube video ID or URL**                    | Paste the whole link if that is easier - the ID is pulled out of it and saved on its own. If the field comes back empty after saving, there was no video ID in what you pasted. |
 | Standfirst                                     | One or two sentences under the headline.                                                               |
 | Key takeaways                                  | One per line. Becomes the numbered list on the episode page.                                           |
 | Chapters                                       | One per line as `time                                                                                  | label`, e.g. `12:40 | The decision that changed the company`. Each becomes a button that jumps the video to that timestamp. |
@@ -61,6 +61,11 @@ An interview can hold more than one slot. If two claim the same slot, the one
 with the lower **Order** number wins (Order is in the right-hand column, under
 Page Attributes).
 
+**You do not have to open interviews to find out which is which.** The
+**Interviews** list has an _Appears in_ column showing every slot each one holds,
+plus its episode number and guest. Anything in no slot reads "Archive only",
+which is not a problem - it is still in the archive and still searchable.
+
 ---
 
 ## 3. Add a guest profile
@@ -92,6 +97,16 @@ a clip pulled out of an interview.
 
 Publishing the first takeaway makes the **Takeaways** section appear on the
 Interview Series page. It is not there before that, on purpose.
+
+**"Came from which interview" is worth filling in every time.** Setting it adds
+a **From this interview** section to that episode's page listing every piece cut
+out of the conversation, and puts a **Watch the full interview** button on the
+takeaway. Leave it empty and the piece still publishes - it just floats free of
+the conversation it came from. The **Takeaways** list has a _From_ column so you
+can see at a glance which ones are still unattached.
+
+Use **Order** to rank them; that is the sequence they appear in on the episode
+page.
 
 ---
 
@@ -180,7 +195,24 @@ Two rules:
 2. **Do not rename a `class="…"`.** The layout is driven by those names.
 
 Anything between `>` and `<` is yours. If you are unsure, change it, look at the
-page, and undo it if it is wrong - WordPress keeps revisions of every page.
+page, and undo it if it is wrong - WordPress keeps revisions of every page,
+interview and takeaway. On an interview or takeaway the **Revisions** panel is in
+the right-hand column; on a page it is under the editor.
+
+---
+
+## 9b. Change the Subscribe link or the Join button
+
+**Interviews → Links.** Two addresses that appear in more than one place:
+
+| Setting            | What it is                                                    |
+| ------------------ | ------------------------------------------------------------- |
+| YouTube channel    | The **Subscribe** button under the interview archive.         |
+| Join The Access Exchange  | Where every **Join The Access Exchange** button goes.                |
+
+Leave a field empty and it goes back to the shipped default, which is printed
+under the box. Change these here rather than by editing a page - the buttons are
+generated, so a page edit would not reach them.
 
 ---
 

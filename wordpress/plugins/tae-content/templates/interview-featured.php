@@ -3,8 +3,18 @@
  * Home §03 - the featured interview, with chapter jumps.
  *
  * Renders only when an interview holds the "Slot · Featured interview" tick.
- * Until then [tae_coming_soon] occupies the same position; the two are mutually
- * exclusive by construction, so publishing the interview is the whole handover.
+ * Until then home-launch.php occupies the same position - the two are
+ * mutually exclusive by construction (inc/shortcodes.php case 'home'), so
+ * ticking the slot is the whole handover.
+ *
+ * CLIENT FIX (2026-08-20): was a full-bleed background photo (.ph absolutely
+ * positioned behind the WHOLE section) with an opaque .feature-panel sitting
+ * on top of the left ~54% of it - client read this as the image "cropping"
+ * / bleeding behind the text area and wanted it boxed to the right only, to
+ * match home-launch.php's series-grid layout. Rebuilt on that exact same
+ * .series/.series-grid/.series-left/.series-right structure (same CSS,
+ * nothing new) - the image is now a contained box in the right column only,
+ * never behind the text, and both §03 states line up visually.
  *
  * @var WP_Post $post
  *
@@ -39,13 +49,9 @@ if ( $tae_who && $tae_stand ) {
 		: $tae_who . ' - ' . $tae_stand;
 }
 ?>
-<section class="feature" aria-labelledby="feature-h">
-	<div class="ph">
-		<?php echo tae_img( $post, 'tae-feature' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-	</div>
-	<div class="feature-in">
-		<div class="feature-panel">
-			<?php // §03 on the home page - this module takes the slot .soon vacates. ?>
+<section class="series feature" aria-labelledby="feature-h">
+	<div class="shell series-grid">
+		<div class="series-left">
 			<div class="tag lab"><span class="s">03</span><span>Featured interview</span></div>
 			<div class="f-meta lab">
 				<?php if ( $tae_cat ) : ?>
@@ -78,6 +84,10 @@ if ( $tae_who && $tae_stand ) {
 					</ul>
 				</div>
 			<?php endif; ?>
+		</div>
+
+		<div class="series-right">
+			<?php echo tae_img( $post, 'tae-feature' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 		</div>
 	</div>
 </section>

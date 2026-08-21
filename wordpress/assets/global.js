@@ -154,7 +154,7 @@
     },
     {
       t: "Get Involved",
-      d: "Every route into The Exchange",
+      d: "Every route into The Access Exchange",
       u: "/get-involved/",
     },
     {
@@ -163,12 +163,12 @@
       u: "/guests-partners/#guest",
     },
     {
-      t: "Partner with The Exchange",
+      t: "Partner with The Access Exchange",
       d: "Corporate sponsorship and partnership form",
       u: "/guests-partners/#corporate",
     },
     {
-      t: "Bring The Exchange to campus",
+      t: "Bring The Access Exchange to campus",
       d: "University and institutional engagement form",
       u: "/universities/#enquire",
     },
@@ -268,10 +268,9 @@
     run("menu", menu);
     run("siteSearch", siteSearch);
     run("reveals", reveals);
+    run("heroParallax", heroParallax);
     run("lazyVideo", lazyVideo);
     run("episode", episode);
-    run("prototypeForms", prototypeForms);
-    run("homeRail", homeRail);
     run("insightsIndex", insightsIndex);
     run("partnershipsGuide", partnershipsGuide);
     run("analytics", analytics);
@@ -392,7 +391,9 @@
     var mast = document.getElementById("mast");
     if (!mast) return;
     var onScroll = function () {
-      mast.classList.toggle("compact", window.scrollY > 70);
+      /* 70px meant the tall masthead held ~200px of the first screen well into
+         the scroll. It collapses as soon as the page moves. */
+      mast.classList.toggle("compact", window.scrollY > 12);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
@@ -598,6 +599,91 @@
   }
 
   /* ═══ 05 · SCROLL REVEALS ══════════════════════════════════════════════ */
+  /* ═══ 05b · HERO PARALLAX ══════════════════════════════════════════════
+     The stage photograph drifts as the page scrolls, so the hero has depth
+     rather than being a still behind type.
+
+     This was a CSS scroll-driven animation (animation-timeline: scroll()),
+     which is the lighter tool - no listener, runs on the compositor - but it is
+     Chrome and Safari only; Firefox needs a flag, so a third of visitors would
+     get a still. Since the brief names movement as part of the primary visual
+     reference, the parallax runs everywhere instead.
+
+     rAF-throttled, transform only, passive listener, and it does not run at all
+     under prefers-reduced-motion - so if a hero looks frozen, check the OS
+     animation setting before this function. The travel stays inside the media
+     box's overhang, so no edge is ever exposed. */
+  function heroParallax() {
+    // CLIENT FIX (2026-08-20), 4th pass - a live <video> hero flickered a
+    // black overlay in during scroll and cleared once scroll stopped. Two
+    // earlier attempts (a CSS layer-promotion hack, then filtering by
+    // querySelector("video") at runtime here) didn't clear it, so this hero
+    // now carries an explicit .stage-media--static class in the markup
+    // (wordpress/index.html §01) instead - a hard-coded flag, not something
+    // inferred from what happens to be inside the element. Excluded here,
+    // and will-change is stripped from it by that same class in global.css -
+    // nothing about disabling this depends on runtime DOM inspection or
+    // browser feature support anymore.
+    var media = $$(".stage-media").filter(function (el) {
+      return !el.classList.contains("stage-media--static");
+    });
+    if (!media.length) return;
+    if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+
+    /* Travel, in % of the MEDIA BOX height - which is what a percentage
+       translate resolves against, not the section's. The box overhangs its
+       section by 12% at the head and 24% at the foot (global.css §03), so it
+       stands 1.36x the section: 0.12/1.36 = 8.8% of slack above it, and
+       0.24/1.36 = 17.6% below. Sitting just inside both keeps every edge
+       covered, and the 25.5% between them is ~35% of the section height -
+       about 190px on a 74vh hero, which reads as movement.
+
+       The first version budgeted +-9% against a box that overhung by 12% at
+       each end, and then spent only three quarters of even that (see p below).
+       ~7% of the box travelled over a whole hero: technically parallax,
+       visually a still. */
+    var DOWN = 8.5;
+    var UP = 17;
+    var ticking = false;
+
+    function frame() {
+      ticking = false;
+
+      for (var i = 0; i < media.length; i++) {
+        var el = media[i];
+        var box = el.parentNode.getBoundingClientRect();
+
+        /* 0 while the section's top is at the top of the viewport, 1 once the
+           section has scrolled fully past it.
+
+           Normalised by the SECTION's own height, not the viewport's. A 74vh
+           hero is gone after 74vh of scroll, so dividing by the viewport
+           retired at p=0.74 and the last quarter of the range was never once
+           on screen. Measured per section rather than from window.scrollY, so
+           a stage placed anywhere on a page behaves the same as one at the
+           top. */
+        var p = Math.min(1, Math.max(0, -box.top / (box.height || 1)));
+
+        /* +DOWN to -UP: as the page scrolls down, the photograph rises inside
+           its frame. */
+        var shift = DOWN - (DOWN + UP) * p;
+        el.style.transform = "translate3d(0," + shift.toFixed(2) + "%,0)";
+      }
+    }
+
+    function request() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(frame);
+    }
+
+    frame();
+    window.addEventListener("scroll", request, { passive: true });
+    window.addEventListener("resize", request, { passive: true });
+  }
+
   function reveals() {
     var els = $$("[data-rv],[data-rule]");
     if (!els.length) return;
@@ -616,7 +702,11 @@
           }
         });
       },
-      { rootMargin: "0px 0px -10% 0px", threshold: 0.05 },
+      /* Positive bottom margin: the root box extends BELOW the viewport, so a
+         reveal starts just before its element arrives rather than once it is
+         already 10% inside. Paired with the shorter durations in global.css §03,
+         the motion lands with the reader instead of trailing them. */
+      { rootMargin: "0px 0px 12% 0px", threshold: 0 },
     );
     els.forEach(function (el) {
       io.observe(el);
@@ -670,7 +760,15 @@
         }, 0);
         video.dataset.start = secs;
         if (video.classList.contains("on")) {
-          /* already playing - rebuild the frame at the new timestamp */
+          /* already playing - rebuild the frame at the new timestamp.
+
+             Clearing .on is what lets §06 build a second iframe, but §12's
+             analytics listener reads that same flag to decide whether a click
+             is a fresh play. Cleared, every chapter jump on a running video
+             counted as another interview_play. The marker below is read and
+             consumed by §12 before §06 ever sees the click. Jumping about
+             inside one conversation is not five plays. */
+          video.dataset.rechapter = "1";
           video.classList.remove("on");
           var old = video.querySelector("iframe");
           if (old) old.remove();
@@ -699,104 +797,20 @@
     });
   }
 
-  /* ═══ 07 · PROTOTYPE FORMS - INERT, see the header note ════════════════ */
-  function prototypeForms() {
-    $$("form[data-validate]").forEach(function (f) {
-      f.addEventListener("submit", function (ev) {
-        ev.preventDefault();
+  /* ═══ 07 + 08 · REMOVED ═══════════════════════════════════════════════
+     Two modules that ran on every page load and could never do anything.
 
-        /* honeypot */
-        var hp = f.querySelector("[name=hp-field]");
-        if (hp && hp.value) return;
+     07 · PROTOTYPE FORMS bound to form[data-validate]. Contact Form 7 took
+     the forms over, and no form has carried that attribute since. It also
+     reached for .panel and #well, both of which went with the contact page.
 
-        var bad = $$("[required]", f).filter(function (el) {
-          return !el.checkValidity();
-        })[0];
-        if (bad) {
-          bad.focus();
-          if (bad.reportValidity) bad.reportValidity();
-          return;
-        }
+     08 · HOME GUEST RAIL bound to #rail, which went with the guest rail in
+     Phase 7.
 
-        var title = f.dataset.thanksTitle || "Thank you.";
-        var body =
-          f.dataset.thanks ||
-          "That has reached us. We read every message ourselves and will come back within two working days.";
-        var html =
-          '<div class="done"><b>' + title + "</b><p>" + body + "</p></div>";
-
-        /* the contact page swaps the whole panel so the card can re-measure */
-        var panel = f.closest(".panel");
-        if (panel) {
-          panel.innerHTML = html;
-          var well = document.getElementById("well");
-          if (well) well.style.height = "";
-        } else {
-          f.innerHTML = html;
-        }
-      });
-    });
-  }
-
-  /* ═══ 08 · HOME - guest rail (arrows + drag) ═══════════════════════════ */
-  function homeRail() {
-    var rail = document.getElementById("rail");
-    if (!rail) return;
-
-    var step = function () {
-      var card = rail.querySelector(".face");
-      return card ? card.offsetWidth + 24 : 300;
-    };
-
-    var prev = document.getElementById("railPrev");
-    var next = document.getElementById("railNext");
-    if (prev)
-      prev.addEventListener("click", function () {
-        rail.scrollBy({ left: -step() });
-      });
-    if (next)
-      next.addEventListener("click", function () {
-        rail.scrollBy({ left: step() });
-      });
-
-    var down = false,
-      startX = 0,
-      startL = 0,
-      moved = 0;
-
-    rail.addEventListener("pointerdown", function (e) {
-      if (e.pointerType === "touch") return;
-      down = true;
-      moved = 0;
-      startX = e.clientX;
-      startL = rail.scrollLeft;
-      rail.style.scrollBehavior = "auto";
-      rail.style.cursor = "grabbing";
-    });
-    window.addEventListener("pointermove", function (e) {
-      if (!down) return;
-      var d = e.clientX - startX;
-      moved = Math.abs(d);
-      rail.scrollLeft = startL - d;
-    });
-    window.addEventListener("pointerup", function () {
-      if (!down) return;
-      down = false;
-      rail.style.scrollBehavior = "";
-      rail.style.cursor = "";
-    });
-    /* swallow the click that ends a drag */
-    rail.addEventListener(
-      "click",
-      function (e) {
-        if (moved > 6) {
-          e.preventDefault();
-          moved = 0;
-        }
-      },
-      true,
-    );
-  }
+     Neither had a hook left in any page or template, so each was ~45 lines
+     parsed and skipped on every request. Deleted rather than left as a
+     comment: git has them if the rail is ever designed back in.
+     ═══════════════════════════════════════════════════════════════════════ */
 
   /* ═══ 09 · INSIGHTS - search + topic filter, re-laid out with FLIP ═════
      Cards travel to their new positions rather than snapping. First and Last
@@ -976,10 +990,13 @@
         });
       }
 
+      // CLIENT EDIT (2026-08-20): "% read" was always 0 - this looked for
+      // #s7, but the Universities page only has sections #s1..#s5, so `last`
+      // was always null and the whole progress block below was skipped.
       var bar = document.getElementById("outlineBar"),
         pct = document.getElementById("outlinePct"),
         first = document.getElementById("s1"),
-        last = document.getElementById("s7"),
+        last = document.getElementById("s5"),
         ticking = false;
 
       if (bar && pct && first && last) {
@@ -1103,16 +1120,40 @@
       });
     });
 
-    /* A play is a real engagement signal; a page view of an interview is not. */
-    $$("[data-yt]").forEach(function (v) {
-      v.addEventListener("click", function () {
-        if (v.classList.contains("on")) return; /* already playing */
+    /* A play is a real engagement signal; a page view of an interview is not.
+
+       ON DOCUMENT, IN THE CAPTURE PHASE, and both halves of that matter.
+
+       CAPTURE, because the .on guard is what stops a second click on a playing
+       video counting twice - and §06 sets .on inside its own click handler. Bound
+       per element, this listener registered after §06's (boot runs lazyVideo at
+       §272, analytics at §278), so on every first click §06 had already set .on
+       by the time this ran and the event was dropped. Not under-counted: never
+       sent, on any video, since the day the guard was written. Capture runs
+       before any handler on the target, so the flag is read before §06 writes it.
+
+       DOCUMENT, because the archive appends tiles from admin-ajax after boot and
+       a per-element loop never sees them. tae-archive.js deliberately does not
+       track these itself; this listener already covers them. */
+    document.addEventListener(
+      "click",
+      function (e) {
+        var v = e.target.closest ? e.target.closest("[data-yt]") : null;
+        if (!v || v.classList.contains("on")) return; /* already playing */
+        /* A chapter jump clears .on so §06 will rebuild the frame; without this
+           the rebuild would look exactly like a first play. §06b sets the flag
+           immediately before it clicks, and this is the only reader. */
+        if (v.dataset.rechapter) {
+          delete v.dataset.rechapter;
+          return;
+        }
         send("interview_play", {
           video_id: v.dataset.yt,
           title: v.dataset.title || document.title,
         });
-      });
-    });
+      },
+      true,
+    );
 
     /* Outbound, including the YouTube channel links in the header and footer. */
     document.addEventListener("click", function (e) {

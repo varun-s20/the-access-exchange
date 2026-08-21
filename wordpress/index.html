@@ -8,16 +8,18 @@
 
      SET IN WORDPRESS (Settings → Reading → "Your homepage displays" → this page)
 
-     SECTION ORDER follows the handoff §8 exactly:
-       01 Hero · 02 Why The Exchange · 03 Interview Series · 04 What Moves
-       Through The Exchange · 05 Universities · 06 Leaders & Corporate Partners
-       · 07 Live Experiences + Coaching · 08 Email capture
+     SECTION ORDER - CLIENT EDIT (2026-08-20): 04 and 05 swapped from the
+     original handoff §8 order at the client's request. Now:
+       01 Hero · 02 Why The Access Exchange · 03 Interview Series · 04
+       Universities · 05 What Moves Through The Access Exchange · 06 Leaders &
+       Corporate Partners · 07 Live Experiences + Coaching · 08 Email capture
 
-     LAUNCH STATE
-       §03 prints [tae_coming_soon], which disappears by itself the moment an
-       interview is given the "Slot · Featured interview" tick - the featured
-       module underneath it takes over the same position. Nothing to rebuild and
-       nothing to delete by hand; publishing the interview is the whole action.
+     LAUNCH STATE - CLIENT EDIT (2026-08-20): §03 now prints the single
+     shortcode [tae_interviews view="home"], which resolves to whichever of
+     two states applies (a featured interview, or the coming-soon card with
+     its sneak-peek image) on its own. See inc/shortcodes.php case 'home'.
+     Nothing to rebuild and nothing to delete by hand; featuring an interview
+     is the whole action.
 
      SEO - enter these in Yoast / Rank Math / SEOPress, NOT here.
        SEO title       The Access Exchange - Connecting you to the people,
@@ -52,33 +54,54 @@
 <div class="tae tae-home">
 
   <!-- ═══ 01 · HERO ═════════════════════════════════════════════════════ -->
-  <section class="thesis" aria-labelledby="thesis-h">
-    <div class="shell">
-      <div class="thesis-rule" aria-hidden="true"></div>
+  <section class="thesis stage" aria-labelledby="thesis-h">
+    <!-- CLIENT EDIT START — hero swapped from static image to looped background
+         video (2026-08-20), 3rd pass. Client asked for something like the
+         universities-page photo "A session run in the room your students
+         already use" - a speaker addressing a room, not a 2-person chat.
+         Swapped to Henri Mathieu-Saint-Laurent, "Engaging speaker at a
+         diverse business conference" (wide + close shots of a speaker and an
+         engaged, diverse audience). Still a placeholder pending final pick.
+         Poster keeps the old Unsplash still as the pre-load/no-JS frame.
+         Swap `src` for production footage, or a better stock pick, later -
+         the stage keeps its shape either way.
 
+         CLIENT FIX (2026-08-20), 4th pass on the scroll-flash bug - two
+         earlier attempts (a CSS layer-promotion hack, then filtering it out
+         of heroParallax by checking for a <video> child at runtime) didn't
+         clear it, and client asked to just remove the effect outright rather
+         than keep chasing it. The `stage-media--static` class below is an
+         unambiguous, hard-coded flag: global.js's heroParallax() skips any
+         element with this class before it ever looks at what's inside it,
+         and global.css strips will-change from it directly by class rather
+         than a :has(video) selector - no runtime DOM inspection, no
+         selector-support assumptions, nothing left to fail silently. This
+         hero gets zero scroll-driven motion now, full stop. -->
+    <div class="stage-media stage-media--static" aria-hidden="true">
+      <video autoplay muted loop playsinline poster="https://images.unsplash.com/photo-1544531586-fde5298cdd40?auto=format&fit=crop&w=2400&h=1400&q=72" fetchpriority="high">
+        <source src="https://videos.pexels.com/video-files/8244322/8244322-hd_1280_720_25fps.mp4" type="video/mp4">
+      </video>
+    </div>
+    <!-- CLIENT EDIT END -->
+
+    <div class="shell stage-in">
       <div class="thesis-grid">
         <h1 id="thesis-h">Get closer to the people and ideas <em>shaping what's next.</em></h1>
 
         <div class="thesis-side">
           <p>The Access Exchange brings people closer to the knowledge, perspective and opportunities that are often hardest to access.</p>
           <div class="thesis-cta">
-            <a href="/interview-series/" class="btn">Enter The Exchange</a>
+            <a href="/interview-series/" class="btn">Enter The Access Exchange</a>
             <a href="/guests-partners/#corporate" class="btn btn--ghost">Partner with us</a>
           </div>
         </div>
       </div>
 
-      <!-- SWAP FOR FOOTAGE: replace this <img> with
-           <video autoplay muted loop playsinline poster="…"><source src="…" type="video/mp4"></video>
-           once production footage exists. The band keeps its shape either way. -->
-      <div class="hero-visual">
-        <img src="https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?auto=format&fit=crop&w=2100&h=900&q=72" alt="A speaker alone on a lit stage in a darkened auditorium" decoding="async" fetchpriority="high">
-      </div>
     </div>
   </section>
 
   <!-- ═══ 02 · WHY THE EXCHANGE ═════════════════════════════════════════ -->
-  <section class="gap" aria-label="Why The Exchange">
+  <section class="gap" aria-label="Why The Access Exchange">
     <div class="shell">
       <div class="gap-in">
         <p data-rv>Some of the most valuable things people know never make it into a textbook, a search result or a job description.</p>
@@ -86,31 +109,67 @@
         <p class="hard" data-rv style="--d:200ms">Knowledge becomes more powerful when it moves.</p>
       </div>
       <hr data-rule style="--d:280ms">
-      <p class="turn" data-rv style="--d:360ms">The Exchange gives that<br>experience somewhere to travel.</p>
+      <p class="turn" data-rv style="--d:360ms">The Access Exchange gives that<br>experience somewhere to travel.</p>
     </div>
   </section>
 
   <!-- ═══ 03 · INTERVIEW SERIES ═════════════════════════════════════════
        Near the top by instruction - this is the launch priority.
-       [tae_coming_soon] holds the position until an interview is featured;
-       [tae_interviews view="featured"] takes it from there. Exactly one of the
-       two ever renders. -->
-  <section class="series" aria-labelledby="series-h">
-    <div class="shell">
-      <div class="tag lab"><span class="s">03</span><span>Interview Series</span></div>
-      <h2 class="h2" id="series-h" data-rv>Go beyond the biography.</h2>
-      <p class="lede" data-rv style="--d:80ms">Titles tell us where someone arrived. We're interested in what they learned getting there - the decisions, turning points, lessons, relationships and ideas that shaped the journey.</p>
+       CLIENT EDIT START (2026-08-20), 2nd pass — was two shortcodes
+       ([tae_coming_soon until="feature"] + [tae_interviews view="featured"]),
+       then briefly the heading below as static markup with the shortcode
+       output in its own block underneath. Client wanted the heading and the
+       coming-soon copy sharing ONE row with the sneak-peek image, so the
+       heading moved into inc/shortcodes.php case 'home' /
+       templates/home-launch.php, which now prints this whole section itself
+       - a featured pick -> the featured module, anything else -> the
+       heading + coming-soon copy + sneak-peek image (from Interviews ->
+       Links in wp-admin) as one row. There is deliberately no static markup
+       left here for §03; both states are fully self-contained shortcode
+       output, the same way §04/§05 already work below. -->
+  [tae_interviews view="home"]
+  <!-- CLIENT EDIT END -->
 
-      [tae_coming_soon until="feature" line="First interview coming soon." body="Join The Exchange and you will hear about it before it goes out." cta="Join The Exchange" href="#join"]
+  <!-- ═══ 04 · UNIVERSITIES ══════════════════════════════════════════════
+       CLIENT EDIT (2026-08-20): swapped with "What moves through The Access
+       Exchange" below (was §05) per client request. Number badges renumbered
+       to match the new order - Universities is 04 now, the four pillars are
+       05. -->
+  <section class="campus" aria-labelledby="campus-h">
+    <div class="shell campus-grid">
+      <div class="ph" data-rv>
+        <img src="https://images.unsplash.com/photo-1663162550938-60f70fab5d31?auto=format&fit=crop&w=900&h=1200&q=72" alt="Students walking together across a university campus" loading="lazy" decoding="async">
+      </div>
+      <div>
+        <div class="tag lab"><span class="s">04</span><span>Universities &amp; institutions</span></div>
+        <h2 class="h2" id="campus-h" data-rv>Bring The Access Exchange into the room.</h2>
+        <p class="lede" data-rv style="--d:80ms">Give students direct access to experienced leaders, industry perspective and conversations that take learning beyond the classroom.</p>
+
+        <ol class="steps">
+          <li data-rv><span class="n lab">01</span><p><strong>Leadership Talk + Q&amp;A.</strong> A focused leadership session, followed by direct student questions.</p></li>
+          <li data-rv style="--d:70ms"><span class="n lab">02</span><p><strong>Moderated Leadership Discussion.</strong> A deeper discussion around experience, perspective and the thinking behind the work.</p></li>
+          <li data-rv style="--d:140ms"><span class="n lab">03</span><p><strong>Industry Session.</strong> A topic-driven programme with experienced practitioners.</p></li>
+          <li data-rv style="--d:210ms"><span class="n lab">04</span><p><strong>Custom Campus Experience.</strong> Programming shaped around your students, academic programmes, industry themes or institutional objectives.</p></li>
+        </ol>
+
+        <div class="tag lab"><span>Who we work with</span></div>
+        <ul class="whos">
+          <li>Colleges</li><li>Academic programmes</li><li>Student organisations</li>
+          <li>Professional associations</li><li>Careers services</li><li>Alumni relations</li>
+        </ul>
+
+        <p class="reassure" data-rv>Bring the experience of industry closer to the people preparing to shape it.</p>
+        <a href="/universities/" class="btn">Bring The Access Exchange to campus</a>
+      </div>
     </div>
   </section>
 
-  [tae_interviews view="featured"]
-
-  <!-- ═══ 04 · WHAT MOVES THROUGH THE EXCHANGE ══════════════════════════ -->
+  <!-- ═══ 05 · WHAT MOVES THROUGH THE EXCHANGE ══════════════════════════
+       CLIENT EDIT (2026-08-20): was §04, swapped below Universities per
+       client request - see the note on the Universities section above. -->
   <section class="standard" aria-labelledby="standard-h">
     <div class="shell">
-      <div class="tag lab"><span class="s">04</span><span>What moves through The Exchange</span></div>
+      <div class="tag lab"><span class="s">05</span><span>What moves through The Access Exchange</span></div>
       <h2 class="h2" id="standard-h" data-rv>Four things worth getting closer to.</h2>
       <div class="tenets">
         <div class="tenet" data-rv>
@@ -133,64 +192,50 @@
     </div>
   </section>
 
-  <!-- ═══ 05 · UNIVERSITIES ═════════════════════════════════════════════ -->
-  <section class="campus" aria-labelledby="campus-h">
-    <div class="shell campus-grid">
-      <div class="ph" data-rv>
-        <img src="https://images.unsplash.com/photo-1663162550938-60f70fab5d31?auto=format&fit=crop&w=900&h=1200&q=72" alt="Students walking together across a university campus" loading="lazy" decoding="async">
-      </div>
-      <div>
-        <div class="tag lab"><span class="s">05</span><span>Universities &amp; institutions</span></div>
-        <h2 class="h2" id="campus-h" data-rv>Bring The Exchange into the room.</h2>
-        <p class="lede" data-rv style="--d:80ms">Give students direct access to experienced leaders, industry perspective and conversations that take learning beyond the classroom.</p>
-
-        <ol class="steps">
-          <li data-rv><span class="n lab">01</span><p><strong>Leadership Talk + Q&amp;A.</strong> A focused leadership session, followed by direct student questions.</p></li>
-          <li data-rv style="--d:70ms"><span class="n lab">02</span><p><strong>Moderated Leadership Discussion.</strong> A deeper discussion around experience, perspective and the thinking behind the work.</p></li>
-          <li data-rv style="--d:140ms"><span class="n lab">03</span><p><strong>Industry Session.</strong> A topic-driven programme with experienced practitioners.</p></li>
-          <li data-rv style="--d:210ms"><span class="n lab">04</span><p><strong>Custom Campus Experience.</strong> Programming shaped around your students, academic programmes, industry themes or institutional objectives.</p></li>
-        </ol>
-
-        <div class="tag lab"><span>Who we work with</span></div>
-        <ul class="whos">
-          <li>Colleges</li><li>Academic programmes</li><li>Student organisations</li>
-          <li>Professional associations</li><li>Careers services</li><li>Alumni relations</li>
-        </ul>
-
-        <p class="reassure" data-rv>Bring the experience of industry closer to the people preparing to shape it.</p>
-        <a href="/universities/" class="btn">Bring The Exchange to campus</a>
-      </div>
-    </div>
-  </section>
-
   <!-- ═══ 06 · LEADERS &amp; CORPORATE PARTNERS ═════════════════════════ -->
   <section class="doors" aria-label="Leaders and corporate partners">
     <div class="doors-in">
       <div class="door">
         <div class="tag lab"><span>For leaders</span></div>
         <h2>Experience should not disappear inside the people who earned it.</h2>
-        <p>Bring your perspective, lessons and ideas into The Exchange. Your title tells us where you are - we're interested in what you know now.</p>
+        <p>Bring your perspective, lessons and ideas into The Access Exchange. Your title tells us where you are - we're interested in what you know now.</p>
         <a href="/guests-partners/#guest" class="btn">Be considered as a guest</a>
       </div>
       <div class="door">
-        <div class="tag lab"><span>For organisations</span></div>
+        <!-- CLIENT EDIT (2026-08-20): "For organisations" -> "For Corporations" -->
+        <div class="tag lab"><span>For Corporations</span></div>
         <h2>Some of your strongest voices are already inside your organisation.</h2>
-        <p>Sponsor an interview. Nominate a leader. Build something meaningful with The Exchange.</p>
-        <a href="/guests-partners/#corporate" class="btn btn--ghost">Explore partnerships</a>
+        <p>Sponsor an interview. Nominate a leader. Build something meaningful with The Access Exchange.</p>
+        <a href="/guests-partners/#corporate" class="btn">Explore partnerships</a>
       </div>
     </div>
-    <p class="doors-foot lab">Something else in mind? <a href="/get-involved/">Get involved</a></p>
+    <!-- CLIENT EDIT START (2026-08-20) — "Something else in mind?" footer line
+         redesigned from a plain centred sentence into a bordered callout band,
+         so it reads as its own invitation rather than trailing off the two
+         doors above it. Markup swap: <p class="doors-foot"> -> <div
+         class="doors-more"> with its own heading + button. CSS at
+         "── LEADERS & CORPORATE PARTNERS ──" in global.css. -->
+    <div class="doors-more">
+      <p class="lab">Something else in mind?</p>
+      <h3>Let's talk about it anyway.</h3>
+      <a href="/get-involved/" class="btn btn--ghost">Get involved</a>
+    </div>
+    <!-- CLIENT EDIT END -->
   </section>
 
   <!-- ═══ 07 · LIVE EXPERIENCES + COACHING ══════════════════════════════ -->
   <section class="exchange" aria-label="Experiences and coaching">
     <div class="split">
       <article class="side">
+        <!-- CLIENT EDIT (2026-08-20), 2nd pass - first replacement (a small
+             office group) wasn't the right fit either. Swapped for a wider
+             panel/conference shot - closer to what "Live experiences" (talks,
+             panels, events) actually looks like, with visible diversity. -->
         <div class="ph">
-          <img src="https://images.unsplash.com/photo-1544531586-fde5298cdd40?auto=format&fit=crop&w=1200&h=900&q=72" alt="A speaker facing a full auditorium" loading="lazy" decoding="async">
+          <img src="https://images.pexels.com/photos/8344905/pexels-photo-8344905.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="A diverse audience engaged in a panel discussion" loading="lazy" decoding="async">
         </div>
         <span class="num lab">Live experiences</span>
-        <h2>The Exchange goes beyond the screen.</h2>
+        <h2>The Access Exchange goes beyond the screen.</h2>
         <p>Leadership discussions, industry panels, learning experiences and events that bring people, ideas and opportunity together in the same room.</p>
         <a href="/experiences/" class="ln">Explore experiences <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></a>
       </article>
@@ -216,7 +261,7 @@
       <h2 class="h2" id="signal-h" data-rv>Stay close to what's coming.</h2>
       <p class="lede" data-rv style="--d:80ms">New interviews. New perspectives. New rooms.</p>
 
-      [contact-form-7 id="REPLACE_ID_JOIN" title="TAE - Join The Exchange" html_class="form form--join"]
+      [contact-form-7 id="REPLACE_ID_JOIN" title="TAE - Join The Access Exchange" html_class="form form--join"]
 
       <span class="fine lab">No more than one email a week. Unsubscribe in one click.</span>
     </div>

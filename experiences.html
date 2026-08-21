@@ -166,7 +166,7 @@
                        ideas and opportunity into the same room.  (152 chars)
        Focus keyphrase leadership events and panels
        Canonical       https://theaccessexchange.com/experiences/
-       OG title        The Exchange goes beyond the screen
+       OG title        The Access Exchange goes beyond the screen
        OG description  Leadership discussions, industry panels and events that
                        bring people, ideas and opportunity together.
        Twitter card    summary_large_image
@@ -189,17 +189,17 @@
 <div class="tae tae-experiences">
 
   <!-- ═══ 01 · HERO ═══════════════════════════════════════════════════════ -->
-  <section class="xp-lead" aria-labelledby="xp-h">
-    <div class="shell">
-      <p class="kicker lab">Experiences</p>
-      <h1 id="xp-h">The Exchange goes beyond the screen.</h1>
-      <p class="lede">Leadership discussions, industry panels, learning experiences and Access Exchange events bring people, ideas, knowledge and opportunity together in the same room.</p>
+  <section class="xp-lead stage stage--soft" aria-labelledby="xp-h">
+    <!-- SWAP FOR FOOTAGE: replace this <img> with a <video> of an actual
+         Access Exchange event once one has been filmed. Same shape either way. -->
+    <div class="stage-media" aria-hidden="true">
+      <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=2400&h=1400&q=72" alt="" decoding="async" fetchpriority="high">
+    </div>
 
-      <!-- SWAP FOR FOOTAGE: replace this <img> with a <video> of an actual
-           Access Exchange event once one has been filmed. Same shape either way. -->
-      <div class="hero-visual">
-        <img src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=2100&h=900&q=72" alt="A microphone in front of a blurred audience" decoding="async" fetchpriority="high">
-      </div>
+    <div class="shell stage-in">
+      <p class="kicker lab">Experiences</p>
+      <h1 id="xp-h">The Access Exchange goes beyond the screen.</h1>
+      <p class="lede">Leadership discussions, industry panels, learning experiences and Access Exchange events bring people, ideas, knowledge and opportunity together in the same room.</p>
     </div>
   </section>
 
@@ -218,7 +218,7 @@
         </article>
 
         <article class="kind" data-rv style="--d:80ms">
-          <div class="ph"><img src="https://images.unsplash.com/photo-1560439514-4e9645039924?auto=format&fit=crop&w=1200&h=900&q=72" alt="A large audience gathered at an industry event" loading="lazy" decoding="async"></div>
+          <div class="ph"><img src="https://images.unsplash.com/photo-1544531586-fde5298cdd40?auto=format&fit=crop&w=1200&h=900&q=72" alt="A speaker facing a full auditorium" loading="lazy" decoding="async"></div>
           <span class="n lab">02</span>
           <h3>Industry panels</h3>
           <p>Several practitioners who genuinely disagree, moderated so the disagreement is the useful part rather than the awkward part.</p>
@@ -252,7 +252,7 @@
 
       <div class="room-pair">
         <figure data-rv>
-          <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=1000&h=750&q=72" alt="An audience listening closely during a session" loading="lazy" decoding="async">
+          <img src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=1000&h=750&q=72" alt="A microphone in front of a blurred audience" loading="lazy" decoding="async">
           <figcaption class="lab">The listening, which is most of it</figcaption>
         </figure>
         <figure data-rv style="--d:90ms">
@@ -269,7 +269,7 @@
   <section class="routes" aria-labelledby="routes-h">
     <div class="shell">
       <p class="kicker lab">Bring one together</p>
-      <h2 class="h2" id="routes-h" data-rv>Where would you like The Exchange to be?</h2>
+      <h2 class="h2" id="routes-h" data-rv>Where would you like The Access Exchange to be?</h2>
 
       <div class="routes-grid">
         <div class="route" data-rv>
@@ -282,7 +282,7 @@
         <div class="route" data-rv style="--d:80ms">
           <span class="n lab">02</span>
           <h3>With your organisation</h3>
-          <p>Sponsor an experience, host one for your people, or build something broader with The Exchange.</p>
+          <p>Sponsor an experience, host one for your people, or build something broader with The Access Exchange.</p>
           <a href="guests-partners.html#corporate" class="ln">Explore partnerships <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </div>
 
@@ -319,7 +319,7 @@
     <div class="foot-cols">
 
       <div>
-        <h4 class="lab">The Exchange</h4>
+        <h4 class="lab">The Access Exchange</h4>
         <ul>
           <li><a href="interview-series.html">Interview Series</a></li>
           <li><a href="interview-series.html#takeaways">Takeaways</a></li>
@@ -333,8 +333,8 @@
         <h4 class="lab">Get involved</h4>
         <ul>
           <li><a href="guests-partners.html#guest">Share your perspective</a></li>
-          <li><a href="guests-partners.html#corporate">Partner with The Exchange</a></li>
-          <li><a href="universities.html#enquire">Bring The Exchange to campus</a></li>
+          <li><a href="guests-partners.html#corporate">Partner with The Access Exchange</a></li>
+          <li><a href="universities.html#enquire">Bring The Access Exchange to campus</a></li>
           <li><a href="coaching.html#coaching">Explore coaching</a></li>
           <li><a href="coaching.html#training">Explore coach training</a></li>
           <li><a href="get-involved.html">General inquiry</a></li>
@@ -365,13 +365,19 @@
       <span>&copy; 2026 The Access Exchange</span>
       <span>Houston, Texas</span>
       <span><a href="privacy.html">Privacy</a> &middot; <a href="terms.html">Terms</a></span>
+      <!-- Build credit. Deliberately a bare <a href> with NO rel attribute:
+           that is already dofollow, which is the point. Do not add nofollow,
+           sponsored or ugc, and do not add rel="dofollow" - it is not a real
+           value and browsers and crawlers both ignore it. No target="_blank"
+           either, so no noopener is needed. -->
+      <span><a href="https://digitalheroesco.com">Created with love by Digital Heroes</a></span>
     </div>
   </div>
 </div>
 
 </footer>
 
-<script>window.TAE_INDEX=[];</script>
+<script>window.TAE_INDEX=[{t:"Home",d:"The platform and every way into it",u:"index.html"},{t:"Interview Series",d:"In-depth interviews, takeaways and the archive",u:"interview-series.html"},{t:"Guests & Partners",d:"Guest consideration, sponsorship, nomination",u:"guests-partners.html"},{t:"Universities & Institutions",d:"Leadership talks, discussions, Q&A, custom programmes",u:"universities.html"},{t:"Experiences",d:"Live panels, leadership discussions and events",u:"experiences.html"},{t:"Coaching",d:"Professional coaching, coach training and certification",u:"coaching.html"},{t:"About",d:"Philosophy, mission and the founder story",u:"about.html"},{t:"Get Involved",d:"Every route into The Access Exchange",u:"get-involved.html"},{t:"Share your perspective",d:"Guest consideration form",u:"guests-partners.html#guest"},{t:"Partner with The Access Exchange",d:"Corporate sponsorship and partnership form",u:"guests-partners.html#corporate"},{t:"Bring The Access Exchange to campus",d:"University and institutional engagement form",u:"universities.html#enquire"},{t:"Explore coaching",d:"Professional coaching inquiry",u:"coaching.html#coaching"},{t:"Explore coach training",d:"Coach training and certification inquiry",u:"coaching.html#training"},{t:"Takeaways",d:"Standout ideas and clips from the interviews",u:"interview-series.html#takeaways"},{t:"The archive",d:"Every interview in full",u:"interview-series.html#episodes"},{t:"From bootcamp to staff engineer in five years",d:"Amara Osei, Staff Engineer",u:"interview-series.html"},{t:"What a backend interview loop actually tests",d:"Ravi Menon, Engineering Manager",u:"interview-series.html"},{t:"Moving from support into product without a technical degree",d:"Fiona Bright, Senior Product Manager",u:"interview-series.html"},{t:"The parts of a data science job nobody puts in the job spec",d:"Dr Leila Haddad, Lead Data Scientist",u:"interview-series.html"},{t:"Forty applications, two offers",d:"Tobi Adeyinka, Junior Developer",u:"interview-series.html"},{t:"Building a portfolio when you have never shipped anything",d:"Marta Kowalska, Product Designer",u:"interview-series.html"},{t:"Switching from civil engineering at thirty-one",d:"Callum Reid, Platform Engineer",u:"interview-series.html"},{t:"Internships, placements and the routes people forget exist",d:"Grace Nwosu, Early Careers Lead",u:"interview-series.html"}];</script>
 <script src="assets/global.js" defer></script>
 </body>
 </html>

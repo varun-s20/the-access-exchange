@@ -15,14 +15,14 @@
        · The FAQPage schema below must stay in sync with the accordion markup.
 
      SEO - enter these in Yoast / Rank Math / SEOPress, NOT here.
-       SEO title       Universities & Institutions - Bring The Exchange to your
+       SEO title       Universities & Institutions - Bring The Access Exchange to your
                        campus | The Access Exchange
        Meta desc       Leadership talks, moderated discussions, industry
                        sessions and custom campus programming that give students
                        direct access to experienced leaders.  (152 chars)
        Focus keyphrase university leadership speaker
        Canonical       https://theaccessexchange.com/universities/
-       OG title        Bring The Exchange to your campus
+       OG title        Bring The Access Exchange to your campus
        OG description  Some lessons only experience can teach.
        Twitter card    summary_large_image
        Robots          index, follow
@@ -40,20 +40,10 @@
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "WebPage",
-      "@id": "https://theaccessexchange.com/universities/#webpage",
-      "url": "https://theaccessexchange.com/universities/",
-      "name": "Universities & Institutions",
-      "description": "Leadership talks, moderated discussions, industry sessions and custom campus programming that give students direct access to experienced leaders.",
-      "isPartOf": { "@id": "https://theaccessexchange.com/#site" },
-      "publisher": { "@id": "https://theaccessexchange.com/#org" },
-      "inLanguage": "en-GB"
-    },
-    {
       "@type": "Service",
       "name": "University and institutional engagements",
       "serviceType": "Leadership talks, moderated discussions, industry sessions and custom campus programming",
-      "provider": { "@id": "https://theaccessexchange.com/#org" },
+      "provider": { "@id": "https://theaccessexchange.com/#organization" },
       "audience": {
         "@type": "Audience",
         "audienceType": "Colleges, academic programmes, student organisations and professional associations"
@@ -103,7 +93,7 @@
   <div class="head">
     <div class="shell col">
       <p class="kicker lab">Universities &amp; institutions</p>
-      <h1>Bring The Exchange to your campus.</h1>
+      <h1>Bring The Access Exchange to your campus.</h1>
       <p class="stand">Give students direct access to experienced leaders, industry perspective and conversations that make the world beyond the classroom more visible.</p>
       <div class="head-cta">
         <a href="#enquire" class="btn">Request an engagement</a>
@@ -118,10 +108,18 @@
       <span class="num lab">01 - Why it matters</span>
       <h2 id="s1-h">Some lessons only experience can teach.</h2>
       <div class="body">
-        <p>The classroom builds knowledge. The Exchange brings students closer to the people who have lived the decisions, changes and challenges behind it.</p>
+        <p>The classroom builds knowledge. The Access Exchange brings students closer to the people who have lived the decisions, changes and challenges behind it.</p>
         <p>What a leader knows about a turning point in their career, an industry shift they had to read correctly, or a call they got wrong and had to recover from - none of that is in a syllabus. It is held by the people who were there, and it usually reaches students only if they happen to know somebody.</p>
         <div class="pull"><q>Bring the experience of industry closer to the people preparing to shape it.</q></div>
         <p>Everything below is the mechanics of getting the right person in front of the right audience, on your timetable.</p>
+        <!-- CLIENT EDIT (2026-08-20): per-section CTA to #enquire, added to
+             sections 01-04 below (the FAQ section's was removed per client
+             feedback - a "still have questions" button reads redundant right
+             above the FAQ accordion itself). Wording is varied per section on
+             purpose rather than repeating "Request an engagement" four times.
+             Solid .btn, not .btn--out - client felt the outline style read as
+             too subtle for a CTA. -->
+        <a href="#enquire" class="btn" style="margin-top:clamp(24px,2.8vw,38px)">Bring this to your campus</a>
       </div>
     </div>
   </section>
@@ -146,6 +144,7 @@
         <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1600&h=686&q=72" alt="A speaker addressing a full lecture hall" loading="lazy" decoding="async">
         <figcaption class="lab">A session run in the room your students already use</figcaption>
       </figure>
+      <a href="#enquire" class="btn" style="margin-top:clamp(24px,2.8vw,38px)">Talk through the right format</a>
     </div>
   </section>
 
@@ -164,6 +163,7 @@
         <li><span class="n">03</span><div><b>We run it</b><span>On campus or online, on a timeline that fits your term and your assessment periods.</span></div></li>
         <li><span class="n">04</span><div><b>You keep it</b><span>Recording and materials where the speaker agrees, and a named contact who stays with the relationship.</span></div></li>
       </ul>
+      <a href="#enquire" class="btn" style="margin-top:clamp(24px,2.8vw,38px)">Start the process</a>
     </div>
   </section>
 
@@ -201,6 +201,7 @@
         <figure><img src="https://images.unsplash.com/photo-1670528148572-9270351b95bd?auto=format&fit=crop&w=800&h=600&q=72" alt="A university building" loading="lazy" decoding="async">
           <figcaption class="lab">Leadership talks and moderated discussions</figcaption></figure>
       </div>
+      <a href="#enquire" class="btn" style="margin-top:clamp(24px,2.8vw,38px)">See where you fit</a>
     </div>
   </section>
 
@@ -237,6 +238,12 @@
           <p class="a">Usually yes, with the speaker's agreement. Anything recorded with your students is yours to reuse.</p>
         </details>
       </div>
+      <!-- CLIENT EDIT (2026-08-20): a "still have questions" CTA was here,
+           right above this FAQ accordion - removed per client feedback, it
+           read redundant next to the FAQ itself. The other 4 per-section
+           CTAs on this page ("Bring this to your campus" / "Talk through the
+           right format" / "Start the process" / "See where you fit") are
+           unaffected. -->
     </div>
   </section>
 

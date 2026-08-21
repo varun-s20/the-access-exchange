@@ -16,6 +16,11 @@
      individual. The founder's name, bio and portrait have not been supplied, so
      §03 below carries clearly-marked placeholders. Do not launch with them.
 
+     CLIENT EDIT (2026-08-20): also blocked on content now - the 4-portrait
+     team strip above §01/§02 and the 3-person team grid in new §04 (see the
+     "CLIENT EDIT" comments at each) are placeholder photos, names, roles and
+     quotes. Same rule: do not launch with them.
+
      SEO - enter these in Yoast / Rank Math / SEOPress, NOT here.
        SEO title       About - Access changes what becomes possible |
                        The Access Exchange
@@ -83,10 +88,33 @@
     </div>
   </section>
 
-  <figure class="plate">
-    <img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?auto=format&fit=crop&w=1800&h=760&q=72" alt="A microphone in a recording studio" loading="lazy" decoding="async">
-    <figcaption class="lab">A conversation, recorded properly, so what is said in it can travel</figcaption>
-  </figure>
+  <!-- CLIENT EDIT START (2026-08-20) — the single "conversation, recorded"
+       studio photo replaced with a strip of 4 team portraits, per client
+       request. PLACEHOLDER PORTRAITS AND NAMES - swap each src, and each
+       name, for the real team member when supplied. These 4 names are used
+       consistently: the same 3 (Priya/Daniel/Sofia) reappear with a role and
+       quote in the crew grid in §04 below; Marcus appears only here. Markup:
+       figure.plate -> section.team-strip, 4x figure.team-shot. CSS at
+       "── TEAM STRIP · 4 portraits ──" in global.css. -->
+  <section class="team-strip" aria-label="The team behind The Access Exchange">
+    <figure class="team-shot">
+      <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=700&h=900&q=72" alt="Portrait placeholder - replace with a team member's photograph" loading="lazy" decoding="async">
+      <figcaption class="lab">Priya Raghavan</figcaption>
+    </figure>
+    <figure class="team-shot">
+      <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=700&h=900&q=72" alt="Portrait placeholder - replace with a team member's photograph" loading="lazy" decoding="async">
+      <figcaption class="lab">Daniel Okonjo</figcaption>
+    </figure>
+    <figure class="team-shot">
+      <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=700&h=900&q=72" alt="Portrait placeholder - replace with a team member's photograph" loading="lazy" decoding="async">
+      <figcaption class="lab">Sofia Marchetti</figcaption>
+    </figure>
+    <figure class="team-shot">
+      <img src="https://images.unsplash.com/photo-1607346256330-dee7af15f7c5?auto=format&fit=crop&w=700&h=900&q=72" alt="Portrait placeholder - replace with a team member's photograph" loading="lazy" decoding="async">
+      <figcaption class="lab">Marcus Bell</figcaption>
+    </figure>
+  </section>
+  <!-- CLIENT EDIT END -->
 
   <!-- ═══ 02 · PHILOSOPHY ═════════════════════════════════════════════════ -->
   <section class="creed" aria-labelledby="creed-h">
@@ -135,7 +163,46 @@
     </div>
   </section>
 
-  <!-- ═══ 04 · COLOPHON ═══════════════════════════════════════════════════ -->
+  <!-- ═══ 04 · THE TEAM ═══════════════════════════════════════════════════
+       CLIENT EDIT START (2026-08-20) — new section, added below the founder
+       per client request: "the founder remains the main, the rest 3 below."
+       PLACEHOLDER PEOPLE - names/roles/quotes/photos below are all
+       placeholders standing in for the real roster, swap once supplied.
+       Same 3 people as the team strip above (matched by photo). CSS at
+       "── THE TEAM · below the founder ──" in global.css, reusing the
+       .facts-grid divider rhythm the page already uses for the colophon
+       strip below. -->
+  <section class="crew" aria-labelledby="crew-h">
+    <div class="shell">
+      <h2 class="lab" id="crew-h" style="color:var(--ink-3);margin-bottom:clamp(24px,3vw,40px)">The team behind the founder</h2>
+      <div class="crew-grid">
+        <figure class="crew-card" data-rv>
+          <div class="ph"><img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=700&h=860&q=72" alt="Portrait placeholder - replace with this team member's photograph" loading="lazy" decoding="async"></div>
+          <figcaption>
+            <blockquote>"The best conversations happen when someone stops performing and starts remembering."</blockquote>
+            <div class="crew-name">Priya Raghavan<span class="lab">Head of Programming, The Access Exchange</span></div>
+          </figcaption>
+        </figure>
+        <figure class="crew-card" data-rv style="--d:80ms">
+          <div class="ph"><img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=700&h=860&q=72" alt="Portrait placeholder - replace with this team member's photograph" loading="lazy" decoding="async"></div>
+          <figcaption>
+            <blockquote>"Every episode has a moment nobody planned for. That's the one we keep."</blockquote>
+            <div class="crew-name">Daniel Okonjo<span class="lab">Head of Production, The Access Exchange</span></div>
+          </figcaption>
+        </figure>
+        <figure class="crew-card" data-rv style="--d:160ms">
+          <div class="ph"><img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=700&h=860&q=72" alt="Portrait placeholder - replace with this team member's photograph" loading="lazy" decoding="async"></div>
+          <figcaption>
+            <blockquote>"Access means someone picks up the phone. That's the whole job, some days."</blockquote>
+            <div class="crew-name">Sofia Marchetti<span class="lab">Head of Partnerships, The Access Exchange</span></div>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+  <!-- CLIENT EDIT END -->
+
+  <!-- ═══ 05 · COLOPHON ═══════════════════════════════════════════════════ -->
   <section class="facts" aria-label="The short version">
     <div class="shell">
 

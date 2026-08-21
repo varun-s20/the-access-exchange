@@ -37,6 +37,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 WP = ROOT / "wordpress"
 
+# --demo fills the site with 27 fake interviews so the populated state can be
+# looked at before a real one exists. Everything it writes is removed by the next
+# plain build - see tools/demo_interviews.py.
+DEMO = "--demo" in sys.argv
+if DEMO:
+    import demo_interviews as demo
+
 
 # ── URL map ────────────────────────────────────────────────────────────────
 # WordPress pretty permalink → the flat file the preview serves. Applied to
@@ -85,7 +92,7 @@ PAGES = [
          desc="Be considered as a guest on the Interview Series, sponsor an interview, nominate a leader, or build a partnership with The Access Exchange."),
     dict(out="universities.html", nav="/universities/", scope="tae-universities",
          body="wp", src="universities.html",
-         title="Universities & Institutions - Bring The Exchange to your campus | The Access Exchange",
+         title="Universities & Institutions - Bring The Access Exchange to your campus | The Access Exchange",
          desc="Leadership talks, moderated discussions, industry sessions and custom campus programming that give students direct access to experienced leaders."),
     dict(out="experiences.html", nav="/experiences/", scope="tae-experiences",
          body="wp", src="experiences.html",
@@ -109,8 +116,8 @@ PAGES = [
          desc="The terms that govern use of theaccessexchange.com."),
     dict(out="get-involved.html", nav="/get-involved/", scope="tae-involved",
          body="wp", src="get-involved.html",
-         title="Get Involved - How do you want to enter The Exchange? | The Access Exchange",
-         desc="Share your perspective, partner with The Exchange, bring it to your campus, explore coaching or coach training, or ask us anything else."),
+         title="Get Involved - How do you want to enter The Access Exchange? | The Access Exchange",
+         desc="Share your perspective, partner with The Access Exchange, bring it to your campus, explore coaching or coach training, or ask us anything else."),
 ]
 
 # Pages the nav points at that no phase has built yet. Empty since Phase 7 -
@@ -127,6 +134,10 @@ STUBS = []
 def sc_coming_soon(a):
     """templates/coming-soon.php. The preview is always the pre-launch state -
     there is no featured interview in a static build to retire it."""
+    # Under --demo there is: an interview holds the Featured slot and 27 are
+    # published, so both until="feature" and until="any" retire themselves.
+    if DEMO:
+        return ""
     body = f'\n\t\t<p class="soon-body">{a["body"]}</p>' if a.get("body") else ""
     cta = (f'\n\t\t<a href="{to_local(a.get("href", "#"))}" class="btn">{a["cta"]}</a>'
            if a.get("cta") else "")
@@ -135,6 +146,42 @@ def sc_coming_soon(a):
             f'\t\t<p class="soon-line">{a.get("line", "")}</p>'
             f'{body}{cta}\n'
             '\t</div>')
+
+
+def sc_home_launch(a):
+    """templates/home-launch.php. Fully self-contained, like sc_coming_soon,
+    but also prints the §03 heading - client wanted the heading and the
+    coming-soon copy sharing one row with the sneak-peek image, not the
+    heading on its own row above them (see the CLIENT EDIT trail in
+    inc/shortcodes.php case 'home')."""
+    if DEMO:
+        return ""
+    body = f'\n\t\t\t\t<p class="soon-body">{a["body"]}</p>' if a.get("body") else ""
+    cta = (f'\n\t\t\t\t<a href="{to_local(a.get("href", "#"))}" class="btn">{a["cta"]}</a>'
+           if a.get("cta") else "")
+    teaser = a.get("teaser_image", "")
+    caption = a.get("teaser_caption", "")
+    cap_html = f'<span class="soon-cap lab">{caption}</span>' if caption else ""
+    right = (f'\n\t\t<div class="series-right">\n\t\t\t<img src="{teaser}" alt="" loading="lazy" decoding="async">'
+              f'\n\t\t\t{cap_html}\n\t\t</div>' if teaser else "")
+    return (
+        '<section class="series" aria-labelledby="series-h">\n'
+        '\t<div class="shell series-grid">\n'
+        '\t\t<div class="series-left">\n'
+        '\t\t\t<div class="tag lab"><span class="s">03</span><span>Interview Series</span></div>\n'
+        '\t\t\t<h2 class="h2" id="series-h">Go beyond the biography.</h2>\n'
+        '\t\t\t<p class="lede">Titles tell us where someone arrived. We\'re interested in what they learned '
+        'getting there - the decisions, turning points, lessons, relationships and ideas that shaped the journey.</p>\n'
+        '\t\t\t<div class="soon">\n'
+        '\t\t\t\t<span class="soon-mark lab" aria-hidden="true"></span>\n'
+        f'\t\t\t\t<p class="soon-line">{a.get("line", "")}</p>'
+        f'{body}{cta}\n'
+        '\t\t\t</div>\n'
+        '\t\t</div>'
+        f'{right}\n'
+        '\t</div>\n'
+        '</section>'
+    )
 
 
 def sc_interviews(a):
@@ -150,7 +197,29 @@ def sc_interviews(a):
     fixtures here would mean porting six PHP templates to Python and keeping
     both in step, to show something no visitor will see at launch.
     """
+    if DEMO:
+        return demo.render(a)
+
     view = a.get("view", "wall")
+    # CLIENT EDIT (2026-08-20), 3rd pass - "home" mirrors inc/shortcodes.php
+    # case 'home'. In a plain (non-demo) build there is never a featured pick
+    # or a published interview (state 2, "published but none featured" -
+    # templates/home-recent.php - is unreachable with zero posts either way),
+    # so it is always the true pre-launch state - sc_home_launch() with the
+    # same literal copy inc/shortcodes.php defaults to. teaser_image/caption
+    # are empty by default on the real settings page now (see inc/settings.php
+    # - it's a real on/off toggle for home-recent.php's 1-vs-3 layout, not
+    # just decoration), so the preview matches a genuinely fresh install:
+    # the plain centred card, no image, exactly like the original design.
+    if view == "home":
+        return sc_home_launch({
+            "line": "First interview coming soon.",
+            "body": "Join The Exchange and you will hear about it before it goes out.",
+            "cta": "Join The Exchange",
+            "href": "#join",
+            "teaser_image": "",
+            "teaser_caption": "",
+        })
     if view in ("featured", "watch", "cover", "wall", "archive", "rail"):
         return ""
     raise KeyError(f'[tae_interviews view="{view}"] has no static renderer yet')
@@ -177,7 +246,7 @@ GUEST_FIELDS = [
     ("location", "Location", "text", False, "City, country"),
     ("area", "Areas of expertise", "text", True,
      "The two or three things you are genuinely worth asking about"),
-    ("why", "What perspective would you bring to The Exchange?", "textarea", True,
+    ("why", "What perspective would you bring to The Access Exchange?", "textarea", True,
      "A few lines is plenty. What have you learned that most people in your position have not?"),
 ]
 
@@ -301,7 +370,7 @@ def sc_cf7(a):
                 '\t\t\t<span class="wpcf7-form-control-wrap" data-name="your-email">\n'
                 '\t\t\t\t<input type="email" name="your-email" placeholder="Your email address" required>\n'
                 '\t\t\t</span>\n'
-                '\t\t\t<input type="submit" value="Join The Exchange" class="wpcf7-submit btn">\n'
+                '\t\t\t<input type="submit" value="Join The Access Exchange" class="wpcf7-submit btn">\n'
                 '\t\t\t<div class="wpcf7-response-output" aria-hidden="true"></div>\n'
                 '\t\t</form>\n'
                 '\t</div>')
@@ -410,8 +479,29 @@ def site_index(js_literal_source):
 
     global.js reads `window.TAE_INDEX || [ …literal… ]`. Publishing the rewritten
     index here means global.js can be copied byte-for-byte instead of patched.
+
+    The parse is deliberately tolerant of formatting: Prettier has already run
+    over global.js once, flipping the literal's quotes and breaking its objects
+    across lines. The original single-quoted one-line regex matched nothing after
+    that, so every page shipped `window.TAE_INDEX=[]` - an empty array is truthy,
+    so `window.TAE_INDEX || [ …literal… ]` used the empty one and site search
+    answered "nothing matches" to every query on every page.
+
+    An empty result is now a hard error rather than a silent one.
     """
-    rows = re.findall(r"\{ t: '(.*?)',\s*d: '(.*?)',\s*u: '(.*?)' \}", js_literal_source)
+    start = js_literal_source.index("var SITE_INDEX")
+    body = js_literal_source[start:js_literal_source.index("];", start)]
+
+    rows = []
+    for obj in re.findall(r"\{(.*?)\}", body, re.S):
+        got = dict(re.findall(r"""(\w+)\s*:\s*["'](.*?)["']""", obj, re.S))
+        if {"t", "d", "u"} <= got.keys():
+            rows.append((got["t"], got["d"], got["u"]))
+
+    if not rows:
+        raise SystemExit("site_index: parsed 0 entries from global.js - "
+                         "the SITE_INDEX literal has changed shape")
+
     out = ",".join(
         "{{t:{!r},d:{!r},u:{!r}}}".format(t, d, to_local(u)).replace("'", '"')
         for t, d, u in rows
@@ -511,6 +601,24 @@ def main():
                  index_js),
             encoding="utf-8")
         written.append(p["out"])
+
+    # One page per interview, mirroring templates/single-tae_interview.php. The
+    # plain build removes them again, which is the whole "back to a clean slate"
+    # mechanism - nothing to undo by hand.
+    for f in ROOT.glob("interviews-*.html"):
+        f.unlink()
+
+    if DEMO:
+        for item in demo.INTERVIEWS:
+            out = demo.page_file(item)
+            (ROOT / out).write_text(
+                page(f'{item["title"]} - The Access Exchange',
+                     item["stand"], "tae-episode", "/interview-series/",
+                     relink(demo.episode_body(item)),
+                     localise(header_src, "/interview-series/"),
+                     localise(footer_src, "/interview-series/"), index_js),
+                encoding="utf-8")
+            written.append(out)
 
     for out, nav, name, phase in STUBS:
         (ROOT / out).write_text(

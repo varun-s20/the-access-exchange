@@ -1556,7 +1556,7 @@ LinkedIn, location, areas of expertise, and what perspective they would bring.
   [text* area id:gc-area placeholder "The two or three things you are genuinely worth asking about"]
 </div>
 <div class="field field--wide">
-  <label class="lab" for="gc-why">What perspective would you bring to The Exchange?</label>
+  <label class="lab" for="gc-why">What perspective would you bring to The Access Exchange?</label>
   [textarea* why id:gc-why placeholder "A few lines is plenty. What have you learned that most people in your position have not?"]
 </div>
 <input class="sr" type="text" name="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">

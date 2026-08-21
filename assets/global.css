@@ -199,13 +199,30 @@ input,select,textarea{font:inherit;color:inherit}
 
    Do not remove the `body`. Do not remove the `:where()`. If a hover state is
    wrong, add the declaration to the component rule instead.
+
+   `[type=button]:hover` is in the list below for a reason: WP core's own
+   classic-themes.css writes its pink hover as one selector list -
+   `[type=button]:hover,[type=submit]:hover,button:hover{…}` - and every
+   `<button type="button">` in our markup matches BOTH the `button:hover`
+   branch AND the `[type=button]:hover` branch of that same rule. The
+   attribute branch is (0,2,0) - one column higher than `button:hover`'s
+   (0,1,1) - so it out-ranks `body :where(…) button:hover` at (0,1,2) on the
+   CLASS column alone, c column never gets compared. Losing this branch is
+   what let the pink back onto the chapter list and the copy-link button
+   while every other themed button stayed clean. Match it with the same
+   `body` element-column trick: `body :where(…) [type=button]:hover` lands at
+   (0,2,1), which ties Hello on CLASS and wins outright on ELEMENT.
    ═══════════════════════════════════════════════════════════════════════════ */
 body :where(.tae,.mast,.veil,.find,.foot) a:hover,
 body :where(.tae,.mast,.veil,.find,.foot) a:focus,
 body :where(.tae,.mast,.veil,.find,.foot) a:active{
   color:inherit;text-decoration:none;box-shadow:none}
 body :where(.tae,.mast,.veil,.find,.foot) button:hover,
-body :where(.tae,.mast,.veil,.find,.foot) button:focus{
+body :where(.tae,.mast,.veil,.find,.foot) button:focus,
+body :where(.tae,.mast,.veil,.find,.foot) [type=button]:hover,
+body :where(.tae,.mast,.veil,.find,.foot) [type=button]:focus,
+body :where(.tae,.mast,.veil,.find,.foot) [type=submit]:hover,
+body :where(.tae,.mast,.veil,.find,.foot) [type=submit]:focus{
   background:none;background-image:none;border-color:transparent;box-shadow:none}
 
 /* The masthead icons and the menu close button are the three buttons with no
@@ -286,13 +303,30 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
 .vid-dur{position:absolute;right:10px;bottom:10px;padding:4px 8px;border-radius:3px;
   background:rgba(20,20,15,.82);color:#fff;font-variant-numeric:tabular-nums}
 .vid.on .vid-play,.vid.on .vid-dur{display:none}
+/* The one interaction the whole site is built around used to be a swap: poster
+   gone, iframe there, no relation between the two. Now the poster scales up and
+   dissolves as the player fades in over it, so the picture you pressed becomes
+   the thing that plays. Short, because it sits between an intent and a video. */
+.vid iframe{position:absolute;inset:0;width:100%;height:100%;border:0;
+  opacity:0;transition:opacity .32s var(--ease)}
+.vid.on iframe{opacity:1}
+.vid.on img{transform:scale(1.04);opacity:0;
+  transition:transform .5s var(--ease),opacity .4s var(--ease)}
 
-/* scroll reveals */
-[data-rv]{opacity:0;transform:translateY(16px);
-  transition:opacity .8s var(--ease),transform .8s var(--ease);transition-delay:var(--d,0ms)}
+/* scroll reveals
+
+   These were .8s and 1.05s with up to 240ms of stagger, and global.js only
+   started them once an element was already 10% inside the viewport. At a normal
+   scroll you arrived at a screenful of paper and waited for the words - motion
+   that reads as latency rather than as cinema. Half the duration, half the
+   travel, and the stagger scaled to a 120ms total; global.js now fires them
+   before the element crosses the edge. */
+[data-rv]{opacity:0;transform:translateY(8px);
+  transition:opacity .45s var(--ease),transform .45s var(--ease);
+  transition-delay:calc(var(--d,0ms) * .5)}
 [data-rv].in{opacity:1;transform:none}
 [data-rule]{transform:scaleX(0);transform-origin:left;
-  transition:transform 1.05s var(--ease);transition-delay:var(--d,0ms)}
+  transition:transform .6s var(--ease);transition-delay:calc(var(--d,0ms) * .5)}
 [data-rule].in{transform:scaleX(1)}
 
 /* platform marks: official artwork, official colours */
@@ -372,6 +406,88 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
 /* a single gold hairline along the foot - the section's only accent */
 .tae .hero-visual::after{content:"";position:absolute;left:0;right:0;bottom:0;
   height:2px;background:var(--accent)}
+
+/* ── STAGE - a dark hero with the photograph behind the words ──
+   Promoted from .gp-hero on its second user, the rule this build has followed
+   since Phase 2. Handoff §18 gives black the job of authority and drama, and
+   §19's primary reference is black-led; before this, one section on the whole
+   site was black. It also answers the emptiest thing about the old heroes: copy
+   held the left half and the right half was paper, so every page opened on a
+   screen that was mostly nothing.
+
+   The media sits BEHIND the copy rather than in a band beneath it, so the first
+   screen carries the photograph, the headline and the CTAs at once. */
+.tae .stage{position:relative;isolation:isolate;overflow:hidden;
+  display:flex;align-items:flex-end;
+  min-height:clamp(460px,74vh,800px);
+  padding:clamp(40px,7vw,110px) 0 clamp(34px,5vw,76px);
+  background:var(--ink);color:var(--paper)}
+.tae .stage-in{position:relative;max-width:var(--shell);width:100%;
+  margin-inline:auto;padding-inline:var(--pad)}
+/* The overhang is the parallax's travel budget: the script can only move the
+   photograph as far as the box hangs past the section. It is deeper at the
+   foot than the head because the drift runs upward, so most of the slack is
+   needed below. */
+.tae .stage-media{position:absolute;inset:-12% 0 -24%;z-index:-2;
+  will-change:transform}
+.tae .stage-media img,.tae .stage-media video{width:100%;height:100%;
+  object-fit:cover;object-position:center 38%}
+/* CLIENT FIX (2026-08-20), 4th pass - "black gradient flashes in on scroll"
+   with the video hero survived a CSS layer-promotion hack and a JS
+   querySelector("video") exclusion (both removed now), so client asked to
+   remove the effect outright instead of chasing the exact cause further.
+   .stage-media--static is a hard-coded class on the hero markup itself
+   (wordpress/index.html §01) - unconditional, not inferred at runtime from
+   what the element happens to contain. This strips the will-change hint
+   that was telling the browser to hold the layer ready for a transform that
+   global.js §05b's heroParallax() now also never applies to it (excluded by
+   that same class) - between the two, nothing here ever transforms or
+   layer-promotes this hero again. */
+.tae .stage-media--static{will-change:auto}
+
+/* Two scrims, not one. The vertical pass seats the copy at the foot; the
+   horizontal pass darkens the left third only, so the headline holds against a
+   bright frame while the right of the picture stays a photograph. A single flat
+   overlay mutes the whole image to protect one corner of it. */
+.tae .stage::after{content:"";position:absolute;inset:0;z-index:-1;
+  background:
+    linear-gradient(90deg,
+      color-mix(in srgb,var(--ink) 80%,transparent) 0%,
+      color-mix(in srgb,var(--ink) 50%,transparent) 40%,
+      transparent 74%),
+    linear-gradient(180deg,
+      color-mix(in srgb,var(--ink) 32%,transparent) 0%,
+      color-mix(in srgb,var(--ink) 28%,transparent) 45%,
+      color-mix(in srgb,var(--ink) 80%,transparent) 100%)}
+
+/* A lighter pass for a photograph that is already dark. The scrim above is
+   tuned for a bright auditorium; over a studio it renders the frame as flat
+   black, which is a dark hero with no picture in it. */
+.tae .stage--soft::after{
+  background:
+    linear-gradient(90deg,
+      color-mix(in srgb,var(--ink) 62%,transparent) 0%,
+      color-mix(in srgb,var(--ink) 34%,transparent) 42%,
+      transparent 78%),
+    linear-gradient(180deg,
+      color-mix(in srgb,var(--ink) 14%,transparent) 0%,
+      color-mix(in srgb,var(--ink) 20%,transparent) 50%,
+      color-mix(in srgb,var(--ink) 66%,transparent) 100%)}
+
+/* PARALLAX lives in global.js §05b, not here. A CSS scroll-driven animation is
+   the lighter implementation but is Chrome/Safari only, and the brief asks for
+   movement rather than movement-where-supported. The media box overhangs the
+   section by 12% at the head and 24% at the foot so the script has slack to
+   move the image through without ever exposing an edge. */
+
+/* type and buttons invert on the dark ground */
+.tae .stage .kicker{color:color-mix(in srgb,var(--paper) 62%,transparent)}
+.tae .stage h1,.tae .stage h2{color:var(--paper)}
+.tae .stage .lede,.tae .stage p{color:color-mix(in srgb,var(--paper) 76%,transparent)}
+.tae .stage .btn{background:var(--paper);color:var(--ink)}
+.tae .stage .btn--ghost{background:transparent;color:var(--paper);
+  box-shadow:inset 0 0 0 var(--hair) color-mix(in srgb,var(--paper) 42%,transparent)}
+.tae .stage .btn--ghost:hover{background:var(--paper);color:var(--ink)}
 
 /* ── SAY / FORM PANELS ──
    A statement on one side, the form that answers it on the other. Guests &
@@ -459,6 +575,8 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
   --mark-top:calc(var(--mast-short) + (var(--mast-tall) - var(--mast-short)) * .38);
   background:var(--paper);color:var(--ink);
   transition:height .55s var(--ease),box-shadow .5s var(--ease)}
+/* Solid paper, by choice. A translucent blurred bar was tried and read as a
+   glow sitting over the page rather than as chrome belonging to it. */
 .mast.compact{height:var(--mast-short);
   --mark-top:calc(var(--mast-short) / 2);
   box-shadow:0 1px 0 var(--rule)}
@@ -477,27 +595,29 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
 .mast-l button:hover,.mast-r .txt:hover{color:var(--ink)}
 .mast-r .txt{display:none}
 @media(min-width:760px){.mast-r .txt{display:inline}}
-/* GET INVOLVED - the one persistent CTA (handoff §7). Champagne gold ground with
-   black text is 8.2:1, the one gold pairing that passes for text.
+/* GET INVOLVED - the one persistent CTA (handoff §7).
 
-   The depth is a hard black offset, not a blur: a soft drop shadow on a gold
-   chip on warm white reads as smudge, where a solid edge reads as a physical
-   key sitting slightly proud of the page. Pressing it drives the button into
-   the offset, so the travel is the feedback and no colour has to change. */
+   It used to be a solid champagne chip with a hard black offset, and it was the
+   loudest object on every page of a site whose brief asks for gold "sparingly,
+   for fine accents, dividers, icons, hover states". Black ground, paper text and
+   a gold hairline: the same weight in the layout, the accent used as an accent.
+   The offset stays, because the travel on press is the feedback and no colour
+   has to change for it. Paper on black is 18.9:1. */
 .mast-r .cta{position:relative;min-height:38px;padding:0 18px;border-radius:2px;
-  background:var(--accent);color:var(--ink);display:inline-flex;align-items:center;
+  background:var(--ink);color:var(--paper);display:inline-flex;align-items:center;
   font-family:var(--skandia-m);font-weight:600;font-size:clamp(.6rem,.7vw,.68rem);
   letter-spacing:.15em;text-transform:uppercase;white-space:nowrap;
-  border:var(--hair) solid var(--ink);
-  box-shadow:3px 3px 0 0 var(--ink);
+  border:var(--hair) solid var(--accent);
+  box-shadow:3px 3px 0 0 color-mix(in srgb,var(--accent) 46%,transparent);
   transition:transform .18s var(--ease),box-shadow .18s var(--ease),
              background .3s var(--ease)}
-.mast-r .cta:hover{background:color-mix(in srgb,var(--accent) 88%,var(--paper));
-  transform:translate(1px,1px);box-shadow:2px 2px 0 0 var(--ink)}
-.mast-r .cta:active{transform:translate(3px,3px);box-shadow:0 0 0 0 var(--ink)}
+.mast-r .cta:hover{background:color-mix(in srgb,var(--ink) 88%,var(--accent));
+  transform:translate(1px,1px);
+  box-shadow:2px 2px 0 0 color-mix(in srgb,var(--accent) 70%,transparent)}
+.mast-r .cta:active{transform:translate(3px,3px);box-shadow:0 0 0 0 var(--accent)}
 .mast-r .cta:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 /* the offset would clip against the bar edge once the masthead collapses */
-.mast.compact .mast-r .cta{box-shadow:2px 2px 0 0 var(--ink)}
+.mast.compact .mast-r .cta{box-shadow:2px 2px 0 0 color-mix(in srgb,var(--accent) 46%,transparent)}
 @media(prefers-reduced-motion:reduce){
   .mast-r .cta{transition:background .3s var(--ease)}
   .mast-r .cta:hover,.mast-r .cta:active{transform:none}
@@ -690,6 +810,10 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
   /* the wordmark is set to fill the measure, so it needs the tighter ratio
      once the side padding stops shrinking with the viewport */
   .foot-mark{font-size:9.1vw}
+  /* a phone is too narrow for the columns to wrap into anything but a ragged
+     centred block, so every entity - the four link columns and the legal row
+     under the wordmark alike - stacks and starts at the same left edge */
+  .foot-cols,.foot-bot{flex-direction:column;align-items:flex-start}
 }
 
 
@@ -741,8 +865,8 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
 /* ── HERO ──
    The subsection names below are components, not page positions; index.html
    orders them. */
-.tae-home .thesis{padding:clamp(26px,3.6vw,54px) 0 0}
-.tae-home .thesis-rule{height:var(--hair);background:var(--rule);margin-bottom:clamp(26px,3.4vw,50px)}
+/* ground, padding and scrim come from .stage. The hairline that used to open
+   the page went with the light hero - a rule drawn on a photograph is a scratch. */
 .tae-home .thesis-grid{display:grid;gap:clamp(22px,3vw,44px);align-items:start}
 @media(min-width:1000px){
   .tae-home .thesis-grid{grid-template-columns:minmax(0,2.4fr) minmax(0,.95fr)}
@@ -755,7 +879,8 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
 .tae-home .thesis-side{opacity:0;animation:fade 1s var(--ease) forwards .9s;
   padding-top:clamp(6px,1vw,14px)}
 @keyframes fade{to{opacity:1}}
-.tae-home .thesis-side p{color:var(--ink-2);line-height:1.62;margin-bottom:22px;max-width:38ch}
+.tae-home .thesis-side p{color:color-mix(in srgb,var(--paper) 78%,transparent);
+  line-height:1.62;margin-bottom:22px;max-width:38ch}
 .tae-home .thesis-cta{display:flex;flex-wrap:wrap;gap:9px}
 @media(max-width:559px){.tae-home .thesis-cta .btn{flex:1 1 100%}}
 
@@ -774,8 +899,37 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
   font-size:var(--fs-h2);line-height:1.06;letter-spacing:-.034em;text-wrap:balance}
 
 /* ── INTERVIEW SERIES ── */
-.tae-home .series{padding:var(--sec) 0;border-top:var(--hair) solid var(--rule)}
+/* CLIENT EDIT (2026-08-20): top padding cut roughly in half so the gap to §02
+   above reads as one page rhythm instead of two stacked whitespace blocks;
+   bottom padding untouched so the rhythm below §03 is unaffected. */
+.tae-home .series{padding:calc(var(--sec) * .42) 0 var(--sec);border-top:var(--hair) solid var(--rule)}
 .tae-home .series .h2{margin-bottom:16px}
+/* CLIENT EDIT (2026-08-20): the pre-launch state (templates/home-launch.php)
+   - heading + coming-soon copy in one column, the sneak-peek image filling a
+   second column that matches its height. .soon keeps its shared, unscoped
+   styling (max-width, padding, accent rule) from the LAUNCH STATE block
+   above; series-left just stops it stretching full-width next to the image. */
+.tae-home .series-grid{display:grid;gap:clamp(28px,4vw,56px)}
+@media(min-width:900px){
+  .tae-home .series-grid{grid-template-columns:minmax(0,1fr) minmax(0,.86fr);align-items:stretch}
+}
+.tae-home .series-left{display:flex;flex-direction:column}
+.tae-home .series-left .soon{max-width:none}
+/* CLIENT FIX (2026-08-20): the image was taller than the left column, not
+   equal to it. Cause - img had height:100% but .series-right itself had no
+   set height (only a min-height floor), so with an indeterminate parent that
+   100% resolved to the image's own intrinsic aspect ratio instead, and THAT
+   height (taller than the text column) became .series-right's natural
+   content height, which is what grid's stretch then matched everything to.
+   Same fix already used elsewhere on this page for this exact problem
+   (.feature > .ph, .side .ph): absolutely position the image so the column
+   itself carries no intrinsic height at all, and stretch can only ever
+   match it to .series-left, never the other way round. */
+.tae-home .series-right{position:relative;min-height:280px;overflow:hidden;border-radius:2px}
+.tae-home .series-right img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.tae-home .series-right .soon-cap{position:absolute;left:16px;bottom:14px;
+  padding:6px 11px;background:color-mix(in srgb,var(--ink) 82%,transparent);
+  color:var(--paper)}
 
 /* ── SPLIT PANELS · Experiences + Coaching ── */
 .tae-home .exchange{border-top:var(--hair) solid var(--rule)}
@@ -794,32 +948,40 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
 }
 .tae-home .side .ph{position:absolute;inset:0;z-index:-2}
 .tae-home .side .ph img{height:100%}
-/* The scrim resolves to paper on a light ground. It leaves the top third of
-   the photograph alone and then goes solid quickly, so the copy sits on clean
-   paper instead of a wash that hides both the picture and the label. */
+/* Top 45% is untouched photograph, then it fades to paper over the rest. It
+   never goes solid - the picture still reads behind the copy. The label and
+   headline sit in the thin part of the fade, which is why .num below is --ink
+   rather than --ink-2. */
 .tae-home .side::after{content:"";position:absolute;inset:0;z-index:-1;
   background:linear-gradient(180deg,
     transparent 0%,
-    transparent 30%,
-    color-mix(in srgb,var(--paper) 70%,transparent) 46%,
-    var(--paper) 56%)}
-.tae-home .side .num{color:var(--ink-2);margin-bottom:18px;display:block}
+    transparent 45%,
+    color-mix(in srgb,var(--paper) 40%,transparent) 58%,
+    color-mix(in srgb,var(--paper) 82%,transparent) 74%,
+    color-mix(in srgb,var(--paper) 90%,transparent) 88%)}
+/* --ink, not --ink-2: the label is the one small element sitting where the
+   fade is still thin, and --ink-2 drops under 4.5:1 there on a dark photo. */
+.tae-home .side .num{color:var(--ink);margin-bottom:18px;display:block}
 .tae-home .side h2{font-family:var(--skandia);font-weight:400;font-size:var(--fs-h3);
   line-height:1.05;letter-spacing:-.034em;margin-bottom:14px;max-width:13ch}
 .tae-home .side p{color:var(--ink-2);max-width:45ch;line-height:1.6;margin-bottom:22px}
 .tae-home .side .proof{display:block;color:var(--ink-3);margin-bottom:20px}
 .tae-home .side .ln{align-self:flex-start}
 
-/* ── FEATURED INTERVIEW - replaces .soon once an interview holds the slot ── */
-.tae-home .feature{position:relative;isolation:isolate;border-top:var(--hair) solid var(--rule);
-  min-height:min(86vh,800px);display:flex;align-items:stretch}
-.tae-home .feature > .ph{position:absolute;inset:0;z-index:-2}
-.tae-home .feature > .ph img{height:100%}
-.tae-home .feature::after{content:none}
-.tae-home .feature-in{width:100%;max-width:var(--shell);margin-inline:auto;display:grid}
-@media(min-width:1000px){.tae-home .feature-in{grid-template-columns:minmax(0,54%) 1fr}}
-.tae-home .feature-panel{background:var(--paper);padding:clamp(32px,4.2vw,70px) var(--pad);
-  display:flex;flex-direction:column;justify-content:center}
+/* ── FEATURED INTERVIEW - replaces the pre-launch card once an interview
+   holds the slot ──
+   CLIENT FIX (2026-08-20), 2nd pass - was a full-bleed background photo
+   (.ph absolutely positioned behind the ENTIRE section) with an opaque
+   .feature-panel floating on top of its left ~54%, so the image only ever
+   showed through the uncovered right portion - client read this as the
+   image cropping / bleeding behind the text and wanted it boxed to the
+   right only. Rebuilt on the same .series/.series-grid/.series-left/
+   .series-right structure home-launch.php already uses (see that file's
+   CSS above, right after "── INTERVIEW SERIES ──") - both §03 states now
+   share one layout system instead of two different ones. Nothing feature-
+   specific left to style here structurally; .f-meta/.feature h2/.stand/
+   .chapters below are unchanged and still apply, scoped to .feature same
+   as before. */
 .tae-home .f-meta{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:22px;
   color:var(--ink-3)}
 .tae-home .f-meta .b{padding:5px 11px;box-shadow:inset 0 0 0 var(--hair) var(--rule-2);color:var(--ink)}
@@ -827,8 +989,28 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
 .tae-home .feature h2{font-family:var(--skandia);font-weight:400;
   font-size:clamp(2rem,4.4vw,4rem);line-height:1;letter-spacing:-.04em;
   max-width:14ch;margin-bottom:18px}
-.tae-home .feature .stand{color:var(--ink-2);font-size:var(--fs-lead);line-height:1.58;
+/* CLIENT EDIT (2026-08-20): selector extended to .series-left - reused by
+   templates/home-recent.php's single-interview-plus-image layout, same
+   typography as the featured module's standfirst. */
+.tae-home .feature .stand,.tae-home .series-left .stand{color:var(--ink-2);font-size:var(--fs-lead);line-height:1.58;
   max-width:48ch;margin-bottom:28px}
+.tae-home .series-left h3.h2 a{color:inherit}
+.tae-home .series-left h3.h2 a:hover{text-decoration:underline;text-underline-offset:4px}
+
+/* CLIENT EDIT (2026-08-20): the "3 recent interviews in a row" layout -
+   templates/home-recent.php falls back to this when no sneak-peek image is
+   set, filling the width the image would have taken. */
+.tae-home .recent-row{display:grid;gap:clamp(22px,2.8vw,36px);list-style:none;
+  margin-top:clamp(28px,3.4vw,48px)}
+@media(min-width:700px){.tae-home .recent-row{grid-template-columns:repeat(3,1fr)}}
+.tae-home .rec-card{display:flex;flex-direction:column;gap:11px}
+.tae-home .rec-card .ph{aspect-ratio:16/9}
+.tae-home .rec-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;color:var(--ink-3)}
+.tae-home .rec-meta .b{background:var(--ink);color:var(--paper);padding:5px 10px;border-radius:999px}
+.tae-home .rec-card h3{font-family:var(--skandia);font-weight:400;
+  font-size:1.14rem;line-height:1.22;letter-spacing:-.018em}
+.tae-home .rec-card h3 a:hover{text-decoration:underline;text-underline-offset:3px}
+.tae-home .rec-who{color:var(--ink-3);font-size:.9rem}
 .tae-home .chapters{margin-top:clamp(26px,3.2vw,42px);border-top:var(--hair) solid var(--rule)}
 .tae-home .chapters .cap{display:block;color:var(--ink-3);padding:14px 0 6px}
 .tae-home .chapters li a{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;
@@ -847,20 +1029,30 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
 .tae-home .standard{padding:var(--sec) 0;border-top:var(--hair) solid var(--rule);
   background:var(--paper-2)}
 .tae-home .standard .h2{max-width:15ch;margin-bottom:clamp(30px,4vw,60px)}
-.tae-home .tenets{display:grid;gap:0;border-top:var(--hair) solid var(--rule-2)}
-@media(min-width:700px){.tae-home .tenets{grid-template-columns:repeat(2,1fr)}}
+/* CLIENT EDIT (2026-08-20): rewritten to fix "01 misaligned to 02/03/04".
+   The old rule drew the vertical dividers with border-left + padding-left +
+   a cancelling negative margin-left, re-targeted per breakpoint with
+   nth-child(2n+1) - two independent box-model offsets per item that had to
+   stay in exact balance across two breakpoints, and any rounding drift
+   between them showed up as a misaligned "01". Replaced with a single
+   left-edge padding (none) shared by every item, so all four numbers sit on
+   the same flush line by construction, and the divider is now a decorative
+   ::before that is absolutely positioned in the column gap - it draws over
+   the gutter without ever touching layout. */
+.tae-home .tenets{display:grid;gap:0;--tp:clamp(18px,2vw,32px);
+  border-top:var(--hair) solid var(--rule-2)}
+@media(min-width:700px){.tae-home .tenets{grid-template-columns:repeat(2,1fr);column-gap:var(--tp)}}
 @media(min-width:1180px){.tae-home .tenets{grid-template-columns:repeat(4,1fr)}}
-.tae-home .tenet{padding:clamp(22px,2.6vw,36px) clamp(18px,2vw,32px) clamp(26px,3vw,42px);
+.tae-home .tenet{position:relative;padding:clamp(22px,2.6vw,36px) 0 clamp(26px,3vw,42px);
   border-bottom:var(--hair) solid var(--rule)}
-.tae-home .tenet:first-child{padding-left:0}
 @media(min-width:700px){
-  .tae-home .tenet{border-left:var(--hair) solid var(--rule)}
-  .tae-home .tenet:nth-child(2n+1){border-left:0;padding-left:0}
+  .tae-home .tenet:nth-child(2n)::before{content:"";position:absolute;top:0;bottom:0;
+    left:calc(-1 * var(--tp) / 2);width:var(--hair);background:var(--rule)}
 }
 @media(min-width:1180px){
-  .tae-home .tenet:nth-child(2n+1){border-left:var(--hair) solid var(--rule);
-    padding-left:clamp(18px,2vw,32px)}
-  .tae-home .tenet:first-child{border-left:0;padding-left:0}
+  .tae-home .tenet::before{content:"";position:absolute;top:0;bottom:0;
+    left:calc(-1 * var(--tp) / 2);width:var(--hair);background:var(--rule)}
+  .tae-home .tenet:first-child::before{content:none}
 }
 .tae-home .tenet .n{display:block;font-family:var(--skandia);font-weight:400;
   font-size:clamp(1.7rem,2.8vw,2.5rem);line-height:1;color:var(--ink-3);margin-bottom:14px}
@@ -908,11 +1100,18 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
   font-size:clamp(1.76rem,3vw,2.8rem);line-height:1.04;letter-spacing:-.036em;
   margin-bottom:16px;max-width:13ch}
 .tae-home .door p{color:var(--ink-2);max-width:41ch;line-height:1.6;margin-bottom:26px}
-.tae-home .doors-foot{text-align:center;padding:22px var(--pad);color:var(--ink-3);
-  border-top:var(--hair) solid var(--rule)}
-.tae-home .doors-foot a{color:var(--ink);border-bottom:var(--hair) solid var(--rule-2);
-  padding-bottom:2px}
-.tae-home .doors-foot a:hover{border-color:var(--ink)}
+/* CLIENT EDIT (2026-08-20): "Something else in mind?" replaced .doors-foot
+   (a single quiet centred sentence, easy to miss under the two bold doors
+   above it) with .doors-more - a bordered callout band with its own
+   kicker + headline + ghost button, so it reads as a third invitation
+   rather than a footnote. */
+.tae-home .doors-more{text-align:center;padding:clamp(30px,4vw,50px) var(--pad);
+  margin:0 var(--pad) clamp(28px,3.6vw,48px);border:var(--hair) solid var(--rule-2);
+  border-radius:2px}
+.tae-home .doors-more > .lab{color:var(--ink-3);margin-bottom:10px}
+.tae-home .doors-more h3{font-family:var(--skandia);font-weight:400;
+  font-size:clamp(1.3rem,2.2vw,1.8rem);line-height:1.1;letter-spacing:-.028em;
+  margin-bottom:20px}
 
 /* ── EMAIL CAPTURE ── */
 .tae-home .signal{padding:var(--sec) 0;border-top:var(--hair) solid var(--rule);text-align:center;
@@ -928,6 +1127,13 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
 .tae-home .form--join input[type=email]:focus{border-color:var(--ink)}
 /* CF7 wraps each field in a span; without this the email input will not stretch */
 .tae-home .form--join .wpcf7-form-control-wrap{flex:1 1 236px}
+/* Newer CF7 versions wrap the submit control in a span too - if that
+   happens it would otherwise inherit the 236px basis meant for the email
+   field above and the two together can overflow the row, dropping the
+   button to its own line. Pinned to content width so it never claims that
+   space, and never grows/shrinks in a way that would wrap its own label. */
+.tae-home .form--join .wpcf7-form-control-wrap:has(input[type=submit]){flex:0 0 auto}
+.tae-home .form--join :is(.wpcf7-submit,input[type=submit]){flex:0 0 auto;white-space:nowrap}
 .tae-home .form--join:is(.sent,.invalid,.failed,.spam,.unaccepted,.aborted)>.wpcf7-response-output{flex:1 1 100%}
 .tae-home .fine{color:var(--ink-3);display:block;margin-bottom:clamp(34px,4.4vw,62px)}
 .tae-home .plats{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));
@@ -971,16 +1177,22 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
 /* ── 00 · HERO ──
    Carries the page in its launch state, and stays above the cover once the
    library fills in. */
-.tae-interviews .lead{padding:clamp(34px,4.6vw,78px) 0 clamp(28px,3.4vw,52px)}
+/* The hero and the cover story are one composition, not two sections. The
+   old pair of paddings put ~110px of nothing between the lede and the
+   first poster at desktop. */
+.tae-interviews .lead{padding:clamp(34px,4.6vw,78px) 0 clamp(12px,1.4vw,20px)}
 .tae-interviews .lead .kicker{color:var(--ink-3);margin-bottom:clamp(16px,2vw,24px)}
+/* Measures sized to hold the launch copy on ONE line at desktop, matching the
+   episode page's masthead. They are max-widths, not nowrap: a longer headline
+   than this one still wraps, and everything wraps below ~1100px. */
 .tae-interviews .lead h1{font-family:var(--skandia);font-weight:400;
   font-size:clamp(1.9rem,5vw,4rem);line-height:1.03;letter-spacing:-.038em;
-  text-wrap:balance;max-width:17ch}
+  text-wrap:balance;max-width:35ch}
 .tae-interviews .lead .lede{font-size:var(--fs-lead);line-height:1.6;
-  color:var(--ink-2);max-width:56ch;margin-top:clamp(14px,1.8vw,22px)}
+  color:var(--ink-2);max-width:86ch;margin-top:clamp(14px,1.8vw,22px)}
 
 /* ── 01 · THE COVER - asymmetric three-column ── */
-.tae-interviews .cover{padding:clamp(26px,3.4vw,54px) 0 clamp(30px,3.6vw,58px)}
+.tae-interviews .cover{padding:clamp(14px,1.6vw,24px) 0 clamp(30px,3.6vw,58px)}
 .tae-interviews .cover-grid{display:grid;gap:clamp(26px,3vw,44px)}
 @media(min-width:1000px){
   .tae-interviews .cover-grid{grid-template-columns:minmax(0,.72fr) minmax(0,1.66fr) minmax(0,.86fr);
@@ -994,6 +1206,7 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
 .tae-interviews .story h2{font-family:var(--skandia);font-weight:400;
   font-size:clamp(2rem,4.6vw,4rem);line-height:1.02;letter-spacing:-.034em;
   margin-bottom:14px;text-wrap:balance}
+.tae-interviews .story h2 a:hover{text-decoration:underline;text-underline-offset:4px}
 .tae-interviews .story .stand{font-size:clamp(1rem,1.2vw,1.16rem);line-height:1.5;color:var(--ink-2);
   max-width:46ch;margin:0 auto 20px}
 .tae-interviews .byline{display:inline-flex;flex-direction:column;align-items:center;gap:9px;
@@ -1109,12 +1322,15 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
 .tae-interviews .assure{display:grid;gap:0;text-align:left;margin-bottom:clamp(28px,3.2vw,46px);
   border-top:var(--hair) solid var(--rule-2)}
 @media(min-width:760px){.tae-interviews .assure{grid-template-columns:repeat(3,1fr)}}
-.tae-interviews .assure div{padding:16px clamp(12px,1.6vw,22px) 20px;
+/* the side padding only earns its keep once the three sit in a row, where it
+   holds the copy off the dividing rules. Stacked, it indented every point but
+   the first, so it is added with the rules rather than before them. */
+.tae-interviews .assure div{padding:16px 0 20px;
   border-bottom:var(--hair) solid var(--rule)}
-.tae-interviews .assure div:first-child{padding-left:0}
 @media(min-width:760px){
-  .tae-interviews .assure div{border-left:var(--hair) solid var(--rule)}
-  .tae-interviews .assure div:first-child{border-left:0}
+  .tae-interviews .assure div{padding-inline:clamp(12px,1.6vw,22px);
+    border-left:var(--hair) solid var(--rule)}
+  .tae-interviews .assure div:first-child{padding-left:0;border-left:0}
 }
 .tae-interviews .assure b{display:block;font-family:var(--skandia-m);font-weight:600;margin-bottom:5px}
 .tae-interviews .assure span{color:var(--ink-2);font-size:.9rem;line-height:1.5}
@@ -1257,12 +1473,14 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
 .tae-universities .assure{display:grid;gap:0;margin-bottom:clamp(22px,2.6vw,34px);
   border-top:var(--hair) solid color-mix(in srgb,var(--paper) 22%,transparent)}
 @media(min-width:640px){.tae-universities .assure{grid-template-columns:repeat(3,1fr)}}
-.tae-universities .assure div{padding:13px 14px 16px;
+/* same as the interviews assurances: the side padding belongs to the row, not
+   to the stack, or the second and third points sit indented against the first */
+.tae-universities .assure div{padding:13px 0 16px;
   border-bottom:var(--hair) solid color-mix(in srgb,var(--paper) 14%,transparent)}
-.tae-universities .assure div:first-child{padding-left:0}
 @media(min-width:640px){
-  .tae-universities .assure div{border-left:var(--hair) solid color-mix(in srgb,var(--paper) 14%,transparent)}
-  .tae-universities .assure div:first-child{border-left:0}
+  .tae-universities .assure div{padding-inline:14px;
+    border-left:var(--hair) solid color-mix(in srgb,var(--paper) 14%,transparent)}
+  .tae-universities .assure div:first-child{padding-left:0;border-left:0}
 }
 .tae-universities .assure b{display:block;font-family:var(--skandia-m);font-weight:600;
   font-size:.95rem;margin-bottom:4px}
@@ -1490,7 +1708,8 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
   max-width:58ch}
 
 /* ── 01 · HERO ── */
-.tae-experiences .xp-lead{padding:clamp(34px,4.6vw,78px) 0 0}
+/* padding, ground and parallax come from .stage; the scrim is .stage--soft */
+.tae-experiences .xp-lead .stage-media img{object-position:center 42%}
 .tae-experiences .xp-lead h1{font-family:var(--skandia);font-weight:400;
   font-size:clamp(1.9rem,5vw,4rem);line-height:1.03;letter-spacing:-.038em;
   text-wrap:balance;max-width:16ch}
@@ -1590,54 +1809,11 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
    things in a vertical column with nothing holding them together. Now one
    composition on one image, with the key line as the pivot rather than a
    fourth paragraph. */
-.tae-guests .gp-hero{position:relative;isolation:isolate;overflow:hidden;
-  display:flex;align-items:flex-end;
-  min-height:clamp(520px,78vh,860px);
-  padding:clamp(40px,7vw,110px) 0 clamp(34px,5vw,76px);
-  background:var(--ink)}
-
-.tae-guests .gp-hero-media{position:absolute;inset:-12% 0 -12% 0;z-index:-2}
-.tae-guests .gp-hero-media img{width:100%;height:100%;object-fit:cover;
-  object-position:center 35%}
-
-/* PARALLAX. The media box is 12% taller than the section at each end, and the
-   image travels through that slack as the section crosses the viewport — so it
-   can never expose an edge. Scroll-driven, so it runs on the compositor and
-   costs no scroll listener.
-
-   entry-crossing/exit-crossing rather than plain scroll(): the range is the
-   section's own passage through the viewport, which keeps the movement the same
-   on a phone and on a 4K monitor. */
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .tae-guests .gp-hero-media{
-      animation:gp-drift linear both;
-      animation-timeline:view();
-      animation-range:entry-crossing exit-crossing}
-  }
-}
-@keyframes gp-drift{
-  from{transform:translate3d(0,-8%,0)}
-  to  {transform:translate3d(0,8%,0)}
-}
-
-/* the scrim: dark enough at the foot to carry the copy, clear at the top so the
-   photograph is still a photograph */
-/* Two scrims, not one. The vertical pass seats the copy at the foot; the
-   horizontal pass darkens the left third only, so the headline holds even
-   against the bright side of the studio photograph while the right of the
-   frame stays a photograph. A single flat overlay would mute the whole image
-   to protect one corner of it. */
-.tae-guests .gp-hero::after{content:"";position:absolute;inset:0;z-index:-1;
-  background:
-    linear-gradient(90deg,
-      color-mix(in srgb,var(--ink) 82%,transparent) 0%,
-      color-mix(in srgb,var(--ink) 52%,transparent) 38%,
-      transparent 72%),
-    linear-gradient(180deg,
-      color-mix(in srgb,var(--ink) 34%,transparent) 0%,
-      color-mix(in srgb,var(--ink) 30%,transparent) 45%,
-      color-mix(in srgb,var(--ink) 80%,transparent) 100%)}
+/* The ground, the media, the parallax and the scrim now live on the shared
+   .stage component (§03) - this page was its only implementation until Home,
+   Interview Series and Experiences needed the same thing. What stays here is
+   what is genuinely this page's: a taller frame and its own type sizes. */
+.tae-guests .gp-hero{min-height:clamp(520px,78vh,860px)}
 
 /* The composition, not a column. Above 1000px the headline and lede hold the
    left, and the key line sits opposite them across a gold rule — so the eye
@@ -1652,14 +1828,12 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
   margin-inline:auto;padding-inline:var(--pad);
   display:grid;row-gap:0}
 
-.tae-guests .gp-hero .kicker{color:color-mix(in srgb,var(--paper) 62%,transparent);
-  margin-bottom:clamp(12px,1.5vw,18px)}
+.tae-guests .gp-hero .kicker{margin-bottom:clamp(12px,1.5vw,18px)}
 .tae-guests .gp-hero h1{font-family:var(--skandia);font-weight:400;
   font-size:clamp(2rem,5.4vw,4.4rem);line-height:1.01;letter-spacing:-.04em;
-  text-wrap:balance;max-width:15ch;color:var(--paper)}
+  text-wrap:balance;max-width:15ch}
 /* heading and subheading are a pair — close enough to read as one block */
 .tae-guests .gp-hero .lede{font-size:var(--fs-lead);line-height:1.6;
-  color:color-mix(in srgb,var(--paper) 76%,transparent);
   max-width:50ch;margin-top:clamp(10px,1.2vw,16px)}
 /* the CTAs follow the sentence they answer, not a screen-height later */
 .tae-guests .gp-routes{display:flex;flex-wrap:wrap;gap:10px;
@@ -1668,11 +1842,7 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
 /* The hero is four things now — kicker, headline, lede, buttons — so it is a
    single column at every width. The key line moved to .gp-statement below. */
 
-/* on the dark hero the buttons invert */
-.tae-guests .gp-hero .btn{background:var(--paper);color:var(--ink)}
-.tae-guests .gp-hero .btn--ghost{background:transparent;color:var(--paper);
-  box-shadow:inset 0 0 0 var(--hair) color-mix(in srgb,var(--paper) 42%,transparent)}
-.tae-guests .gp-hero .btn--ghost:hover{background:var(--paper);color:var(--ink)}
+/* button inversion is the shared .stage rule now */
 @media(max-width:559px){.tae-guests .gp-routes .btn{flex:1 1 100%}}
 
 /* ── 01b · THE KEY LINE ──
@@ -1759,11 +1929,13 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
 .tae-episode .ep-crumb a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
 .tae-episode .dot{width:3px;height:3px;border-radius:50%;background:var(--accent);
   display:inline-block;flex:none}
+/* Same measures as the Interview Series masthead, so an episode title and the
+   index title sit on one line together rather than one wrapping and one not. */
 .tae-episode h1{font-family:var(--skandia);font-weight:400;
   font-size:clamp(1.72rem,4.2vw,3.4rem);line-height:1.04;letter-spacing:-.036em;
-  text-wrap:balance;max-width:20ch}
+  text-wrap:balance;max-width:38ch}
 .tae-episode .ep-stand{font-size:var(--fs-lead);line-height:1.6;color:var(--ink-2);
-  max-width:58ch;margin-top:clamp(14px,1.8vw,22px)}
+  max-width:104ch;margin-top:clamp(14px,1.8vw,22px)}
 
 /* the guest is the reason anyone is here, so it gets its own line and a rule */
 .tae-episode .ep-guest{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;
@@ -1795,6 +1967,10 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
 
 .tae-episode .ep-take{margin-top:clamp(40px,5vw,76px);padding-top:clamp(28px,3.4vw,46px);
   border-top:var(--hair) solid var(--rule)}
+/* The rule above separates the takeaways from the article. With no article
+   written there is nothing to separate them from, and the offset only pushed
+   them a screenful below "In this conversation" beside them. */
+.tae-episode .ep-take:first-child{margin-top:0;padding-top:0;border-top:0}
 .tae-episode .ep-take h2{font-family:var(--skandia);font-weight:400;
   font-size:var(--fs-h3);letter-spacing:-.03em;line-height:1.1;
   margin-bottom:clamp(20px,2.6vw,34px)}
@@ -1818,12 +1994,24 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
   border-top:var(--hair) solid var(--rule)}
 .tae-episode .ep-share-row{display:flex;flex-wrap:wrap;gap:8px}
 .tae-episode .ep-share-row a,.tae-episode .ep-copy{
+  display:inline-flex;align-items:center;gap:8px;
   font-family:var(--skandia-m);font-weight:600;font-size:.68rem;letter-spacing:.14em;
   text-transform:uppercase;padding:9px 14px;border-radius:2px;color:var(--ink-2);
   box-shadow:inset 0 0 0 var(--hair) var(--rule-2);
   transition:color .3s var(--ease),box-shadow .3s var(--ease)}
 .tae-episode .ep-share-row a:hover,.tae-episode .ep-copy:hover{
   color:var(--ink);box-shadow:inset 0 0 0 var(--hair) var(--accent)}
+/* The three services are recognised by their mark, so they carry no label and no
+   visible name - the accessible name is on the anchor. Copy link is an action
+   rather than a service, has no mark anybody recognises, and keeps its words.
+   Email and copy have no brand colour of their own: gold and ink. */
+.tae-episode .ep-share-row a{padding:10px;gap:0}
+.tae-episode .ep-share-row a .s-ic{width:18px;height:18px}
+.tae-episode .s-ic{width:15px;height:15px;flex:none}
+.tae-episode .s-li .s-ic{fill:#0A66C2}
+.tae-episode .s-x .s-ic{fill:var(--ink)}
+.tae-episode .s-em .s-ic{fill:var(--accent)}
+.tae-episode .ep-copy .s-ic{fill:var(--ink-3)}
 
 .tae-episode .ep-next{border-top:var(--hair) solid var(--rule);padding:var(--sec) 0}
 .tae-episode .ep-next h2{color:var(--ink-3);margin-bottom:clamp(20px,2.6vw,32px)}
@@ -1854,8 +2042,12 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
 .tae-interviews .take-h{font-family:var(--skandia);font-weight:400;
   font-size:var(--fs-h2);line-height:1.04;letter-spacing:-.032em;
   text-wrap:balance;max-width:18ch}
+/* CLIENT EDIT (2026-08-20): margin-bottom raised - heading/lede and the
+   takeaway tiles right under them read as stuck together on phone and
+   desktop alike. Paired with the .tae-takeaways .body top padding below,
+   which used to be 0 (padding-bottom only). */
 .tae-interviews .take-lede{margin-top:clamp(12px,1.6vw,18px);
-  margin-bottom:clamp(22px,3vw,40px)}
+  margin-bottom:clamp(34px,4.6vw,64px)}
 
 /* ── 06 · BE A GUEST · the two routes onto Guests & Partners ── */
 .tae-interviews .guest-cta{display:flex;flex-wrap:wrap;gap:10px;
@@ -1904,7 +2096,10 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
 .tae-takeaways .hunt button:hover{color:var(--ink)}
 
 /* ── 02 · SIDEBAR + STREAM ── */
-.tae-takeaways .body{padding-bottom:var(--sec)}
+/* CLIENT EDIT (2026-08-20): top padding added - was bottom-only, so an
+   embedded stream (search="no", no .top header above it) had nothing
+   separating the takeaways heading from the tile grid. */
+.tae-takeaways .body{padding-top:clamp(6px,1vw,14px);padding-bottom:var(--sec)}
 .tae-takeaways .body-grid{display:grid;gap:clamp(24px,3vw,52px)}
 @media(min-width:1000px){
   .tae-takeaways .body-grid{grid-template-columns:210px minmax(0,1fr);align-items:start}
@@ -2102,11 +2297,42 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
   margin-top:12px;max-width:52ch}
 
 /* ── 03 · THE FOUNDER ── */
+/* ── TEAM STRIP · 4 portraits ──
+   CLIENT EDIT (2026-08-20): replaces the single full-bleed "conversation,
+   recorded" photo (.plate) between §01 and §02. */
+.tae-about .team-strip{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;
+  border-top:var(--hair) solid var(--rule-2)}
+@media(min-width:700px){.tae-about .team-strip{grid-template-columns:repeat(4,1fr)}}
+.tae-about .team-shot{margin:0;position:relative;overflow:hidden}
+.tae-about .team-shot img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;
+  filter:grayscale(.15);transition:filter .4s var(--ease)}
+.tae-about .team-shot:hover img{filter:none}
+/* CLIENT EDIT (2026-08-20): caption used to sit visible at all times; client
+   wants it to appear only on hover, with the gradient behind the text only
+   (not the whole image) - so both the gradient and the name fade in
+   together rather than the gradient always being there under nothing. */
+/* CLIENT FIX (2026-08-20): gradient used to be sized to the caption's own
+   text box (a thin strip a few lines tall), reading as too abrupt to tell
+   which tile was hovered. It now covers the lower ~55% of the whole image
+   (top:45% instead of an auto-height box), fading gradually into it, with
+   the name still anchored to the bottom via flex. */
+.tae-about .team-shot figcaption{position:absolute;left:0;right:0;bottom:0;top:45%;
+  display:flex;align-items:flex-end;
+  padding:16px clamp(12px,1.6vw,18px);color:var(--paper);opacity:0;
+  transform:translateY(6px);
+  background:linear-gradient(180deg,transparent,color-mix(in srgb,var(--ink) 88%,transparent) 80%);
+  transition:opacity .3s var(--ease),transform .3s var(--ease)}
+.tae-about .team-shot:hover figcaption{opacity:1;transform:none}
+
 .tae-about .who{padding:var(--sec) 0;border-top:var(--hair) solid var(--rule-2);
   background:var(--paper-2)}
 .tae-about .who-grid{display:grid;gap:clamp(26px,3.4vw,58px);align-items:center}
 @media(min-width:820px){.tae-about .who-grid{grid-template-columns:auto 1fr}}
-.tae-about .who .ph{width:clamp(140px,18vw,246px);aspect-ratio:4/5}
+/* CLIENT EDIT (2026-08-20): widened - once the team grid below (.crew-card
+   .ph, same aspect-ratio) shipped at a comparable size, the founder no
+   longer read as clearly the primary portrait. This is now visibly the
+   larger image on the page; .crew-card .ph below was scaled down to match. */
+.tae-about .who .ph{width:clamp(200px,26vw,360px);aspect-ratio:4/5}
 .tae-about .who blockquote{font-family:var(--skandia);font-weight:400;
   font-size:clamp(1.24rem,2.4vw,2.05rem);line-height:1.22;letter-spacing:-.032em;
   max-width:28ch;margin-bottom:18px;text-wrap:balance}
@@ -2127,6 +2353,27 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
 .tae-about .plate-pair figcaption{padding-top:10px;color:var(--ink-3)}
 
 /* ── 04 · COLOPHON FACTS ── */
+/* ── THE TEAM · below the founder ──
+   CLIENT EDIT (2026-08-20): new section - "founder remains the main, the
+   rest 3 below." Each card mirrors the founder block's own shape (portrait,
+   quote, name/role) at a smaller scale, so the two sections read as one
+   family rather than two different systems. */
+.tae-about .crew{padding:var(--sec) 0;border-top:var(--hair) solid var(--rule-2)}
+.tae-about .crew-grid{display:grid;gap:clamp(24px,3vw,40px)}
+@media(min-width:700px){.tae-about .crew-grid{grid-template-columns:repeat(3,1fr)}}
+.tae-about .crew-card{margin:0}
+/* CLIENT FIX (2026-08-20): 200px read as too small next to the founder
+   portrait (.who .ph, clamp(200px,26vw,360px)) - sized up close to it here,
+   capped a little lower so the founder still reads as marginally primary. */
+.tae-about .crew-card .ph{aspect-ratio:4/5;max-width:clamp(220px,24vw,320px);margin:0 auto 18px}
+.tae-about .crew-card .ph img{width:100%;height:100%;object-fit:cover;display:block}
+.tae-about .crew-card blockquote{font-family:var(--skandia);font-weight:400;
+  font-size:clamp(1rem,1.3vw,1.15rem);line-height:1.42;letter-spacing:-.014em;
+  color:var(--ink-2);margin-bottom:14px}
+.tae-about .crew-name{font-family:var(--skandia-m);font-weight:600;
+  font-size:.92rem;letter-spacing:-.006em;display:flex;flex-direction:column;gap:5px}
+.tae-about .crew-name .lab{color:var(--ink-3);font-weight:600}
+
 .tae-about .facts{padding:var(--sec) 0;border-top:var(--hair) solid var(--rule-2)}
 .tae-about .facts-grid{display:grid;grid-template-columns:repeat(2,1fr);
   border-top:var(--hair) solid var(--rule-2)}
@@ -2290,9 +2537,13 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
 .tae-universities .wpcf7 :is(.wpcf7-submit,.btn,input[type=submit],button[type=submit]):hover{
   opacity:.86}
 
-/* the partnerships band is dark - restate both colours against it */
+/* the partnerships band is dark - restate both colours against it.
+   Selector matches the :is(...) state list from §11b's generic rule on
+   purpose - without it this loses the specificity fight for `background`
+   (3 classes vs. the generic rule's 4), so the cream background wins while
+   this rule's light text colour still applies: white text on cream. */
 .tae-universities .wpcf7-not-valid-tip{color:#ffb2a4}
-.tae-universities .form>.wpcf7-response-output{
+.tae-universities .form:is(.sent,.invalid,.failed,.spam,.unaccepted,.aborted)>.wpcf7-response-output{
   background:color-mix(in srgb,var(--paper) 10%,transparent);
   color:color-mix(in srgb,var(--paper) 72%,transparent)}
 .tae-universities .form.sent>.wpcf7-response-output{color:var(--paper)}

@@ -15,7 +15,16 @@ same sources:
 ```
 python tools/build-static.py        # regenerate the preview
 python wordpress/tests/check.py     # 378 assertions over both
+python tools/build-static.py --demo # same, plus 27 fake interviews
 ```
+
+`--demo` exists to answer "what does this look like once it has content in it".
+It publishes 27 dummy episodes - cover story, home feature, most-watched rail, a
+paged archive and 27 episode pages - from `tools/demo_interviews.py`. The plain
+build deletes every file it wrote, so a clean slate is one command and nothing to
+undo. The dummy library is not covered by `check.py`, which asserts the launch
+state; one check fails under `--demo` by design (the coming-soon card is gone,
+which is exactly what publishing an interview does).
 
 Open `index.html` from the repo root. Any static server works too, but plain
 `file://` is enough - every link is relative.
@@ -95,9 +104,9 @@ carries eight blocks.
 | §   | Section                         | Built from                                                           |
 | --- | ------------------------------- | -------------------------------------------------------------------- |
 | 01  | Hero + cinematic band           | `.thesis`, new `.hero-visual`                                        |
-| 02  | Why The Exchange                | `.gap`                                                               |
+| 02  | Why The Access Exchange                | `.gap`                                                               |
 | 03  | Interview Series                | `.series` + `[tae_coming_soon]` / `[tae_interviews view="featured"]` |
-| 04  | What Moves Through The Exchange | `.standard .tenets`                                                  |
+| 04  | What Moves Through The Access Exchange | `.standard .tenets`                                                  |
 | 05  | Universities                    | `.campus`, steps repurposed as the four engagement formats           |
 | 06  | Leaders & Corporate Partners    | `.doors`                                                             |
 | 07  | Live Experiences + Coaching     | `.exchange .split`                                                   |
@@ -214,7 +223,7 @@ New `templates/single-tae_interview.php`
 - cover image, guest name / title / organization, YouTube embed (facade until
   play - the existing no-request-until-play behaviour stays), hook, key
   takeaways, chapters, related clips, social sharing, related/next interview,
-  Join The Exchange CTA
+  Join The Access Exchange CTA
 
 ### Taxonomy
 
@@ -235,7 +244,11 @@ Changing the seeded defaults off the tech set is a one-time edit in five places:
 | `assets/global.css:949-953`             | same, archive filter                                             |
 | `inc/filter-css.php:35-55`              | pretty radio IDs (`c-eng`, `f-eng`) keeping the fallback in sync |
 | `tests/test-tae.php:105-109`            | asserts the generated stylesheet exactly                         |
-| `data/seed.php`, `inc/importer.php:252` | demo rows                                                        |
+
+`data/seed.php` and `inc/importer.php` were the sixth row. Both are deleted - the
+demo rows they carried were the prototype's copy, not launch content, and a
+Tools-menu button that puts them on the live site is not worth keeping for an
+import that runs once.
 
 Proposed defaults: `leadership` · `founders` · `industry` · `career` · `campus`
 (Leadership · Founders & Builders · Industry & Craft · Career & Transitions ·
@@ -368,7 +381,7 @@ same move `.soon` got in Phase 2, now that a second page opens with one.
 
 ### Original scope notes
 
-Hero: "The Exchange goes beyond the screen." Event and room imagery, section
+Hero: "The Access Exchange goes beyond the screen." Event and room imagery, section
 headlines, inquiry pathway into the Get Involved routing.
 
 ---
@@ -433,7 +446,7 @@ EXPLORE COACH TRAINING.
 founder bio + portrait. Company reads larger than one person.
 
 **Get Involved / Contact** (rework `contact.html`): routing hub, six routes -
-Share Your Perspective · Partner With The Exchange · Bring The Exchange To
+Share Your Perspective · Partner With The Access Exchange · Bring The Access Exchange To
 Campus · Explore Coaching · Explore Coach Training · General Inquiry. Existing
 page has four (Guest / University / Press / Other); Press is not in the handoff.
 

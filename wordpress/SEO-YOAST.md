@@ -1,7 +1,7 @@
 # Yoast SEO - full setup for The Access Exchange
 
 Everything you need to type in, page by page. Work through §1 once, then §3
-six times.
+ten times.
 
 Menu paths are Yoast 20+ ("Yoast SEO → Settings" with the left-hand nav). If
 your install is older the same options exist under "Search Appearance".
@@ -101,22 +101,30 @@ files have been **trimmed**. Current split:
 | `Service` (partnerships)                                              | **inline JSON-LD** - Yoast cannot express it                                                                                  |
 | `FAQPage` + `Question` (partnerships, interviews)                     | **inline JSON-LD** - Yoast can only do this via its Gutenberg FAQ block, which is unavailable inside an Elementor HTML widget |
 
-Four page files now carry **no** JSON-LD at all (`index`, `about`, `contact`,
-`insights`). Two carry a trimmed graph whose `@id` values match Yoast's node
-ids, so the two graphs stitch into one:
+Eight page files now carry **no** JSON-LD at all (`index`, `guests-partners`,
+`experiences`, `coaching`, `about`, `get-involved`, `privacy`, `terms`). Two -
+`interview-series` and `universities` - carry a trimmed graph whose `@id`
+values match Yoast's node ids, so the two graphs stitch into one:
 
 ```
 https://theaccessexchange.com/#organization          ← Yoast
 https://theaccessexchange.com/{slug}/#webpage        ← Yoast
 https://theaccessexchange.com/{slug}/#faq            ← ours, isPartOf the above
-https://theaccessexchange.com/university-partnerships/#service   ← ours
 ```
 
+`universities.html` also carries a `Service` node (the university-engagement
+offer) whose `provider` points at Yoast's `#organization` node - it used to
+also duplicate its own `WebPage` node pointing at `#org`/`#site`, which don't
+match Yoast's real ids (`#organization`/`#website`) and would have shipped as
+dangling references the moment Yoast's graph went live. That duplicate node has
+been removed; only `Service` and `FAQPage` are inline now, matching the split
+below.
+
 **Before launch:** find-and-replace `https://theaccessexchange.com` with the real
-domain across **all six** page files. It is functional in the two JSON-LD blocks
-above, and cosmetic in the instruction comments at the top of every file - but
-those comments are served to the browser, so a stale domain sitting in the page
-source is a bad look either way.
+domain across **all ten** page files. It is functional in the two JSON-LD blocks
+above, and cosmetic in the instruction comments and Canonical fields at the top
+of every file - but those comments are served to the browser, so a stale domain
+sitting in the page source is a bad look either way.
 
 ⚠️ On the two FAQ pages set the Yoast page type to **Web Page** / **Collection
 Page**, _not_ **FAQ Page** - picking FAQ Page there would put a second
@@ -196,21 +204,29 @@ redirect manager; Redirection is a good free alternative):
 | `/insights/`                | `/interview-series/#takeaways` |
 
 Skipping these means anything already shared - an email, a deck, a link in
-someone's notes - lands on a 404.
+someone's notes - lands on a 404. This table is page-level only; the wildcard
+rule for individual takeaway URLs (`/insights/(.*) → /takeaways/$1`) is in
+`MIGRATE-V1-TO-V2.md` §3b - do that one **before** the `/insights/` row above,
+or the page-level rule swallows the post URLs.
 
 ## 4. Open Graph images
 
 **1200 × 630 px**, JPG, under 300 KB, real text baked in (not just the logo -
 these get scaled to a thumbnail in Slack and WhatsApp).
 
-| File                  | Suggested content                                                        |
-| --------------------- | ------------------------------------------------------------------------ |
-| `og-home.jpg`         | The wordmark + "Get closer to the people and ideas shaping what's next." |
-| `og-interviews.jpg`   | The cover-story still + "Interviews worth carrying forward"              |
-| `og-partnerships.jpg` | The campus photo + "Bring the industry onto your campus."                |
-| `og-insights.jpg`     | Wordmark + "Everything we have published."                               |
-| `og-about.jpg`        | The recording-setup still                                                |
-| `og-contact.jpg`      | Plain paper ground + wordmark                                            |
+| File                     | Page               | Suggested content                                                        |
+| ------------------------ | ------------------- | ------------------------------------------------------------------------ |
+| `og-home.jpg`            | Home                 | The wordmark + "Get closer to the people and ideas shaping what's next." |
+| `og-interviews.jpg`      | Interview Series     | The cover-story still + "Interviews worth carrying forward"              |
+| `og-guests-partners.jpg` | Guests & Partners    | A guest portrait + "Bring a perspective worth hearing"                   |
+| `og-universities.jpg`    | Universities         | The campus photo + "Bring The Access Exchange to your campus."                  |
+| `og-experiences.jpg`     | Experiences          | An event/room still + "The Access Exchange goes beyond the screen"              |
+| `og-coaching.jpg`        | Coaching             | Wordmark + "Turn access into action."                                    |
+| `og-about.jpg`           | About                | The recording-setup still                                                |
+| `og-get-involved.jpg`    | Get Involved         | Plain paper ground + wordmark                                            |
+
+Privacy and Terms need no OG image of their own - they inherit the Site basics
+fallback (§1.2), which is correct for pages that aren't meant to be shared.
 
 Set these on the **Social tab**, not as the Featured Image - Hello Elementor
 would print the featured image into the page body.
@@ -256,23 +272,29 @@ Several Yoast checks will go orange. Here is what is real and what is noise.
 
 ## 6. Internal link graph
 
-Yoast's "internal links" check passes on all six pages because the design
+Yoast's "internal links" check passes on all ten pages because the design
 already links densely. Do not break these when editing:
 
 ```
-Home            → Interviews, Partnerships, Insights, Contact, be-a-guest
-Interviews      → #episodes, #be-a-guest, YouTube
-Partnerships    → #s1…#s7, #enquire
-Insights        → Interviews (#episodes), Partnerships (#s1, #s5)
-About           → be-a-guest, Partnerships, Contact
-Contact         → Partnerships
-Header (all)    → Home, Interviews, Partnerships, Insights, About, Contact
-Footer (all)    → all six + be-a-guest + #episodes + Privacy + Terms
+Home              → Interview Series, Guests & Partners, Universities,
+                    Experiences, Coaching, /#join
+Interview Series  → #episodes, #takeaways, guests-partners#guest, YouTube
+Guests & Partners → #guest, #corporate
+Universities      → #s1…#s5, #enquire
+Experiences       → the three inquiry pathways it routes to (no form of its own)
+Coaching          → #coaching, #training
+About             → guests-partners#guest, universities, get-involved
+Get Involved      → all six specific routes it hands off to
+Header (all)      → Home, Interview Series, Guests & Partners, Universities,
+                    Experiences, Coaching, About, + persistent Get Involved CTA
+Footer (all)      → all ten pages + guests-partners#guest/#corporate +
+                    universities#enquire + coaching#coaching/#training +
+                    interview-series#takeaways + Privacy + Terms
 ```
 
-The footer links to `/privacy/` and `/terms/`. **Create those two pages** or
-the site ships two 404s on every page - Yoast's crawl and Search Console will
-both flag it. Set both to `noindex, follow`.
+The footer links to `/privacy/` and `/terms/`. Both pages exist (they're
+drafts pending legal review, not blank) - set both to `noindex, follow`;
+they exist to be found by someone already on the site, not to rank.
 
 ---
 
@@ -282,22 +304,22 @@ both flag it. Set both to `noindex, follow`.
    search engines_ must be **unchecked**. Yoast shows a red warning on the
    dashboard while it is on; do not launch past it.
 2. **Find-and-replace the domain** in `interview-series.html` and
-   `university-partnerships.html` (the only remaining hard-coded URLs).
+   `universities.html` (the only two with functional hard-coded URLs, in their
+   JSON-LD) - and, cosmetically, in every other page's SEO comment block.
 3. **Search Console.** Add the property, verify via Yoast → Settings → Site
    connections, submit `sitemap_index.xml`.
 4. **Rich Results Test** every URL - `search.google.com/test/rich-results`.
-   Expect: Organization + Breadcrumbs on all six; FAQ on Interviews and
-   Partnerships; no duplicate-entity warnings. If you see two `FAQPage` nodes,
+   Expect: Organization + Breadcrumbs on all ten; FAQ on Interview Series and
+   Universities; no duplicate-entity warnings. If you see two `FAQPage` nodes,
    the Yoast page type is set to "FAQ Page" - change it back (§2).
 5. **Pick one canonical host** - `https://` and one of www/non-www - and 301
    everything else. Yoast will not fix a split canonical for you.
-6. **Redirect the old prototype URLs** if they were ever live:
-   `/index.html → /`, `/about.html → /about/`, `/contact.html → /contact/`,
-   `/insights.html → /insights/`, `/interview-series.html → /interview-series/`,
-   `/university-partnerships.html → /university-partnerships/`.
-   Free Yoast has no redirect manager - use the _Redirection_ plugin.
+6. **Redirects.** The full current list - old-slug and v1-migration redirects
+   both - lives in `MIGRATE-V1-TO-V2.md` §6, not here; that file is the one
+   kept in sync with the live architecture. Free Yoast has no redirect
+   manager - use the _Redirection_ plugin either way.
 7. **Confirm one `<h1>` per page.** Hello Elementor prints its own page title;
-   Elementor → Page Settings → **Hide Title** must be on for all six (this was
+   Elementor → Page Settings → **Hide Title** must be on for all ten (this was
    already in the pink-fix step, but re-check after any template change).
 8. **Check the mobile snippet preview** in Yoast for each page - titles are
    truncated harder on mobile than the desktop preview suggests.
