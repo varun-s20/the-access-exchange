@@ -51,7 +51,8 @@ if DEMO:
 URLS = {
     "/": "index.html",
     "/interview-series/": "interview-series.html",
-    "/guests-partners/": "guests-partners.html",
+    "/guests/": "guests.html",
+    "/partnerships/": "partnerships.html",
     "/universities/": "universities.html",
     "/experiences/": "experiences.html",
     "/coaching/": "coaching.html",
@@ -63,7 +64,8 @@ URLS = {
 
 # Pages this build has retired. Kept out of URLS so a surviving link to one is a
 # hard failure in check.py rather than a quiet 404 on the live site.
-RETIRED = ("/insights/", "/university-partnerships/", "/contact/")
+RETIRED = ("/insights/", "/university-partnerships/", "/contact/",
+           "/guests-partners/")
 
 
 def to_local(url):
@@ -86,10 +88,17 @@ PAGES = [
          body="wp", src="interview-series.html",
          title="Interview Series - In-depth interviews with people worth hearing | The Access Exchange",
          desc="In-depth interviews with leaders, founders, practitioners and subject-matter experts on what their experience actually taught them."),
-    dict(out="guests-partners.html", nav="/guests-partners/", scope="tae-guests",
-         body="wp", src="guests-partners.html",
-         title="Guests & Partners - Bring a perspective worth hearing | The Access Exchange",
-         desc="Be considered as a guest on the Interview Series, sponsor an interview, nominate a leader, or build a partnership with The Access Exchange."),
+    # Split from one combined guests-partners page at the client request
+    # (2026-09-04). Both keep scope="tae-guests": that is the CSS scope the
+    # shared hero, panelled and options rules are written against.
+    dict(out="guests.html", nav="/guests/", scope="tae-guests",
+         body="wp", src="guests.html",
+         title="Guests - Bring a perspective worth hearing | The Access Exchange",
+         desc="Be considered as a guest on The Access Exchange Interview Series. Long-form conversations with leaders, founders and practitioners."),
+    dict(out="partnerships.html", nav="/partnerships/", scope="tae-guests",
+         body="wp", src="partnerships.html",
+         title="Partnerships - Amplify your thought leadership | The Access Exchange",
+         desc="Sponsor an interview, nominate a leader, or build a partnership with The Access Exchange and reach emerging talent directly."),
     dict(out="universities.html", nav="/universities/", scope="tae-universities",
          body="wp", src="universities.html",
          title="Universities & Institutions - Bring The Access Exchange to your campus | The Access Exchange",

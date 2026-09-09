@@ -147,42 +147,78 @@ function tae_sc_interviews( $atts ) {
 			$post = tae_slot_post( 'feature' );
 			return $post ? tae_template( 'interview-featured', array( 'post' => $post ) ) : '';
 
-		// CLIENT EDIT START (2026-08-20) - the home page §03 state machine.
-		// Two states:
-		//   1. a featured pick exists -> the featured module (as before,
-		//                                self-contained, full-bleed)
-		//   2. no featured pick       -> templates/home-launch.php, which is
-		//                                ALSO fully self-contained: it prints
-		//                                the "Go beyond the biography" heading
-		//                                itself (this used to be static markup
-		//                                in wordpress/index.html) plus the
-		//                                coming-soon copy, side by side with
-		//                                the sneak-peek image from Interviews
-		//                                -> Links, as one row instead of a
-		//                                separate block underneath.
-		// CLIENT FIX (2026-08-20): this originally had a third, in-between
-		// state - interviews published but none featured yet - showing up to
-		// 2 recent interviews. Client did not want that ("didn't want the
-		// speaker example next to it"); removed, permanently down to 2 states.
-		// A second attempt then put the heading in its own row above a
-		// separate soon+image row; client wanted the heading and the
-		// coming-soon copy sharing ONE row with the image, which is what
-		// forced the heading itself to move into this template.
+		// CLIENT EDIT START (2026-08-20), 3rd pass - the home page §03 state
+		// machine. Three states:
+		//   1. a featured pick exists     -> the featured module, self-
+		//                                    contained, full-bleed.
+		//   2. interviews exist, none is
+		//      featured                   -> templates/home-recent.php.
+		//      Behaviour depends on the sneak-peek image (Interviews ->
+		//      Links): set -> 1 most recent interview beside that image;
+		//      empty -> up to 3 most recent interviews in a row instead,
+		//      using the width the image would have taken.
+		//   3. nothing published at all   -> templates/home-launch.php - the
+		//      "First interview coming soon" card, with the same sneak-peek
+		//      image if one is set.
+		// Earlier passes: a version of state 2 existed, got removed because
+		// it didn't match what was wanted ("didn't want the speaker example
+		// next to it") - that one was unconditional and showed 2 interviews
+		// with no image ever. This is a different, more specific design:
+		// the sneak-peek image toggles between showing 1 interview + that
+		// image, or 3 interviews with no image. Both home-launch.php and
+		// home-recent.php print their own "Go beyond the biography" heading -
+		// there is no shared static heading in wordpress/index.html for §03.
 		case 'home':
 			$featured = tae_slot_post( 'feature' );
 			if ( $featured ) {
 				return tae_template( 'interview-featured', array( 'post' => $featured ) );
 			}
 
+			$teaser_image   = tae_option( 'tae_teaser_image' );
+			$teaser_caption = tae_option( 'tae_teaser_caption' );
+
+			$recent = tae_interviews(
+				array(
+					'posts_per_page' => $teaser_image ? 1 : 3,
+					'no_found_rows'  => true,
+				)
+			)->posts;
+
+			if ( $recent ) {
+				return tae_template(
+					'home-recent',
+					array(
+						'posts'          => $recent,
+						'teaser_image'   => $teaser_image,
+						'teaser_caption' => $teaser_caption,
+					)
+				);
+			}
+
+			// CLIENT EDIT (2026-09-04, revisions doc §3): was 'First interview
+			// coming soon.' / 'Join The Exchange and you will hear about it
+			// before it goes out.' The doc replaces it with waitlist copy that
+			// names who the first guests are, so the block builds anticipation
+			// instead of admitting there is nothing here yet.
+			//
+			// THE SAME COPY IS ON /interview-series/, where it is passed as
+			// [tae_coming_soon] attributes rather than hardcoded. Two places,
+			// one message - reword one and reword the other. The homepage is
+			// hardcoded here because view="home" takes no copy attributes.
+			//
+			// THE HOUSTON SECTORS LINE IS A CLAIM ABOUT WHO HAS BEEN BOOKED.
+			// The client's own standing rule is that nothing on this site may
+			// state something that has not happened. Confirm the bookings are
+			// real before this goes live.
 			return tae_template(
 				'home-launch',
 				array(
-					'line'           => 'First interview coming soon.',
-					'body'           => 'Join The Exchange and you will hear about it before it goes out.',
-					'cta'            => 'Join The Exchange',
+					'line'           => 'Join the waitlist for our inaugural Interview Series.',
+					'body'           => 'Featuring seasoned executives and founders from Houston\'s top energy, tech, and finance sectors.',
+					'cta'            => 'Join the waitlist',
 					'href'           => '#join',
-					'teaser_image'   => tae_option( 'tae_teaser_image' ),
-					'teaser_caption' => tae_option( 'tae_teaser_caption' ),
+					'teaser_image'   => $teaser_image,
+					'teaser_caption' => $teaser_caption,
 				)
 			);
 		// CLIENT EDIT END

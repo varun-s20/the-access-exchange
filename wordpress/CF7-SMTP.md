@@ -29,86 +29,136 @@ That mail is unsigned, comes from a shared server IP, and is routinely dropped
 by Gmail and Outlook without a bounce. Every form on the site goes through
 `wp_mail()`, so fixing it once fixes all six.
 
-Plugin: **WP Mail SMTP** (by WPForms), free version. Everything below is in the
-free tier except where marked.
+Plugin: **FluentSMTP**, free. Every provider is included - there is no paid
+tier gating the mailer you need.
 
-### 1.1 Pick a mailer
+### 1.1 Mailer
 
-WP Mail SMTP calls the transport a _mailer_. Which ones are free matters here -
-two of the obvious choices are behind the Pro licence.
+The mailbox is **Microsoft 365**, so mail leaves through the mailbox itself over
+OAuth (Microsoft Graph). Sent mail lands in that mailbox's Sent folder and
+inherits Microsoft's own SPF and DKIM, so **no DNS work is required** and the
+domain's existing Namecheap mail forwarding is untouched.
 
-| Situation                                                               | Mailer to pick                                                                                                                 | Tier |
-| ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | ---- |
-| `hello@theaccessexchange.com` is already a **Google Workspace** mailbox | **Google Workspace / Gmail** (OAuth, no password stored)                                                                       | free |
-| No mailbox yet, want free sending                                       | **Brevo** - 300/day free                                                                                                       | free |
-| Want strong deliverability for a small spend                            | **Postmark**, **SendGrid** or **SMTP.com**                                                                                     | free |
-| **Microsoft 365 / Outlook** mailbox                                     | the dedicated Outlook mailer is **Pro** - use **Other SMTP** against `smtp.office365.com` instead, or move to one of the above | -    |
-| **Amazon SES**                                                          | **Pro only**                                                                                                                   | -    |
-| Host already gave you SMTP credentials                                  | **Other SMTP**                                                                                                                 | free |
+Two dead ends worth naming, so nobody rediscovers them:
 
-Any of the free ones is fine at this volume. What actually decides whether the
-mail lands is §1.3, not the brand on the mailer.
+| Route                                          | Status                                                                                                        |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Basic-auth SMTP to `smtp.office365.com`        | **Dead.** Microsoft permanently disabled Basic Auth for SMTP AUTH client submission in September 2025.        |
+| WP Mail SMTP's own Outlook mailer              | **Pro only.** FluentSMTP does the same OAuth for free, which is why it is the plugin here.                     |
+| A relay (Brevo, Postmark, SendGrid)            | Works, but cannot sign `@…onmicrosoft.com` - Microsoft owns that domain. Only an option once §1.6 is done.     |
 
 ### 1.2 Install and configure
 
-**Plugins → Add New → "WP Mail SMTP" → Install → Activate.** It opens a Setup
-Wizard; you can run it or skip straight to **WP Mail SMTP → Settings**. Either
-way the settings that matter are the same:
+Deactivate WP Mail SMTP first if it is present. **Never leave both active** -
+two plugins filtering PHPMailer fight over the config and you get silent
+failures that look like DNS problems.
 
-- **From Email** - `hello@theaccessexchange.com`
-  (or `no-reply@theaccessexchange.com` if you would rather keep the inbox clean)
-- **Force From Email** - **ON**
-- **From Name** - `The Access Exchange`
-- **Force From Name** - ON
-- **Return Path** - tick _"Set the return-path to match the From Email"_, so
-  bounces come back to you instead of vanishing
-- **Mailer** - from §1.1, then its credentials
+**Plugins → Add New → "FluentSMTP" → Install → Activate**, then
+**Settings → FluentSMTP → Add Connection**:
+
+- **From Email** - `connect@theaccessexchange.onmicrosoft.com`
+- **Force From Email** - ON
+- **From Name** - `The Access Exchange`, Force From Name ON
+- **Connection Provider** - Outlook / Office 365
+
+It prints a **Redirect/Callback URL**. Copy it verbatim, then in
+[entra.microsoft.com](https://entra.microsoft.com) →
+**Applications → App registrations → New registration**:
+
+- Name `TAE Website Mailer`
+- Supported account types: **this organizational directory only**
+- Redirect URI: platform **Web**, paste the callback URL
+
+Then:
+
+1. Overview → copy **Application (client) ID**
+2. **Certificates & secrets → New client secret** → copy the **Value** column
+   immediately. Not the Secret ID. It is shown once and never again.
+3. **API permissions → Microsoft Graph → Delegated permissions** →
+   `Mail.Send`, `offline_access`, `User.Read` → **Grant admin consent**
+
+Paste the ID and secret into FluentSMTP → Save → **Authorize**, signing in as
+`connect@theaccessexchange.onmicrosoft.com` itself, **not** your own admin
+account. OAuth is delegated: it sends as whoever authorises.
 
 > **The single most common mistake:** setting the From address to the visitor's
 > email so replies "just work". Do not. Your server is not authorised to send as
 > `someone@gmail.com`, so SPF and DKIM both fail and the mail goes to spam or is
-> rejected outright. The From address is always your domain; the visitor's
+> rejected outright. The From address is always your own domain; the visitor's
 > address goes in **Reply-To** (§5). _Force From Email_ being ON is what stops
 > any plugin overriding this later.
 
-**If you chose Other SMTP**, the settings are:
-
-| Field               | Value                                                                                              |
-| ------------------- | -------------------------------------------------------------------------------------------------- |
-| SMTP Host           | from your provider (e.g. `smtp-relay.brevo.com`, `smtp.office365.com`)                             |
-| Encryption          | **TLS**                                                                                            |
-| SMTP Port           | **587**                                                                                            |
-| Auto TLS            | ON                                                                                                 |
-| Authentication      | ON                                                                                                 |
-| Username / Password | from your provider - _not_ your normal mailbox password if the provider issues a separate SMTP key |
-
-Keep the password out of the database. In `wp-config.php`, above the
-`/* That's all, stop editing! */` line:
+Keep credentials encrypted at rest. In `wp-config.php`, above the
+`/* That's all, stop editing! */` line, and **before** you save the connection:
 
 ```php
-define( 'WPMS_ON', true );
-define( 'WPMS_SMTP_PASS', 'your-smtp-password-or-api-key' );
+define( 'FLUENTMAIL_ENCRYPT_SALT', 'a-long-random-string' );
 ```
 
-`WPMS_ON` must be `true` or the constant is ignored. With it set, the password
-field in the admin screen goes read-only - that is the confirmation it took.
+Generate the string from any line of
+<https://api.wordpress.org/secret-key/1.1/salt/>. Confirm the constant name
+against FluentSMTP's current docs before relying on it.
 
-### 1.3 DNS - do not skip
+> **The client secret expires - 24 months maximum.** When it lapses every form
+> stops delivering silently, with no bounce and no error on screen. Put it in a
+> calendar at 22 months. This is the single most likely way this site breaks
+> two years from now.
 
-Add these at whoever hosts the DNS for `theaccessexchange.com`. Without them the
-mail is unsigned no matter which plugin is installed.
+### 1.3 DNS
 
-| Record                                   | Value                                                                                                                                                                                                      |
-| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **SPF** (`TXT`, host `@`)                | one record only, e.g. `v=spf1 include:_spf.google.com ~all` - take the `include:` from your provider. If an SPF record already exists, **merge** the include into it; two SPF records is a permanent fail. |
-| **DKIM** (`TXT`, host given by provider) | copy the key from the provider dashboard verbatim                                                                                                                                                          |
-| **DMARC** (`TXT`, host `_dmarc`)         | start at `v=DMARC1; p=none; rua=mailto:hello@theaccessexchange.com`, tighten to `p=quarantine` after a few weeks of clean reports                                                                          |
+Nothing to add. Sending as `@theaccessexchange.onmicrosoft.com` through
+Microsoft means SPF, DKIM and DMARC are Microsoft's own and already pass -
+that is the one real upside of the tenant address.
 
-DNS takes minutes to hours. Verify in the provider dashboard before testing.
+`theaccessexchange.com`'s MX records point at Namecheap email forwarding
+(`eforward1-5.registrar-servers.com`). Whether any alias is actually configured
+behind them is **unconfirmed** - `hello@theaccessexchange.com`, used throughout
+this repo, was a placeholder we invented, not an address the client gave us.
+
+Confirm with the client which aliases exist before changing MX. If none do, the
+MX records can be repointed at Microsoft with nothing to migrate - see §1.6.
+
+Optional, and safe to add now:
+
+| Record                           | Value                                                                        |
+| -------------------------------- | ------------------------------------------------------------------------------ |
+| **DMARC** (`TXT`, host `_dmarc`) | `v=DMARC1; p=none; rua=mailto:connect@theaccessexchange.onmicrosoft.com`     |
+
+`p=none` only reports, it never blocks. The domain has no DMARC record today.
+
+### 1.6 Later - moving to a real address
+
+Everything above works, with two known ceilings the client should be told about
+before launch:
+
+- Microsoft **throttles outbound external mail from `.onmicrosoft.com` tenant
+  domains** - roughly 100 external recipients a day before rate limiting. Fine
+  for six low-volume forms; not fine if a newsletter ever goes out this way.
+- Notifications arrive from `connect@theaccessexchange.onmicrosoft.com`, which
+  reads as a spoof to anyone who does not know the tenant, and does not match
+  the brand.
+
+The fix, when she is ready: add `theaccessexchange.com` to the M365 tenant
+(**Microsoft 365 admin → Settings → Domains → Add domain**), which flips the MX
+records to Microsoft. Cost depends entirely on one unanswered question:
+
+- **No Namecheap forwarding aliases in use** - nothing to migrate. Add the
+  domain, let Microsoft set MX, done in under an hour.
+- **Aliases in use** - each one must be recreated as an M365 mailbox or alias
+  *before* the cutover, or that mail starts bouncing the moment MX changes.
+
+Either way, afterwards change From and To here to
+`connect@theaccessexchange.com` and re-authorise FluentSMTP. No other part of
+the build moves.
+
+> **`hello@theaccessexchange.com` is a placeholder we invented.** It is not an
+> address the client supplied and may deliver nowhere. It is still printed as a
+> live `mailto:` on `get-involved.html` and published in the Yoast Organization
+> schema (`SEO-YOAST.md` §2). Both need a real address before launch.
 
 ### 1.4 Prove it
 
-**WP Mail SMTP → Tools → Email Test** → send an HTML test to a Gmail address
+**Settings → FluentSMTP → Email Test** → send an HTML test to a Gmail address
 _and_ an Outlook/Hotmail address. Then open the received mail → _Show original_
 (Gmail) or _View message source_ (Outlook) and confirm `SPF: PASS`,
 `DKIM: PASS`, `DMARC: PASS`.
@@ -116,20 +166,16 @@ _and_ an Outlook/Hotmail address. Then open the received mail → _Show original
 If any of the three says `fail` or `none`, fix DNS before going further - every
 later step assumes mail actually leaves. If the test itself errors, the error
 text names the cause (bad credentials, port blocked by host, OAuth not
-completed); WP Mail SMTP prints the raw SMTP response, which is the useful part.
+completed); FluentSMTP prints the raw SMTP response, which is the useful part.
 
 ### 1.5 Logging
 
-The free version does **not** log sent mail - Email Log is Pro. You want some
-record before launch, so pick one:
+FluentSMTP logs every `wp_mail()` for free - **Settings → FluentSMTP → Email
+Logs**. Each row shows status, provider response and the full body, and failed
+sends can be resent from there. No second plugin, no Pro upgrade.
 
-- install **WP Mail Logging** (free, separate plugin, logs every `wp_mail()`); or
-- rely on the sending provider's own dashboard - Brevo, Postmark, SendGrid and
-  Google Workspace all show delivery status per message; or
-- upgrade WP Mail SMTP to Pro if you also want failure alerts.
-
-Any of the three is enough. Having none means a client saying "I filled the form
-and heard nothing" is unanswerable.
+Turn retention down if the log grows: **Settings → Log & Misc**. Keep it on -
+having no log makes "I filled the form and heard nothing" unanswerable.
 
 ---
 
@@ -221,13 +267,12 @@ comments reference it.
   is written on **one line** precisely so this option can delete the whole row
   when the field came in empty.
 
-**From address, with the Google mailer**
+**From address, with the Outlook mailer**
 
-You connected WP Mail SMTP to Google. Google will only send as the account you
-authenticated, or as an address verified under _Gmail → Settings → Accounts →
-Send mail as_. So the From address on every form must be that exact mailbox -
-`hello@theaccessexchange.com` if that is the Workspace account. Anything else
-gets rewritten by Google or rejected.
+FluentSMTP is authorised against one mailbox, and Microsoft will only send as
+that mailbox or one of its proxy addresses. So the From address on every form
+must be exactly `connect@theaccessexchange.onmicrosoft.com`. Anything else is
+rewritten by Exchange or rejected outright.
 
 The visitor's address never goes in From. It goes in **Reply-To**, which is what
 makes hitting Reply in the inbox work.
@@ -285,8 +330,8 @@ Route: someone offering themselves as an interview guest, from `/contact/#guest`
 
 | Field                              | Value                                               |
 | ---------------------------------- | --------------------------------------------------- |
-| To                                 | `hello@theaccessexchange.com`                       |
-| From                               | `The Access Exchange <hello@theaccessexchange.com>` |
+| To                                 | `connect@theaccessexchange.onmicrosoft.com`                       |
+| From                               | `The Access Exchange <connect@theaccessexchange.onmicrosoft.com>` |
 | Subject                            | `Guest enquiry - [your-name]`                       |
 | Additional headers                 | `Reply-To: [email]`                                 |
 | Use HTML content type              | ☑                                                  |
@@ -482,8 +527,8 @@ The short version of 4.5 - same audience, fewer questions.
 
 | Field                              | Value                                               |
 | ---------------------------------- | --------------------------------------------------- |
-| To                                 | `hello@theaccessexchange.com`                       |
-| From                               | `The Access Exchange <hello@theaccessexchange.com>` |
+| To                                 | `connect@theaccessexchange.onmicrosoft.com`                       |
+| From                               | `The Access Exchange <connect@theaccessexchange.onmicrosoft.com>` |
 | Subject                            | `University enquiry - [institution]`                |
 | Additional headers                 | `Reply-To: [email]`                                 |
 | Use HTML content type              | ☑                                                  |
@@ -692,8 +737,8 @@ instead of a row in the table.
 
 | Field                              | Value                                               |
 | ---------------------------------- | --------------------------------------------------- |
-| To                                 | `hello@theaccessexchange.com`                       |
-| From                               | `The Access Exchange <hello@theaccessexchange.com>` |
+| To                                 | `connect@theaccessexchange.onmicrosoft.com`                       |
+| From                               | `The Access Exchange <connect@theaccessexchange.onmicrosoft.com>` |
 | Subject                            | `Press - [outlet] - [your-name]`                    |
 | Additional headers                 | `Reply-To: [email]`                                 |
 | Use HTML content type              | ☑                                                  |
@@ -912,8 +957,8 @@ rather than a table.
 
 | Field                              | Value                                               |
 | ---------------------------------- | --------------------------------------------------- |
-| To                                 | `hello@theaccessexchange.com`                       |
-| From                               | `The Access Exchange <hello@theaccessexchange.com>` |
+| To                                 | `connect@theaccessexchange.onmicrosoft.com`                       |
+| From                               | `The Access Exchange <connect@theaccessexchange.onmicrosoft.com>` |
 | Subject                            | `Website message - [your-name]`                     |
 | Additional headers                 | `Reply-To: [email]`                                 |
 | Use HTML content type              | ☑                                                  |
@@ -1103,8 +1148,8 @@ email; the email is always on cream.
 
 | Field                              | Value                                               |
 | ---------------------------------- | --------------------------------------------------- |
-| To                                 | `hello@theaccessexchange.com`                       |
-| From                               | `The Access Exchange <hello@theaccessexchange.com>` |
+| To                                 | `connect@theaccessexchange.onmicrosoft.com`                       |
+| From                               | `The Access Exchange <connect@theaccessexchange.onmicrosoft.com>` |
 | Subject                            | `Partnership enquiry - [institution]`               |
 | Additional headers                 | `Reply-To: [email]`                                 |
 | Use HTML content type              | ☑                                                  |
@@ -1343,8 +1388,8 @@ it goes in the subject line and gets a pill treatment in the email.
 
 | Field                              | Value                                               |
 | ---------------------------------- | --------------------------------------------------- |
-| To                                 | `hello@theaccessexchange.com`                       |
-| From                               | `The Access Exchange <hello@theaccessexchange.com>` |
+| To                                 | `connect@theaccessexchange.onmicrosoft.com`                       |
+| From                               | `The Access Exchange <connect@theaccessexchange.onmicrosoft.com>` |
 | Subject                            | `Be a guest - [your-name], [area]`                  |
 | Additional headers                 | `Reply-To: [email]`                                 |
 | Use HTML content type              | ☑                                                  |
@@ -1570,7 +1615,7 @@ LinkedIn, location, areas of expertise, and what perspective they would bring.
 
 | Field              | Value                                  |
 | ------------------ | -------------------------------------- |
-| To                 | `hello@theaccessexchange.com`          |
+| To                 | `connect@theaccessexchange.onmicrosoft.com`          |
 | Subject            | `GUEST - [your-name], [role] at [org]` |
 | Additional headers | `Reply-To: [email]`                    |
 
@@ -1636,7 +1681,7 @@ category from 4.8.
 
 | Field              | Value                            |
 | ------------------ | -------------------------------- |
-| To                 | `hello@theaccessexchange.com`    |
+| To                 | `connect@theaccessexchange.onmicrosoft.com`    |
 | Subject            | `CORPORATE - [org] - [interest]` |
 | Additional headers | `Reply-To: [email]`              |
 
@@ -1705,7 +1750,7 @@ deciding whether to ask is how an inquiry form loses an inquiry.
 
 | Field              | Value                                   |
 | ------------------ | --------------------------------------- |
-| To                 | `hello@theaccessexchange.com`           |
+| To                 | `connect@theaccessexchange.onmicrosoft.com`           |
 | Subject            | `UNIVERSITY - [institution] - [format]` |
 | Additional headers | `Reply-To: [email]`                     |
 
@@ -1758,7 +1803,7 @@ form loses the people worth talking to.
 
 | Field              | Value                              |
 | ------------------ | ---------------------------------- |
-| To                 | `hello@theaccessexchange.com`      |
+| To                 | `connect@theaccessexchange.onmicrosoft.com`      |
 | Subject            | `COACHING - [your-name] - [focus]` |
 | Additional headers | `Reply-To: [email]`                |
 
@@ -1802,7 +1847,7 @@ different things, and merging them would mean triaging them apart by hand.
 
 | Field              | Value                                    |
 | ------------------ | ---------------------------------------- |
-| To                 | `hello@theaccessexchange.com`            |
+| To                 | `connect@theaccessexchange.onmicrosoft.com`            |
 | Subject            | `COACH TRAINING - [your-name] - [stage]` |
 | Additional headers | `Reply-To: [email]`                      |
 
@@ -1846,7 +1891,7 @@ that owns them, so this one only has to catch what is left.
 
 | Field              | Value                             |
 | ------------------ | --------------------------------- |
-| To                 | `hello@theaccessexchange.com`     |
+| To                 | `connect@theaccessexchange.onmicrosoft.com`     |
 | Subject            | `GENERAL - [topic] - [your-name]` |
 | Additional headers | `Reply-To: [email]`               |
 
@@ -1890,9 +1935,9 @@ deadline) and 4.4 (short messages, often no reply wanted).
 | Field                 | Value                                               |
 | --------------------- | --------------------------------------------------- |
 | To                    | `[email]`                                           |
-| From                  | `The Access Exchange <hello@theaccessexchange.com>` |
+| From                  | `The Access Exchange <connect@theaccessexchange.onmicrosoft.com>` |
 | Subject               | `We have your message`                              |
-| Additional headers    | `Reply-To: hello@theaccessexchange.com`             |
+| Additional headers    | `Reply-To: connect@theaccessexchange.onmicrosoft.com`             |
 | Use HTML content type | ☑                                                  |
 
 Message body - same card, two lines of copy, no data echoed back:
@@ -1984,8 +2029,8 @@ these is set inside its own §4.x block.
 **Seven live forms: 4.8 – 4.13 plus the email opt-in on the home page.** 4.1 – 4.6
 are all retired. Auto-reply is ON everywhere except 4.13 - see §4.7.
 
-Identical on all of them: **To** `hello@theaccessexchange.com`, **From**
-`The Access Exchange <hello@theaccessexchange.com>`, **Additional headers**
+Identical on all of them: **To** `connect@theaccessexchange.onmicrosoft.com`, **From**
+`The Access Exchange <connect@theaccessexchange.onmicrosoft.com>`, **Additional headers**
 `Reply-To: [email]`, both Mail-tab checkboxes ticked, and `html_class="form"`
 kept on the shortcode (4.8 and 4.9 add a second class after it).
 

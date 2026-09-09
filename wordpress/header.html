@@ -19,6 +19,11 @@
      GET INVOLVED is the one persistent CTA and never leaves the bar, at any
      width or scroll position (handoff §7).
 
+     GUESTS and PARTNERSHIPS are two separate top-level pages, at the client's
+     request (2026-09-04). They were one combined /guests-partners/ page. Both
+     navs below list them separately - keep them adjacent and in this order if
+     either list is ever reordered.
+
      The active nav item is set at runtime by global.js (it compares each href to
      location.pathname, across both navs), so this file stays byte-identical
      site-wide.
@@ -54,7 +59,8 @@
   <nav class="mast-nav" aria-label="Primary">
     <a href="/">Home</a>
     <a href="/interview-series/">Interview Series</a>
-    <a href="/guests-partners/">Guests &amp; Partners</a>
+    <a href="/guests/">Guests</a>
+    <a href="/partnerships/">Partnerships</a>
     <a href="/universities/">Universities</a>
     <a href="/experiences/">Experiences</a>
     <a href="/coaching/">Coaching</a>
@@ -77,11 +83,12 @@
       <ul class="veil-nav">
         <li style="--i:0"><a href="/">Home</a></li>
         <li style="--i:1"><a href="/interview-series/">Interview Series</a></li>
-        <li style="--i:2"><a href="/guests-partners/">Guests &amp; Partners</a></li>
-        <li style="--i:3"><a href="/universities/">Universities</a></li>
-        <li style="--i:4"><a href="/experiences/">Experiences</a></li>
-        <li style="--i:5"><a href="/coaching/">Coaching</a></li>
-        <li style="--i:6"><a href="/about/">About</a></li>
+        <li style="--i:2"><a href="/guests/">Guests</a></li>
+        <li style="--i:3"><a href="/partnerships/">Partnerships</a></li>
+        <li style="--i:4"><a href="/universities/">Universities</a></li>
+        <li style="--i:5"><a href="/experiences/">Experiences</a></li>
+        <li style="--i:6"><a href="/coaching/">Coaching</a></li>
+        <li style="--i:7"><a href="/about/">About</a></li>
       </ul>
     </nav>
     <div class="veil-sides veil-sides--one">

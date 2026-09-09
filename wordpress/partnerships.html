@@ -1,0 +1,141 @@
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     PAGE · PARTNERSHIPS                          WordPress slug: partnerships
+     ───────────────────────────────────────────────────────────────────────────
+     PASTE INTO   Elementor → Pages → Partnerships → single full-width
+                  Container → one "HTML" widget → everything below.
+                  Page Layout: Elementor Full Width. Container padding 0, gap 0.
+
+     SPLIT FROM /guests-partners/ (client request, 2026-09-04). This page and
+     /guests/ were one page serving two audiences off two anchors. They are
+     separate pages now, so an organisation weighing a sponsorship never has to
+     scroll past a pitch aimed at individual guests. The guest half lives in
+     guests.html - both files share the same hero markup, so a change to either
+     goes in BOTH files.
+
+     THE BODY CLASS STAYS "tae-guests". That is what the gp-hero, panelled and
+     options CSS is scoped to. Renaming it here would mean duplicating a large
+     block of global.css for no gain.
+
+     REDIRECT: /guests-partners/ 301s to /guests/, not here. Anyone landing on
+     the old URL is far more likely to have wanted the guest half.
+
+     IN-PAGE ANCHOR
+       #corporate   partnership options + form  (still linked from the home
+                    page and footer - do not rename)
+
+     FORM  One CF7 form, specified in CF7-SMTP.md §4.9. Create it, then replace
+     REPLACE_ID_CORPORATE below. Separate notification category from the guest
+     form on /guests/. Mail(2) on for the confirmation autoresponder.
+
+     ALL FORM MAIL GOES TO connect@theaccessexchange.com - the only address on
+     this site (client, 2026-09-04).
+
+     SEO - enter these in Yoast / Rank Math / SEOPress, NOT here.
+       SEO title       Partnerships - Amplify your thought leadership |
+                       The Access Exchange
+       Meta desc       Sponsor an interview, nominate a leader, or build a
+                       partnership with The Access Exchange and reach emerging
+                       talent directly.  (148 chars)
+       Focus keyphrase corporate partnerships
+       Canonical       https://theaccessexchange.com/partnerships/
+       OG title        Partner with The Access Exchange
+       OG description  Showcase your executives, elevate your employer brand,
+                       and reach the next generation of industry leaders.
+       Twitter card    summary_large_image
+       Robots          index, follow
+       Breadcrumb      Home › Partnerships
+
+     PERFORMANCE NOTES
+       · The hero image is the one image above the fold and carries
+         fetchpriority="high". The LCP element is the H1, which renders from
+         CSS alone and needs no preload.
+     ═══════════════════════════════════════════════════════════════════════════ -->
+
+<!-- NO JSON-LD ON THIS PAGE - Yoast owns it. Set Schema tab → Page type =
+     "Web Page". The form is not a schema-worthy entity on its own. -->
+
+<div class="tae tae-guests">
+
+  <!-- ═══ 01 · HERO ═══════════════════════════════════════════════════════
+       Full-bleed image with the copy over it. The key line is composed INTO the
+       hero rather than stacked under it — as a separate block under the lede it
+       read as a third paragraph instead of the statement it is.
+
+       The parallax is CSS-only, via scroll-driven animation. There is no
+       background-attachment:fixed here on purpose: it janks badly on Windows
+       and iOS ignores it outright. Browsers without animation-timeline get a
+       still image, which is a fine hero. -->
+  <section class="stage gp-hero" aria-labelledby="gp-h">
+    <div class="stage-media" aria-hidden="true">
+      <!-- CLIENT EDIT (2026-09-04): its own photograph. The split left both
+           halves carrying the image from the page they came from, so /guests/
+           and /partnerships/ opened on an identical frame and read as the same
+           page twice. This one is a working meeting rather than the lone
+           speaker on /guests/ - the audience here is an organisation, not an
+           individual. Swap for a real photograph before launch; it is a Pexels
+           hotlink like every other stock image in this build. -->
+      <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=2400&h=1600&q=72" alt="" decoding="async" fetchpriority="high">
+    </div>
+
+    <div class="shell gp-hero-in">
+      <p class="kicker lab">Partnerships</p>
+      <h1 id="gp-h">Partner with The Access Exchange.</h1>
+      <p class="lede">Sponsor an interview, nominate a leader from your own organisation, or build something broader across the Interview Series, live experiences and campus programming.</p>
+
+      <div class="gp-routes">
+        <a href="#corporate" class="btn">Explore partnerships</a>
+        <a href="/guests/" class="btn btn--ghost">Be considered as a guest</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 04 · CORPORATE ══════════════════════════════════════════════════ -->
+  <section class="panelled panelled--tint" id="corporate" aria-labelledby="corp-h">
+    <div class="shell panel-grid">
+
+      <div class="panel-say">
+        <p class="kicker lab">Partner with The Access Exchange</p>
+        <!-- CLIENT EDIT (2026-09-04, revisions doc §2): was "Some of your
+             strongest voices are already inside your organisation." / "Sponsor
+             an interview. Nominate a leader." The doc asks for ROI language a
+             sponsor can take to a budget holder. The SAME copy leads the
+             corporate door on the homepage - if one is reworded, reword both. -->
+        <h2 id="corp-h">Amplify your company's thought leadership and build a direct pipeline to top university talent.</h2>
+        <p>Partner with us to showcase your executives, elevate your employer brand, and give back to the next generation of industry leaders.</p>
+
+        <ul class="options">
+          <li>
+            <span class="n lab">01</span>
+            <div>
+              <b>Sponsor an Interview</b>
+              <span>Back a conversation and be associated with the thinking in it, not with an ad break around it.</span>
+            </div>
+          </li>
+          <li>
+            <span class="n lab">02</span>
+            <div>
+              <b>Nominate a Leader</b>
+              <span>Put someone from your organisation forward as a guest, and give their experience a wider audience.</span>
+            </div>
+          </li>
+          <li>
+            <span class="n lab">03</span>
+            <div>
+              <b>Build a Partnership</b>
+              <span>Broader collaboration across the Interview Series, live experiences and campus programming.</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="panel-form">
+        <h3>Corporate inquiry</h3>
+        <!-- CF7 form "TAE - Corporate partnership" - CF7-SMTP.md §4.9.
+             Separate notification category from the guest form above. -->
+        [contact-form-7 id="REPLACE_ID_CORPORATE" title="TAE - Corporate partnership" html_class="form form--corporate"]
+      </div>
+
+    </div>
+  </section>
+
+</div>

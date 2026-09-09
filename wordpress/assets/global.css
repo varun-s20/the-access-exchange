@@ -447,8 +447,30 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
    parallax. If this is still visible, it's likely a GPU/driver-specific
    Chromium compositing quirk rather than something fixable in CSS - need to
    know the browser + OS to chase it further. */
-.tae .stage:has(video) .stage-media{will-change:auto}
-.tae .stage-media video{transform:translateZ(0);backface-visibility:hidden}
+.tae .stage-media--static{will-change:auto}
+
+/* CLIENT FIX (2026-08-20), 4th and final pass. The three earlier attempts -
+   a translateZ(0) layer promotion, a heroParallax() exclusion that sniffed
+   for a <video> child at runtime, and the :has(video) hint-clearing above -
+   all failed to clear the flash, so the client asked for the effect to be
+   removed outright rather than chased further.
+
+   .stage-media--static is a hard-coded class on the hero markup itself
+   (wordpress/index.html §01): unconditional, not inferred at runtime from
+   what the element happens to contain, and nothing left to fail silently.
+   heroParallax() skips the same class before it looks inside the element,
+   so between the two nothing transforms or layer-promotes this hero again.
+
+   DO NOT reintroduce translateZ, backface-visibility or will-change here,
+   and do not go back to a :has() selector. That is the loop this fix ended. */
+
+/* A browser that refuses the autoplay (iOS Low Power Mode, Safari set to
+   never auto-play) paints its own play glyph over the video, and a long
+   press opens a media context menu on it. Taking the video out of
+   hit-testing kills both - there is nothing left to press. The loop is
+   restored instead by global.js, which re-issues play() on the first tap
+   anywhere in the document. */
+.tae .stage-media video{pointer-events:none}
 
 /* Two scrims, not one. The vertical pass seats the copy at the foot; the
    horizontal pass darkens the left third only, so the headline holds against a
@@ -888,6 +910,25 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
   line-height:1.62;margin-bottom:22px;max-width:38ch}
 .tae-home .thesis-cta{display:flex;flex-wrap:wrap;gap:9px}
 @media(max-width:559px){.tae-home .thesis-cta .btn{flex:1 1 100%}}
+
+/* ── CHOOSE YOUR PATH ──
+   Three equal cards below the homepage hero, so a visitor self-segments
+   before reading anything else (client revisions doc §4, 2026-09-04).
+   Scoped to .tae-home; the markup is the .paths section in index.html.
+   .path is a flex column with .btn on margin-top:auto, so the buttons
+   line up across the row however uneven the copy above them is. */
+.tae-home .paths{padding:var(--sec) 0;border-top:var(--hair) solid var(--rule)}
+.tae-home .paths .h2{max-width:16ch;margin-bottom:clamp(28px,3.6vw,52px)}
+.tae-home .path-set{display:grid;gap:clamp(24px,3vw,40px)}
+@media(min-width:760px){.tae-home .path-set{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1080px){.tae-home .path-set{grid-template-columns:repeat(3,1fr)}}
+.tae-home .path{display:flex;flex-direction:column;align-items:flex-start;
+  padding-top:clamp(18px,2vw,26px);border-top:2px solid var(--ink)}
+.tae-home .path h3{font-family:var(--skandia-m);font-weight:600;
+  font-size:clamp(1.04rem,1.3vw,1.2rem);letter-spacing:-.012em;margin-bottom:10px}
+.tae-home .path p{color:var(--ink-2);font-size:.95rem;line-height:1.6;
+  margin-bottom:clamp(18px,2vw,26px)}
+.tae-home .path .btn{margin-top:auto}
 
 /* ── WHY THE EXCHANGE - the stacked statement ── */
 .tae-home .gap{padding:var(--sec) 0;border-top:var(--hair) solid var(--rule)}
@@ -1747,7 +1788,14 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
   line-height:1.55;max-width:44ch}
 
 /* ── 03 · IN THE ROOM - editorial statement ── */
-.tae-experiences .room{border-top:var(--hair) solid var(--rule);padding:var(--sec) 0}
+/* CLIENT EDIT (2026-09-04): top padding cut to 45%. Every section here
+   carries a full --sec top AND bottom, so between any two of them the reader
+   crosses two whole section gaps stacked - the bottom of the one above plus
+   the top of this one. Under the image-led .kinds grid that read as a dead
+   screen. Bottom padding untouched, so the rhythm going into .routes below
+   is unchanged. Same fix, same reason, as .tae-home .series. */
+.tae-experiences .room{border-top:var(--hair) solid var(--rule);
+  padding:calc(var(--sec) * .45) 0 var(--sec)}
 .tae-experiences .room-in{max-width:56ch;margin-inline:auto;text-align:center}
 .tae-experiences .room-in p{font-family:var(--skandia);font-weight:400;
   font-size:clamp(1.24rem,2.2vw,1.86rem);line-height:1.26;letter-spacing:-.028em;
@@ -1761,6 +1809,12 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
 .tae-experiences .room-pair img{width:100%;aspect-ratio:4/3;object-fit:cover;
   border-radius:var(--r)}
 .tae-experiences .room-pair figcaption{color:var(--ink-3);margin-top:10px}
+
+/* CLIENT EDIT (2026-09-04): "Bring one together" had the same doubled gap -
+   .room's bottom padding, then .routes' top. The .routes rule itself is
+   shared with Get Involved, where the spacing is right, so the reduction is
+   scoped to this page instead of changing the shared component. */
+.tae-experiences .routes{padding-top:calc(var(--sec) * .45)}
 
 .tae-experiences .ln{display:inline-flex;align-items:center;gap:.7em;
   font-family:var(--skandia-m);font-weight:600;font-size:clamp(.61rem,.7vw,.7rem);
@@ -1782,10 +1836,17 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
 
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   08c · PAGE - GUESTS & PARTNERS                               .tae-guests
-   Two audiences, one page (handoff §10): a leader putting themselves forward,
-   and an organisation sponsoring, nominating or partnering. Each gets a route
-   from the hero and a form of its own, so neither has to read the other's.
+   08c · PAGES - GUESTS + PARTNERSHIPS                          .tae-guests
+   Two audiences (handoff §10): a leader putting themselves forward, and an
+   organisation sponsoring, nominating or partnering.
+
+   ONE SCOPE, TWO PAGES. This was a single /guests-partners/ page with a route
+   to each audience; the client asked on 2026-09-04 for them to be separate,
+   so it is now /guests/ and /partnerships/. Both keep class "tae-guests" -
+   every rule below is shared between them, and splitting the scope would mean
+   duplicating this whole block to style two pages that look identical.
+   A rule that should apply to only one of them needs a second class on that
+   page, not a second copy of this section.
 
    Uses the shared .tae .form base in §03 rather than a fourth copy of it.
    ═══════════════════════════════════════════════════════════════════════════ */
@@ -2020,12 +2081,35 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
 
 .tae-episode .ep-next{border-top:var(--hair) solid var(--rule);padding:var(--sec) 0}
 .tae-episode .ep-next h2{color:var(--ink-3);margin-bottom:clamp(20px,2.6vw,32px)}
-.tae-episode .ep-next-list{display:grid;gap:var(--hair);background:var(--rule)}
-@media(min-width:760px){.tae-episode .ep-next-list{grid-template-columns:repeat(3,1fr)}}
+/* CLIENT FIX (2026-09-04): the grey panel. This drew its separators with
+   gap:var(--hair) over background:var(--rule) - the container colour showing
+   through one-pixel gaps. That works only while the cards fill every cell,
+   and a fixed repeat(3,1fr) track with one or two related items leaves the
+   empty cells painted --rule: a slab of grey beside the cards, which is what
+   made the block stand out. Each card carries its own hairline now and the
+   track sizes to the cards that exist, so a short row is just a short row.
+   auto-fill, not auto-fit: auto-fit collapses the empty tracks and stretches
+   a lone card the full width, which reads as a different component. */
+.tae-episode .ep-next-list{display:grid;gap:clamp(14px,1.6vw,20px)}
+@media(min-width:760px){
+  .tae-episode .ep-next-list{grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
+}
 .tae-episode .ep-next-list a{display:flex;flex-direction:column;gap:9px;height:100%;
-  padding:clamp(20px,2.4vw,30px);background:var(--paper);
-  transition:background .4s var(--ease)}
-.tae-episode .ep-next-list a:hover{background:var(--paper-2)}
+  padding:clamp(16px,1.8vw,22px);background:var(--paper);
+  border:var(--hair) solid var(--rule);border-radius:var(--r);overflow:hidden;
+  transition:background .4s var(--ease),border-color .4s var(--ease),
+             transform .4s var(--ease)}
+.tae-episode .ep-next-list a:hover{background:var(--paper-2);
+  border-color:var(--rule-2);transform:translateY(-2px)}
+
+/* The thumbnail, pulled out to the card edges - the padding is for the type,
+   and a picture inset from the border reads as a stamp rather than a still.
+   A card whose post has no featured image simply has no .ph and starts at
+   the kicker, which is why the aspect-ratio lives here and not on the card. */
+.tae-episode .ep-next-list .ph{margin:calc(-1 * clamp(16px,1.8vw,22px));
+  margin-bottom:4px;aspect-ratio:16/9;background:var(--paper-3)}
+.tae-episode .ep-next-list .ph img{width:100%;height:100%;object-fit:cover}
+.tae-episode .ep-next-list a:hover .ph img{transform:scale(1.03)}
 .tae-episode .ep-next-list .k{color:var(--accent)}
 .tae-episode .ep-next-list .t{font-family:var(--skandia);font-weight:400;
   font-size:clamp(1rem,1.5vw,1.22rem);line-height:1.16;letter-spacing:-.026em}
@@ -2044,7 +2128,14 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
 
 
 /* ── 05 · TAKEAWAYS · the section heading above the embedded stream ── */
-.tae-interviews .take-h{font-family:var(--skandia);font-weight:400;
+/* CLIENT EDIT (2026-09-04): margin-top added. The "Takeaways" divider band
+   directly above this is full-bleed and carries its own top and bottom
+   rules; a heading with no top margin sat hard against that lower rule, so
+   the band and the heading read as one stuck-together object. The space
+   goes here rather than on .divider because .divider is shared furniture -
+   it also runs above the archive, where being tight is correct. */
+.tae-interviews .take-h{margin-top:clamp(34px,4.6vw,64px);
+  font-family:var(--skandia);font-weight:400;
   font-size:var(--fs-h2);line-height:1.04;letter-spacing:-.032em;
   text-wrap:balance;max-width:18ch}
 /* CLIENT EDIT (2026-08-20): margin-bottom raised - heading/lede and the
@@ -2302,12 +2393,21 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
   margin-top:12px;max-width:52ch}
 
 /* ── 03 · THE FOUNDER ── */
-/* ── TEAM STRIP · 4 portraits ──
+/* ── TEAM STRIP · 3 portraits ──
    CLIENT EDIT (2026-08-20): replaces the single full-bleed "conversation,
-   recorded" photo (.plate) between §01 and §02. */
-.tae-about .team-strip{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;
+   recorded" photo (.plate) between §01 and §02.
+
+   CLIENT EDIT (2026-08-21): the roster closed at three people, so this is
+   three tiles and one row, at every width. The old rule was two columns on
+   phones and four above 700px, which was the right answer for an even count
+   and the wrong one for an odd one: three items in a two-column grid leave a
+   half-empty second row, and the odd tile out reads as a mistake rather than
+   a layout. One row of three holds at 320px - each tile is ~106px wide, and
+   these are a decorative band, not the place anyone reads a name (the name
+   is a hover caption, which no touch device shows anyway; §04 below is where
+   the roster is actually legible). */
+.tae-about .team-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;
   border-top:var(--hair) solid var(--rule-2)}
-@media(min-width:700px){.tae-about .team-strip{grid-template-columns:repeat(4,1fr)}}
 .tae-about .team-shot{margin:0;position:relative;overflow:hidden}
 .tae-about .team-shot img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;
   filter:grayscale(.15);transition:filter .4s var(--ease)}
@@ -2338,7 +2438,18 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
    longer read as clearly the primary portrait. This is now visibly the
    larger image on the page; .crew-card .ph below was scaled down to match. */
 .tae-about .who .ph{width:clamp(200px,26vw,360px);aspect-ratio:4/5}
-.tae-about .who blockquote{font-family:var(--skandia);font-weight:400;
+/* CLIENT EDIT (2026-08-21): "the image and the text section are of the same
+   height". Side by side, the portrait now takes its height from the row and
+   drops the 4/5 ratio, so its bottom edge lands on the last line of the bio
+   instead of wherever 4/5 happened to end. Must sit after the rule above -
+   a media query adds no specificity, so on equal weight the later rule wins.
+   Stacked (under 820px) there is no text column to match, so the ratio stays
+   and .who-grid keeps centring. */
+@media(min-width:820px){
+  .tae-about .who-grid{align-items:stretch}
+  .tae-about .who .ph{aspect-ratio:auto}
+}
+.tae-about .who .who-name{font-family:var(--skandia);font-weight:400;
   font-size:clamp(1.24rem,2.4vw,2.05rem);line-height:1.22;letter-spacing:-.032em;
   max-width:28ch;margin-bottom:18px;text-wrap:balance}
 .tae-about .who .sign{display:flex;align-items:center;gap:12px;color:var(--ink-3)}
@@ -2360,24 +2471,49 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
 /* ── 04 · COLOPHON FACTS ── */
 /* ── THE TEAM · below the founder ──
    CLIENT EDIT (2026-08-20): new section - "founder remains the main, the
-   rest 3 below." Each card mirrors the founder block's own shape (portrait,
-   quote, name/role) at a smaller scale, so the two sections read as one
-   family rather than two different systems. */
+   rest below." Each card mirrors the founder block's own shape at a smaller
+   scale, so the two sections read as one family rather than two different
+   systems.
+
+   CLIENT EDIT (2026-08-21), real roster: three placeholder cards carrying a
+   quote and a job title became two real people carrying a name and a
+   biography. Three changes follow from that, and each is a rule below rather
+   than a tweak:
+
+   TWO COLUMNS, NOT THREE. Two cards in a three-column grid sit squashed
+   against the left with a third of the row empty. Two columns also give the
+   biographies a ~56ch measure instead of ~38ch, which is the difference
+   between a readable paragraph and a column of ragged fragments.
+
+   NO TITLE RULE. `.crew-name .lab` is deleted, not just unused - the client's
+   instruction is that team members are listed without titles, and leaving a
+   live rule behind is an invitation to put one back.
+
+   THE NAME IS NOW A HEADING. It used to be a caption under a pull-quote, at
+   .92rem in the mono face, because the quote above it was the loud part.
+   With the quote gone the name leads the card, so it takes the display face
+   the founder's own name uses in §03, a size down. */
 .tae-about .crew{padding:var(--sec) 0;border-top:var(--hair) solid var(--rule-2)}
-.tae-about .crew-grid{display:grid;gap:clamp(24px,3vw,40px)}
-@media(min-width:700px){.tae-about .crew-grid{grid-template-columns:repeat(3,1fr)}}
+.tae-about .crew-grid{display:grid;gap:clamp(28px,4vw,64px)}
+@media(min-width:700px){.tae-about .crew-grid{grid-template-columns:repeat(2,1fr)}}
 .tae-about .crew-card{margin:0}
 /* CLIENT FIX (2026-08-20): 200px read as too small next to the founder
    portrait (.who .ph, clamp(200px,26vw,360px)) - sized up close to it here,
-   capped a little lower so the founder still reads as marginally primary. */
-.tae-about .crew-card .ph{aspect-ratio:4/5;max-width:clamp(220px,24vw,320px);margin:0 auto 18px}
+   capped a little lower so the founder still reads as marginally primary.
+   CLIENT EDIT (2026-08-21): left-aligned, not centred. A centred portrait
+   over a centred quote was symmetrical; over a left-aligned biography it
+   floats away from the text it belongs to. Its left edge now lines up with
+   the name and every line of the bio. */
+.tae-about .crew-card .ph{aspect-ratio:4/5;max-width:clamp(220px,24vw,320px);margin:0 0 18px}
 .tae-about .crew-card .ph img{width:100%;height:100%;object-fit:cover;display:block}
-.tae-about .crew-card blockquote{font-family:var(--skandia);font-weight:400;
-  font-size:clamp(1rem,1.3vw,1.15rem);line-height:1.42;letter-spacing:-.014em;
-  color:var(--ink-2);margin-bottom:14px}
-.tae-about .crew-name{font-family:var(--skandia-m);font-weight:600;
-  font-size:.92rem;letter-spacing:-.006em;display:flex;flex-direction:column;gap:5px}
-.tae-about .crew-name .lab{color:var(--ink-3);font-weight:600}
+.tae-about .crew-name{font-family:var(--skandia);font-weight:400;
+  font-size:clamp(1.14rem,1.7vw,1.42rem);line-height:1.22;letter-spacing:-.026em;
+  text-wrap:balance}
+/* Same shape as .who .bio in §03 - same colour, same leading, same top
+   margin doing the paragraph spacing - one size down, because the founder's
+   block stays the primary one. */
+.tae-about .crew-card .bio{color:var(--ink-2);line-height:1.62;max-width:56ch;
+  font-size:clamp(.94rem,1.02vw,1rem);margin-top:clamp(14px,1.7vw,20px)}
 
 .tae-about .facts{padding:var(--sec) 0;border-top:var(--hair) solid var(--rule-2)}
 .tae-about .facts-grid{display:grid;grid-template-columns:repeat(2,1fr);

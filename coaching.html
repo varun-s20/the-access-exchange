@@ -41,6 +41,11 @@
      GET INVOLVED is the one persistent CTA and never leaves the bar, at any
      width or scroll position (handoff §7).
 
+     GUESTS and PARTNERSHIPS are two separate top-level pages, at the client's
+     request (2026-09-04). They were one combined /guests-partners/ page. Both
+     navs below list them separately - keep them adjacent and in this order if
+     either list is ever reordered.
+
      The active nav item is set at runtime by global.js (it compares each href to
      location.pathname, across both navs), so this file stays byte-identical
      site-wide.
@@ -76,7 +81,8 @@
   <nav class="mast-nav" aria-label="Primary">
     <a href="index.html">Home</a>
     <a href="interview-series.html">Interview Series</a>
-    <a href="guests-partners.html">Guests &amp; Partners</a>
+    <a href="guests.html">Guests</a>
+    <a href="partnerships.html">Partnerships</a>
     <a href="universities.html">Universities</a>
     <a href="experiences.html">Experiences</a>
     <a href="coaching.html" aria-current="page">Coaching</a>
@@ -99,11 +105,12 @@
       <ul class="veil-nav">
         <li style="--i:0"><a href="index.html">Home</a></li>
         <li style="--i:1"><a href="interview-series.html">Interview Series</a></li>
-        <li style="--i:2"><a href="guests-partners.html">Guests &amp; Partners</a></li>
-        <li style="--i:3"><a href="universities.html">Universities</a></li>
-        <li style="--i:4"><a href="experiences.html">Experiences</a></li>
-        <li style="--i:5"><a href="coaching.html" aria-current="page">Coaching</a></li>
-        <li style="--i:6"><a href="about.html">About</a></li>
+        <li style="--i:2"><a href="guests.html">Guests</a></li>
+        <li style="--i:3"><a href="partnerships.html">Partnerships</a></li>
+        <li style="--i:4"><a href="universities.html">Universities</a></li>
+        <li style="--i:5"><a href="experiences.html">Experiences</a></li>
+        <li style="--i:6"><a href="coaching.html" aria-current="page">Coaching</a></li>
+        <li style="--i:7"><a href="about.html">About</a></li>
       </ul>
     </nav>
     <div class="veil-sides veil-sides--one">
@@ -198,7 +205,15 @@
 
       <div class="panel-say">
         <p class="kicker lab">Professional coaching</p>
-        <h2 id="pc-h">Personalised guidance, not general advice.</h2>
+        <h2 id="pc-h">Personalized guidance, not general advice.</h2>
+        <!-- CLIENT EDIT (2026-09-04, revisions doc §5): the doc asks for the
+             target demographic to be named rather than left as "people". It
+             leaves that demographic in brackets - "[recent graduates and
+             mid-level professionals]" - and says to finalise it with the
+             founders before publishing. It is written out plainly below; if
+             they settle on other wording, this line and the matching one in
+             the homepage coaching card both change. -->
+        <p>Personalized guidance for recent graduates and mid-level professionals to help them navigate career pivots, strengthen their positioning, and turn ambition into execution.</p>
         <p>The Access Exchange provides professional coaching designed to help people clarify goals, navigate transitions, strengthen professional positioning, build relationships, identify development priorities and translate insight into practical strategy.</p>
 
         <ul class="focus">
@@ -282,6 +297,16 @@
      scales with the viewport rather than sitting at a fixed size.
      Update the © year here once a year, or swap the <span> for the shortcode
      [year] if you have a snippet plugin registered for it.
+
+     THREE COLUMNS, ONE LINK PER DESTINATION (2026-09-04). Every page is
+     reachable from here exactly once: EXPLORE is where you read or watch,
+     GET INVOLVED is where you fill something in. Before adding a link, check
+     the destination is not already listed - the previous footer had
+     /get-involved/ twice and pointed at /coaching/ and /universities/ under
+     two different labels each. Guests and Partnerships are named after their
+     pages rather than given CTA copy, so the footer and the nav agree.
+     .foot-cols is a centred flex row, so adding or removing a column needs
+     no CSS change.
      ═══════════════════════════════════════════════════════════════════════════ -->
 
 <div class="foot">
@@ -289,34 +314,25 @@
     <div class="foot-cols">
 
       <div>
-        <h4 class="lab">The Access Exchange</h4>
+        <h4 class="lab">Explore</h4>
         <ul>
+          <li><a href="index.html">Home</a></li>
           <li><a href="interview-series.html">Interview Series</a></li>
           <li><a href="interview-series.html#takeaways">Takeaways</a></li>
           <li><a href="universities.html">Universities</a></li>
           <li><a href="experiences.html">Experiences</a></li>
           <li><a href="coaching.html">Coaching</a></li>
+          <li><a href="about.html">About</a></li>
         </ul>
       </div>
 
       <div>
         <h4 class="lab">Get involved</h4>
         <ul>
-          <li><a href="guests-partners.html#guest">Share your perspective</a></li>
-          <li><a href="guests-partners.html#corporate">Partner with The Access Exchange</a></li>
+          <li><a href="guests.html">Guests</a></li>
+          <li><a href="partnerships.html">Partnerships</a></li>
           <li><a href="universities.html#enquire">Bring The Access Exchange to campus</a></li>
-          <li><a href="coaching.html#coaching">Explore coaching</a></li>
-          <li><a href="coaching.html#training">Explore coach training</a></li>
           <li><a href="get-involved.html">General inquiry</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <h4 class="lab">Platform</h4>
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a href="get-involved.html">Get Involved</a></li>
         </ul>
       </div>
 
@@ -347,7 +363,7 @@
 
 </footer>
 
-<script>window.TAE_INDEX=[{t:"Home",d:"The platform and every way into it",u:"index.html"},{t:"Interview Series",d:"In-depth interviews, takeaways and the archive",u:"interview-series.html"},{t:"Guests & Partners",d:"Guest consideration, sponsorship, nomination",u:"guests-partners.html"},{t:"Universities & Institutions",d:"Leadership talks, discussions, Q&A, custom programmes",u:"universities.html"},{t:"Experiences",d:"Live panels, leadership discussions and events",u:"experiences.html"},{t:"Coaching",d:"Professional coaching, coach training and certification",u:"coaching.html"},{t:"About",d:"Philosophy, mission and the founder story",u:"about.html"},{t:"Get Involved",d:"Every route into The Access Exchange",u:"get-involved.html"},{t:"Share your perspective",d:"Guest consideration form",u:"guests-partners.html#guest"},{t:"Partner with The Access Exchange",d:"Corporate sponsorship and partnership form",u:"guests-partners.html#corporate"},{t:"Bring The Access Exchange to campus",d:"University and institutional engagement form",u:"universities.html#enquire"},{t:"Explore coaching",d:"Professional coaching inquiry",u:"coaching.html#coaching"},{t:"Explore coach training",d:"Coach training and certification inquiry",u:"coaching.html#training"},{t:"Takeaways",d:"Standout ideas and clips from the interviews",u:"interview-series.html#takeaways"},{t:"The archive",d:"Every interview in full",u:"interview-series.html#episodes"},{t:"From bootcamp to staff engineer in five years",d:"Amara Osei, Staff Engineer",u:"interview-series.html"},{t:"What a backend interview loop actually tests",d:"Ravi Menon, Engineering Manager",u:"interview-series.html"},{t:"Moving from support into product without a technical degree",d:"Fiona Bright, Senior Product Manager",u:"interview-series.html"},{t:"The parts of a data science job nobody puts in the job spec",d:"Dr Leila Haddad, Lead Data Scientist",u:"interview-series.html"},{t:"Forty applications, two offers",d:"Tobi Adeyinka, Junior Developer",u:"interview-series.html"},{t:"Building a portfolio when you have never shipped anything",d:"Marta Kowalska, Product Designer",u:"interview-series.html"},{t:"Switching from civil engineering at thirty-one",d:"Callum Reid, Platform Engineer",u:"interview-series.html"},{t:"Internships, placements and the routes people forget exist",d:"Grace Nwosu, Early Careers Lead",u:"interview-series.html"}];</script>
+<script>window.TAE_INDEX=[{t:"Home",d:"The platform and every way into it",u:"index.html"},{t:"Interview Series",d:"In-depth interviews, takeaways and the archive",u:"interview-series.html"},{t:"Guests",d:"Be considered as a guest on the Interview Series",u:"guests.html"},{t:"Partnerships",d:"Sponsor an interview, nominate a leader, build a partnership",u:"partnerships.html"},{t:"Universities & Institutions",d:"Leadership talks, discussions, Q&A, custom programmes",u:"universities.html"},{t:"Experiences",d:"Live panels, leadership discussions and events",u:"experiences.html"},{t:"Coaching",d:"Professional coaching, coach training and certification",u:"coaching.html"},{t:"About",d:"Philosophy, mission and the founder story",u:"about.html"},{t:"Get Involved",d:"Every route into The Access Exchange",u:"get-involved.html"},{t:"Share your perspective",d:"Guest consideration form",u:"guests.html#guest"},{t:"Partner with The Access Exchange",d:"Corporate sponsorship and partnership form",u:"partnerships.html#corporate"},{t:"Bring The Access Exchange to campus",d:"University and institutional engagement form",u:"universities.html#enquire"},{t:"Explore coaching",d:"Professional coaching inquiry",u:"coaching.html#coaching"},{t:"Explore coach training",d:"Coach training and certification inquiry",u:"coaching.html#training"},{t:"Takeaways",d:"Standout ideas and clips from the interviews",u:"interview-series.html#takeaways"},{t:"The archive",d:"Every interview in full",u:"interview-series.html#episodes"},{t:"From bootcamp to staff engineer in five years",d:"Amara Osei, Staff Engineer",u:"interview-series.html"},{t:"What a backend interview loop actually tests",d:"Ravi Menon, Engineering Manager",u:"interview-series.html"},{t:"Moving from support into product without a technical degree",d:"Fiona Bright, Senior Product Manager",u:"interview-series.html"},{t:"The parts of a data science job nobody puts in the job spec",d:"Dr Leila Haddad, Lead Data Scientist",u:"interview-series.html"},{t:"Forty applications, two offers",d:"Tobi Adeyinka, Junior Developer",u:"interview-series.html"},{t:"Building a portfolio when you have never shipped anything",d:"Marta Kowalska, Product Designer",u:"interview-series.html"},{t:"Switching from civil engineering at thirty-one",d:"Callum Reid, Platform Engineer",u:"interview-series.html"},{t:"Internships, placements and the routes people forget exist",d:"Grace Nwosu, Early Careers Lead",u:"interview-series.html"}];</script>
 <script src="assets/global.js" defer></script>
 </body>
 </html>

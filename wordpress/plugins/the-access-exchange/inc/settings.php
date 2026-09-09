@@ -38,25 +38,26 @@ function tae_options() {
 			'default' => '/#join',
 			'help'    => 'Where every "Join The Exchange" button goes. The default is the sign-up band on the home page. Point it at a different page, or an external list, if the opt-in ever moves.',
 		),
-		/* CLIENT EDIT START (2026-08-20) - the home page's pre-launch card
-		   (§03, before any interview is published at all) can show a
-		   right-side sneak-peek image of the interview that is coming.
-		   Leave the image blank and the section still renders (heading +
-		   coming-soon copy), just without the right column. See
-		   inc/shortcodes.php case 'home' and templates/home-launch.php. */
+		/* CLIENT EDIT START (2026-08-20), 2nd pass - the home page §03 uses
+		   this as a genuine on/off toggle now, not just decoration:
+		     - empty  -> if interviews are published but none is featured,
+		                 show 3 of them in a row instead of 1
+		     - filled -> show 1 recent interview beside this image instead
+		   (and it still doubles as the sneak-peek image on the true
+		   pre-launch card, before anything is published at all). Left empty
+		   by default on purpose - was a placeholder image, but that silently
+		   forced the "1 + image" layout even with nothing configured, which
+		   defeated the point of it being a toggle. See inc/shortcodes.php
+		   case 'home', templates/home-launch.php and templates/home-recent.php. */
 		'tae_teaser_image'   => array(
 			'label'     => 'Upcoming interview - sneak peek image',
-			// CLIENT EDIT (2026-08-20): client wants the guest kept a
-			// mystery - one person's back to camera, the other person (the
-			// interviewer) visible - so the placeholder default is that kind
-			// of shot rather than an empty studio/equipment photo.
-			'default'   => 'https://images.unsplash.com/photo-1559523161-0fc0d8b38a7a?auto=format&fit=crop&w=1000&h=1200&q=72',
-			'help'      => 'Shown beside the "First interview coming soon" card. Paste a different image URL to replace the placeholder.',
+			'default'   => '',
+			'help'      => 'Optional. Try https://images.unsplash.com/photo-1559523161-0fc0d8b38a7a?auto=format&fit=crop&w=1000&h=1200&q=72 (a "guest\'s back to camera" shot) if you want a placeholder - paste it here to turn it on.',
 			'sanitize'  => 'esc_url_raw',
 		),
 		'tae_teaser_caption' => array(
 			'label'     => 'Upcoming interview - sneak peek caption',
-			'default'   => 'Recording the first conversation.',
+			'default'   => '',
 			'help'      => 'Optional short caption over the sneak-peek image above, e.g. "Recording now."',
 			'sanitize'  => 'sanitize_text_field',
 		),

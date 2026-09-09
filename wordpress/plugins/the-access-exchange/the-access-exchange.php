@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name:       The Access Exchange
- * Description:       Interviews and takeaways as editable content, rendered through shortcodes into the existing Elementor HTML widgets. Emits markup identical to the static prototype, so global.css never changes. Reinstalled under a brand new plugin slug (the-access-exchange) and filename after "tae-content" got stuck on the live host - old versions kept reappearing after deletion and new uploads failed with "Plugin file does not exist" even once the folder was emptied. This is a clean install, not an update of the old one.
- * Version:           2.0.0
+ * Description:       Interviews and takeaways as editable content, rendered through shortcodes into the existing Elementor HTML widgets. Emits markup identical to the static prototype, so global.css never changes. Reinstalled under a brand new plugin slug (the-access-exchange) and filename after "tae-content" got stuck on the live host - old versions kept reappearing after deletion and new uploads failed with "Plugin file does not exist" even once the folder was emptied. This is a clean install, not an update of the old one. v2.1.0 folds in the 3rd-pass homepage work that landed in the old tae-content folder AFTER this slug was first packaged, plus the 2026-09-04 guests/partnerships split.
+ * Version:           2.1.0
  * Requires at least: 6.0
  * Requires PHP:      7.4
  * Author:            Digital Heroes
@@ -14,7 +14,7 @@
 defined( 'ABSPATH' ) || exit;
 
 // Also the cache-buster on tae-archive.js. Bump it whenever that file changes.
-define( 'TAE_VER', '2.0.0' );
+define( 'TAE_VER', '2.1.0' );
 define( 'TAE_DIR', plugin_dir_path( __FILE__ ) );
 define( 'TAE_URL', plugin_dir_url( __FILE__ ) );
 

@@ -77,10 +77,35 @@
          than a :has(video) selector - no runtime DOM inspection, no
          selector-support assumptions, nothing left to fail silently. This
          hero gets zero scroll-driven motion now, full stop. -->
+    <!-- CLIENT EDIT (2026-08-21) - the client's own footage, not the Pexels
+         placeholder (8244322) that was here. ref/home-video.mp4 is 1920x1080,
+         h264, 15s, no audio track, 5.1MB, moov atom already at the front so it
+         streams without waiting for the whole file. Nothing to re-encode.
+
+         TWO CUTS, ONE DOWNLOAD. The 16:9 cut reads badly in a phone's tall
+         stage, so there is a portrait cut too and global.js §05a picks ONE.
+         `<source media="...">` looks like the answer and is not - no current
+         browser honours `media` inside <video> - and two <video> tags both
+         download, autoplay overriding preload="none". Setting src once, before
+         the element has a source to fetch, is the only shape that pulls a
+         single file. This element just carries the two URLs.
+
+         NO POSTER, EVER - client decision (2026-08-21), restated as a hard
+         rule. Nothing paints in the stage until the first video frame decodes:
+         a beat of flat --paper-3 on a cold load. The hero's LCP is the H1,
+         which is CSS-only, so this costs nothing measurable. Do not add
+         `poster="..."` back, and do not add `controls`.
+
+         UPLOAD TWO FILES: Media -> Add New -> home-video.mp4 (landscape) and
+         home-video-mobile.mp4 (portrait). The paths below assume 2026/08, the
+         folder the founder portrait went to - check each File URL after upload
+         and correct it if the month rolled over. WordPress rejects .mp4 on
+         some hosts; if it does, upload by FTP to the same folder.
+         The static preview at the repo root cannot resolve these; expected. -->
     <div class="stage-media stage-media--static" aria-hidden="true">
-      <video autoplay muted loop playsinline poster="https://images.unsplash.com/photo-1544531586-fde5298cdd40?auto=format&fit=crop&w=2400&h=1400&q=72" fetchpriority="high">
-        <source src="https://videos.pexels.com/video-files/8244322/8244322-hd_1280_720_25fps.mp4" type="video/mp4">
-      </video>
+      <video id="heroVid" autoplay muted loop playsinline fetchpriority="high"
+             data-wide="/wp-content/uploads/2026/08/home-video.mp4"
+             data-tall="/wp-content/uploads/2026/08/home-video-mobile.mp4"></video>
     </div>
     <!-- CLIENT EDIT END -->
 
@@ -90,13 +115,58 @@
 
         <div class="thesis-side">
           <p>The Access Exchange brings people closer to the knowledge, perspective and opportunities that are often hardest to access.</p>
+          <!-- CLIENT EDIT (2026-09-04, revisions doc §1): the operational
+               "what we actually do" line. It is APPENDED under the tagline,
+               never in place of it - the doc is explicit that the tagline
+               stays, so a partner learns the what within five seconds without
+               losing the hook. -->
+          <p>We connect emerging talent with established leaders through in-depth interview series, live campus programming, and 1-on-1 professional coaching.</p>
           <div class="thesis-cta">
             <a href="/interview-series/" class="btn">Enter The Access Exchange</a>
-            <a href="/guests-partners/#corporate" class="btn btn--ghost">Partner with us</a>
+            <a href="/partnerships/" class="btn btn--ghost">Partner with us</a>
           </div>
         </div>
       </div>
 
+    </div>
+  </section>
+
+  <!-- ═══ CHOOSE YOUR PATH ══════════════════════════════════════════════
+       CLIENT EDIT (2026-09-04, revisions doc §4). Three columns directly
+       below the hero so a visitor self-segments before reading anything else.
+
+       DELIBERATELY UNNUMBERED. Every section below carries a number badge
+       (02 … 08) and this one does not, exactly like the hero above it. That
+       keeps the badges as they are - numbering this block would have meant
+       renumbering all seven that follow it, in the markup and in every
+       client conversation that already refers to them by number.
+
+       The .paths / .path-set / .path CSS this uses already exists in
+       global.css ("── THREE PATHS ──"). No new CSS was written for this. -->
+  <section class="paths" aria-labelledby="paths-h">
+    <div class="shell">
+      <h2 class="h2" id="paths-h" data-rv>Choose your path.</h2>
+      <div class="path-set">
+
+        <div class="path" data-rv>
+          <h3>Gain access to insights and coaching.</h3>
+          <p>For emerging talent - students, recent graduates and early-career professionals.</p>
+          <a href="/interview-series/" class="btn">Explore the Interview Series</a>
+        </div>
+
+        <div class="path" data-rv style="--d:80ms">
+          <h3>Bring industry leaders to your campus.</h3>
+          <p>For universities, academic programmes, student organisations and careers services.</p>
+          <a href="/universities/#enquire" class="btn">Request a campus engagement</a>
+        </div>
+
+        <div class="path" data-rv style="--d:160ms">
+          <h3>Share your perspective and partner with us.</h3>
+          <p>For leaders and corporations who want their people in these conversations.</p>
+          <a href="/partnerships/" class="btn">Explore partnerships</a>
+        </div>
+
+      </div>
     </div>
   </section>
 
@@ -199,14 +269,20 @@
         <div class="tag lab"><span>For leaders</span></div>
         <h2>Experience should not disappear inside the people who earned it.</h2>
         <p>Bring your perspective, lessons and ideas into The Access Exchange. Your title tells us where you are - we're interested in what you know now.</p>
-        <a href="/guests-partners/#guest" class="btn">Be considered as a guest</a>
+        <a href="/guests/" class="btn">Be considered as a guest</a>
       </div>
       <div class="door">
         <!-- CLIENT EDIT (2026-08-20): "For organisations" -> "For Corporations" -->
         <div class="tag lab"><span>For Corporations</span></div>
-        <h2>Some of your strongest voices are already inside your organisation.</h2>
-        <p>Sponsor an interview. Nominate a leader. Build something meaningful with The Access Exchange.</p>
-        <a href="/guests-partners/#corporate" class="btn">Explore partnerships</a>
+        <!-- CLIENT EDIT (2026-09-04, revisions doc §2): was "Some of your
+             strongest voices are already inside your organisation." / "Sponsor
+             an interview. Nominate a leader." The doc asks for ROI language a
+             sponsor can take to a budget holder, so the heading now leads on
+             what the company gets. The SAME copy appears on the Partnerships
+             page - if one is reworded, reword both. -->
+        <h2>Amplify your company's thought leadership and build a direct pipeline to top university talent.</h2>
+        <p>Partner with us to showcase your executives, elevate your employer brand, and give back to the next generation of industry leaders.</p>
+        <a href="/partnerships/" class="btn">Explore partnerships</a>
       </div>
     </div>
     <!-- CLIENT EDIT START (2026-08-20) — "Something else in mind?" footer line
@@ -246,7 +322,13 @@
         </div>
         <span class="num lab">Coaching</span>
         <h2>Turn insight into action.</h2>
-        <p>Personalised guidance to help people gain clarity, strengthen their positioning, navigate important decisions and move forward with greater intention.</p>
+        <!-- CLIENT EDIT (2026-09-04, revisions doc §5). The doc leaves the
+             demographic in brackets - "[recent graduates and mid-level
+             professionals]" - and says to finalise it with the founders
+             before publishing. It is written out plainly below; if they
+             settle on different wording, this line and the matching one on
+             /coaching/ both change. -->
+        <p>Personalized guidance for recent graduates and mid-level professionals to help them navigate career pivots, strengthen their positioning, and turn ambition into execution.</p>
         <a href="/coaching/" class="ln">Explore coaching <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></a>
       </article>
     </div>
@@ -261,7 +343,17 @@
       <h2 class="h2" id="signal-h" data-rv>Stay close to what's coming.</h2>
       <p class="lede" data-rv style="--d:80ms">New interviews. New perspectives. New rooms.</p>
 
-      [contact-form-7 id="REPLACE_ID_JOIN" title="TAE - Join The Access Exchange" html_class="form form--join"]
+      <!-- CLIENT FIX (2026-09-04): was REPLACE_ID_JOIN, which is a placeholder,
+           not an id - CF7 answers "Contact form not found" for it. 4dd65c1 is the
+           real id from the live install and is what was here before the restore.
+           If the form is ever rebuilt, CF7 issues a NEW id and this line has to
+           change with it; Contact -> Forms shows the current one.
+
+           IF THE BUTTON SITS BELOW THE FIELD INSTEAD OF BESIDE IT, the cause is
+           not this line and not the CSS: CF7 is wrapping every row in <p> tags,
+           which become stray flex items. Fix it once, site-wide, with the filter
+           in CF7-SMTP.md 3.2 - add_filter( wpcf7_autop_or_not, __return_false ). -->
+      [contact-form-7 id="4dd65c1" title="TAE - Join The Exchange" html_class="form form--join"]
 
       <span class="fine lab">No more than one email a week. Unsubscribe in one click.</span>
     </div>

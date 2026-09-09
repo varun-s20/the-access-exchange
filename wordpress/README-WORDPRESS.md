@@ -380,9 +380,10 @@ the six forms and paste their real ids in.
 Three things are easy to miss, all covered in `CF7-SMTP.md`:
 
 1. **SMTP first.** PHP `mail()` is unsigned and gets dropped silently. Install
-   **WP Mail SMTP**, force the From address to `@theaccessexchange.com`, and add
-   SPF + DKIM + DMARC. Every form uses `wp_mail()`, so this one fix covers all
-   six. Note the free tier has no email log - see `CF7-SMTP.md` §1.5.
+   **FluentSMTP**, connect it to the Microsoft 365 mailbox over OAuth, and force
+   the From address to `connect@theaccessexchange.onmicrosoft.com`. No DNS is
+   needed — Microsoft's SPF and DKIM apply. Every form uses `wp_mail()`, so this
+   one fix covers all six. Logging is free - see `CF7-SMTP.md` §1.5.
 2. **Elementor HTML widgets do not run shortcodes.** One `elementor/widget/
 render_content` filter fixes it, otherwise the page prints the shortcode as
    text.

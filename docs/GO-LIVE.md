@@ -266,15 +266,17 @@ Skipping it gives 404s on every episode page.
 
 ### 8c. Forms and mail
 
-The from-address must now live on the real domain or Gmail will drop it.
+The from-address must be the authorised mailbox or Gmail will drop it.
 
-1. **WP Mail SMTP → Settings** → set **From Email** to the real mailbox on
-   `@theaccessexchange.com`, **From Name** to the site name.
-2. If the mailer is Brevo/Postmark/SendGrid, re-verify the sending domain there
-   and add the SPF/DKIM records it gives you — at **Namecheap → Advanced DNS**
-   under Method B, or **hPanel → DNS Zone Editor** under Method A.
-3. **WP Mail SMTP → Tools → Email Test** → send to a Gmail address. Must land in
-   the inbox, not spam.
+1. **Settings → FluentSMTP** → the Outlook connection's **From Email** must be
+   `connect@theaccessexchange.onmicrosoft.com` — the mailbox FluentSMTP was
+   authorised against. Exchange rewrites or rejects anything else. **From Name**
+   is the site name.
+2. No DNS to add: sending through Microsoft means SPF and DKIM are Microsoft's
+   and already pass. Leave MX alone unless the client has confirmed which
+   forwarding aliases exist — see `CF7-SMTP.md` §1.3.
+3. **Settings → FluentSMTP → Email Test** → send to a Gmail address. Must land in
+   the inbox, not spam. **Email Logs** shows every send if it does not.
 4. Submit **every** form on the live domain once (`CF7-SMTP.md` §6 lists them)
    and confirm each notification arrives.
 

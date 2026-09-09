@@ -158,6 +158,11 @@ while ( have_posts() ) :
 						<?php foreach ( $tae_children as $tae_child ) : ?>
 							<li>
 								<a href="<?php echo esc_url( tae_destination( $tae_child ) ); ?>">
+									<?php // CLIENT EDIT (2026-09-04): the card was type-only. ?>
+									<?php $tae_child_img = tae_img( $tae_child, 'tae-tile' ); ?>
+									<?php if ( $tae_child_img ) : ?>
+										<span class="ph"><?php echo $tae_child_img; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+									<?php endif; ?>
 									<span class="k lab"><?php echo esc_html( tae_topic_name( $tae_child ) ? tae_topic_name( $tae_child ) : 'Takeaway' ); ?></span>
 									<span class="t"><?php echo esc_html( get_the_title( $tae_child ) ); ?></span>
 									<?php $tae_child_by = (string) get_post_meta( $tae_child->ID, 'tae_byline', true ); ?>
@@ -181,6 +186,17 @@ while ( have_posts() ) :
 						<?php foreach ( $tae_related as $tae_item ) : ?>
 							<li>
 								<a href="<?php echo esc_url( tae_destination( $tae_item ) ); ?>">
+									<?php /* CLIENT EDIT (2026-09-04): "show the proper interview with the
+									   thumbnail". A still, not a tae_vid() facade - this card navigates to
+									   the interview, and a play button here would promise playback that
+									   does not happen.
+									
+									   BLOCK COMMENT, NOT //. A // comment ends at the newline, so the
+									   lines under it become PHP code and the page fatals. */ ?>
+									<?php $tae_item_img = tae_img( $tae_item, 'tae-tile' ); ?>
+									<?php if ( $tae_item_img ) : ?>
+										<span class="ph"><?php echo $tae_item_img; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+									<?php endif; ?>
 									<span class="k lab"><?php echo esc_html( 'tae_interview' === $tae_item->post_type ? 'Interview' : 'Takeaway' ); ?></span>
 									<span class="t"><?php echo esc_html( get_the_title( $tae_item ) ); ?></span>
 									<?php if ( tae_guest( $tae_item ) ) : ?>

@@ -211,8 +211,8 @@ Run the full checklist in `GO-LIVE.md` §9 against the new host. The additions
 specific to a host move:
 
 - [ ] Every form submits **and the email arrives** - new server, new sending IP.
-      Re-test all of them. If WP Mail SMTP is configured the transport is
-      unchanged, but test anyway.
+      Re-test all of them. FluentSMTP sends over the Microsoft Graph API, not
+      the server's IP, so the transport is unchanged — but test anyway.
 - [ ] `/interviews/<slug>/` and the archive paging both work - proves
       `.htaccess` rebuilt.
 - [ ] Images load - proves uploads came across.

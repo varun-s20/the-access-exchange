@@ -11,15 +11,35 @@
      one of those and takeaway pages lose their layout silently. Add freely;
      rename nothing.
 
-     BLOCKED ON CLIENT CONTENT. Handoff §14 asks for "a concise professional
-     biography and portrait" and says the company should feel larger than one
-     individual. The founder's name, bio and portrait have not been supplied, so
-     §03 below carries clearly-marked placeholders. Do not launch with them.
+     CLIENT CONTENT (2026-08-21): Handoff §14 is answered for the founder - name,
+     biography and portrait supplied, live in §03 and in slot 1 of the portrait
+     strip. The portrait is the only part outstanding as a file: upload it in
+     WordPress and point BOTH <img src> at its media URL (see §03's comment).
 
-     CLIENT EDIT (2026-08-20): also blocked on content now - the 4-portrait
-     team strip above §01/§02 and the 3-person team grid in new §04 (see the
-     "CLIENT EDIT" comments at each) are placeholder photos, names, roles and
-     quotes. Same rule: do not launch with them.
+     THIS PAGE NEEDS THE MATCHING global.css. Two rules changed on 2026-08-21:
+     `.tae-about .who blockquote` was renamed `.tae-about .who .who-name`, and a
+     min-width:820px block after `.tae-about .who .ph` stretches the portrait to
+     the text column's height. Ship the stylesheet with this markup or the
+     founder's name loses its display type and the portrait its height.
+
+     CLIENT CONTENT (2026-08-21) - the roster is complete and no longer
+     blocked. It is THREE people, not four: the founder plus Angelica Jamalov
+     and Shukur Jamalov. Every placeholder photo, name, role and quote is out
+     of this page. Two things follow from that and are easy to get wrong:
+     the roster appears TWICE (the portrait strip above §02 and the team grid
+     in §04) and both must be edited together, and the team members carry NO
+     TITLE by client instruction - only a name and a biography.
+
+     STILL OUTSTANDING AS FILES - ref/angelica.jpg and ref/shukur.jpg are not
+     uploaded to WordPress yet. Each is referenced twice; see the upload note
+     above the portrait strip.
+
+     THE REVISIONS DOC (2026-09-04) §3 note asks that this page "strongly
+     highlight the founders' past credentials to build trust while content is
+     rolling out". The §03 biography below already does exactly that - EY,
+     Tokio Marine HCC, Freddie Mac, the U.S. Department of State, the M.Eng.
+     and the CISA / CDPSE / CCRP credentials are all named in the first
+     paragraph. Nothing was added for that note; it was already satisfied.
 
      SEO - enter these in Yoast / Rank Math / SEOPress, NOT here.
        SEO title       About - Access changes what becomes possible |
@@ -89,29 +109,38 @@
   </section>
 
   <!-- CLIENT EDIT START (2026-08-20) — the single "conversation, recorded"
-       studio photo replaced with a strip of 4 team portraits, per client
-       request. PLACEHOLDER PORTRAITS AND NAMES - swap each src, and each
-       name, for the real team member when supplied. These 4 names are used
-       consistently: the same 3 (Priya/Daniel/Sofia) reappear with a role and
-       quote in the crew grid in §04 below; Marcus appears only here. Markup:
-       figure.plate -> section.team-strip, 4x figure.team-shot. CSS at
-       "── TEAM STRIP · 4 portraits ──" in global.css. -->
+       studio photo replaced with a strip of team portraits, per client
+       request.
+
+       CLIENT CONTENT (2026-08-21), roster closed: the team is THREE people,
+       not four - the founder and two colleagues. The three placeholders
+       (Priya/Daniel/Sofia) are gone, and every tile here is a real person
+       with a real photograph. The strip and the team grid in §04 are the same
+       roster in the same order, so if a person is ever added or removed,
+       change BOTH or they fall out of step.
+
+       UPLOAD: Media → Add New → ref/angelica.jpg and ref/shukur.jpg, then
+       paste each "File URL" over the src below AND over the matching card in
+       §04. Upload the .jpg, not the .png the client sent: identical pixels,
+       ~100KB instead of ~1MB, and each file is used twice on this page. The
+       2026/08 folder below is the month the founder portrait went to - check
+       each File URL after upload in case the month has rolled over. The
+       static preview at the repo root cannot resolve these; expected.
+
+       Markup: figure.plate -> section.team-strip, 3x figure.team-shot. CSS at
+       "── TEAM STRIP · 3 portraits ──" in global.css. -->
   <section class="team-strip" aria-label="The team behind The Access Exchange">
     <figure class="team-shot">
-      <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=700&h=900&q=72" alt="Portrait placeholder - replace with a team member's photograph" loading="lazy" decoding="async">
-      <figcaption class="lab">Priya Raghavan</figcaption>
+      <img src="/wp-content/uploads/2026/08/founder.jpg" alt="Akosua Nsowah, Founder of The Access Exchange" loading="lazy" decoding="async">
+      <figcaption class="lab">Akosua Nsowah</figcaption>
     </figure>
     <figure class="team-shot">
-      <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=700&h=900&q=72" alt="Portrait placeholder - replace with a team member's photograph" loading="lazy" decoding="async">
-      <figcaption class="lab">Daniel Okonjo</figcaption>
+      <img src="/wp-content/uploads/2026/08/angelica.jpg" alt="Angelica Jamalov of The Access Exchange" loading="lazy" decoding="async">
+      <figcaption class="lab">Angelica Jamalov</figcaption>
     </figure>
     <figure class="team-shot">
-      <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=700&h=900&q=72" alt="Portrait placeholder - replace with a team member's photograph" loading="lazy" decoding="async">
-      <figcaption class="lab">Sofia Marchetti</figcaption>
-    </figure>
-    <figure class="team-shot">
-      <img src="https://images.unsplash.com/photo-1607346256330-dee7af15f7c5?auto=format&fit=crop&w=700&h=900&q=72" alt="Portrait placeholder - replace with a team member's photograph" loading="lazy" decoding="async">
-      <figcaption class="lab">Marcus Bell</figcaption>
+      <img src="/wp-content/uploads/2026/08/shukur.jpg" alt="Shukur Jamalov of The Access Exchange" loading="lazy" decoding="async">
+      <figcaption class="lab">Shukur Jamalov</figcaption>
     </figure>
   </section>
   <!-- CLIENT EDIT END -->
@@ -145,56 +174,88 @@
   </section>
 
   <!-- ═══ 03 · THE FOUNDER ════════════════════════════════════════════════
-       PLACEHOLDER - the founder's name, biography and portrait have not been
-       supplied. Handoff §14: "concise professional biography and portrait. The
-       company should feel larger than one individual." Replace all three below
-       before launch. -->
+       CLIENT CONTENT (2026-08-21) - name, biography and credentials are the
+       client's own words, re-punctuated to house style (no em dashes, no
+       serial commas). Two .bio paragraphs, not one: the CSS gives every .bio
+       the same top margin, so they space themselves.
+
+       PORTRAIT: Media → Add New → upload ref/founder.jpg, then paste its "File
+       URL" over the src below AND over the first .team-shot in the strip above,
+       which is the same file. Upload the .jpg, not the .png she sent: same
+       1023x1386 pixels, no transparency to lose, 122KB instead of 1.4MB, and
+       this page shows it twice. The path below is the real media URL, confirmed
+       by the client after upload (2026/08 is the upload month's folder, not a
+       guess). The static preview at the repo root cannot resolve it; expected.
+
+       CLIENT EDIT (2026-08-21): the pull-quote that used to open this block is
+       gone at the client's request - the heading now runs straight into her
+       name and bio. .who-name inherits the display type the quotation had
+       (global.css renames that rule rather than leaving a dead one), and the
+       portrait is stretched to the text column's height there too. -->
   <section class="who" aria-labelledby="who-h">
     <div class="shell who-grid">
       <div class="ph" data-rv>
-        <img src="https://images.unsplash.com/photo-1745060594679-61578eb592f7?auto=format&fit=crop&w=620&h=775&q=72" alt="Portrait placeholder - replace with the founder's photograph" loading="lazy" decoding="async">
+        <img src="/wp-content/uploads/2026/08/founder.jpg" alt="Akosua Nsowah, Founder of The Access Exchange" loading="lazy" decoding="async">
       </div>
       <div>
         <h2 class="lab" id="who-h" style="color:var(--ink-3);margin-bottom:18px">Who is behind it</h2>
-        <blockquote data-rv>"I kept watching one conversation change the direction of someone's career, and it was almost always a conversation they got by accident. This is an attempt to stop leaving it to accident."</blockquote>
+        <p class="who-name" data-rv>Akosua Nsowah</p>
         <div class="sign lab" data-rv style="--d:80ms">Founder, The Access Exchange</div>
-        <p class="bio" data-rv style="--d:140ms">[FOUNDER BIOGRAPHY - two or three sentences: the professional background that makes the platform credible, and the reason for building it. Supplied by the client.]</p>
+        <p class="bio" data-rv style="--d:140ms">Akosua Nsowah is a cyber risk, privacy and technology audit leader with more than a decade of experience spanning EY, Tokio Marine HCC, Freddie Mac and the U.S. Department of State. She has led high-stakes security and technology assessments, strengthened enterprise control environments, and translated complex risk into clear action for senior leaders. She holds an M.Eng. in Cybersecurity from George Washington University, a BBA in Management Information Systems from the University of Houston, and the CISA, CDPSE and CCRP credentials.</p>
+        <p class="bio" data-rv style="--d:200ms">Her own transition from the classroom into the professional world revealed how much career-changing knowledge lives outside formal education - in conversations, relationships and lived experience. She founded The Access Exchange to bring that wisdom into the open, connecting people to the leaders, knowledge and opportunities that can change what becomes possible.</p>
       </div>
     </div>
   </section>
 
   <!-- ═══ 04 · THE TEAM ═══════════════════════════════════════════════════
-       CLIENT EDIT START (2026-08-20) — new section, added below the founder
-       per client request: "the founder remains the main, the rest 3 below."
-       PLACEHOLDER PEOPLE - names/roles/quotes/photos below are all
-       placeholders standing in for the real roster, swap once supplied.
-       Same 3 people as the team strip above (matched by photo). CSS at
-       "── THE TEAM · below the founder ──" in global.css, reusing the
-       .facts-grid divider rhythm the page already uses for the colophon
-       strip below. -->
+       CLIENT EDIT START (2026-08-20) - new section, added below the founder
+       per client request: "the founder remains the main, the rest below."
+
+       CLIENT CONTENT (2026-08-21): the roster is now real and CLOSED AT THREE
+       PEOPLE - the founder in §03 and the two below. The third placeholder
+       card is deleted outright, not left blank: the grid is two columns now
+       (global.css), so a stray empty card would leave a hole rather than
+       simply not being there.
+
+       NO TITLES, by client instruction - "list them as team members, don't
+       give them a title." The role line each card used to carry under the
+       name (a span.lab) is gone from the markup AND from the CSS rule that
+       styled it. Do not reintroduce one for a new member; a name is the whole
+       label here.
+
+       The placeholder quotes went with the roles. What replaces both is the
+       person's own biography, in the client's words, re-punctuated to the
+       house style used for the founder in §03 (no em dashes, no serial
+       commas). Bios run to several paragraphs and each is its own p.bio - the
+       CSS gives every .bio the same top margin, so they space themselves,
+       exactly as the founder's two do.
+
+       Same people, same order, as the strip above §02 - both are the roster
+       and both must change together. Photos are the same two uploads the
+       strip uses (see the upload note there); paste each File URL in both
+       places. CSS at "── THE TEAM · below the founder ──" in global.css. -->
   <section class="crew" aria-labelledby="crew-h">
     <div class="shell">
-      <h2 class="lab" id="crew-h" style="color:var(--ink-3);margin-bottom:clamp(24px,3vw,40px)">The team behind the founder</h2>
+      <h2 class="lab" id="crew-h" style="color:var(--ink-3);margin-bottom:clamp(24px,3vw,40px)">The team behind the vision</h2>
       <div class="crew-grid">
         <figure class="crew-card" data-rv>
-          <div class="ph"><img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=700&h=860&q=72" alt="Portrait placeholder - replace with this team member's photograph" loading="lazy" decoding="async"></div>
+          <div class="ph"><img src="/wp-content/uploads/2026/08/angelica.jpg" alt="Angelica Jamalov of The Access Exchange" loading="lazy" decoding="async"></div>
           <figcaption>
-            <blockquote>"The best conversations happen when someone stops performing and starts remembering."</blockquote>
-            <div class="crew-name">Priya Raghavan<span class="lab">Head of Programming, The Access Exchange</span></div>
+            <div class="crew-name">Angelica Jamalov</div>
+            <p class="bio">Angelica Jamalov is a legal, business and compliance professional with experience across regulatory affairs, legal research, risk management, technology and business analytics. In her current role she conducts multi-jurisdictional regulatory research, supports compliance and licensing activities, monitors legislative developments and helps translate complex requirements into practical solutions for the business.</p>
+            <p class="bio">Her commitment to leadership began at the University of Houston, where she co-founded the Black Business Student Association, which continues to create connections and career opportunities for students nearly a decade later.</p>
+            <p class="bio">Angelica holds a BBA in Management Information Systems and an ABA-approved Advanced Technical Paralegal Certificate, and is currently pursuing an MBA. She plans to continue her legal education, with interests in regulatory law, data privacy, cybersecurity, artificial intelligence and emerging technology. Her long-term goal is to help organizations navigate the legal and regulatory challenges of technological change while advancing responsible innovation and better-informed business decisions.</p>
           </figcaption>
         </figure>
         <figure class="crew-card" data-rv style="--d:80ms">
-          <div class="ph"><img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=700&h=860&q=72" alt="Portrait placeholder - replace with this team member's photograph" loading="lazy" decoding="async"></div>
+          <div class="ph"><img src="/wp-content/uploads/2026/08/shukur.jpg" alt="Shukur Jamalov of The Access Exchange" loading="lazy" decoding="async"></div>
           <figcaption>
-            <blockquote>"Every episode has a moment nobody planned for. That's the one we keep."</blockquote>
-            <div class="crew-name">Daniel Okonjo<span class="lab">Head of Production, The Access Exchange</span></div>
-          </figcaption>
-        </figure>
-        <figure class="crew-card" data-rv style="--d:160ms">
-          <div class="ph"><img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=700&h=860&q=72" alt="Portrait placeholder - replace with this team member's photograph" loading="lazy" decoding="async"></div>
-          <figcaption>
-            <blockquote>"Access means someone picks up the phone. That's the whole job, some days."</blockquote>
-            <div class="crew-name">Sofia Marchetti<span class="lab">Head of Partnerships, The Access Exchange</span></div>
+            <div class="crew-name">Shukur Jamalov</div>
+            <p class="bio">Shukur Jamalov, CISA, is an IT audit, cybersecurity and AI governance leader with more than a decade of experience helping global organizations manage technology risk, strengthen internal controls and navigate complex regulatory requirements.</p>
+            <p class="bio">He has led global audit teams and engagements across cybersecurity, SOX, cloud security, data privacy, regulatory compliance and emerging technology, partnering with executives and technology leaders to identify risk, strengthen controls and improve organizational resilience.</p>
+            <p class="bio">He has also developed a strong focus on AI governance and responsible AI adoption, including AI risk assessments, regulatory readiness and the implementation of controls and guardrails for safe and compliant use.</p>
+            <p class="bio">A committed leader and mentor, he has managed global teams, coached professionals and presented complex technology matters to C-suite executives and audit committees.</p>
+            <p class="bio">Shukur holds a BBA in Management Information Systems from the University of Houston and is a Certified Information Systems Auditor. His long-term focus is helping organizations navigate the intersection of cybersecurity, AI, regulatory compliance and emerging technology.</p>
           </figcaption>
         </figure>
       </div>
@@ -223,7 +284,10 @@
       </div>
 
       <div class="ends">
-        <a href="/guests-partners/#guest" class="btn">Be considered as a guest</a>
+        <!-- CLIENT EDIT (2026-09-04): /guests-partners/#guest -> /guests/.
+             The combined page was split into /guests/ and /partnerships/ at
+             the client's request; the old permalink 301s to /guests/. -->
+        <a href="/guests/" class="btn">Be considered as a guest</a>
         <a href="/get-involved/" class="btn btn--out">Get involved</a>
       </div>
 

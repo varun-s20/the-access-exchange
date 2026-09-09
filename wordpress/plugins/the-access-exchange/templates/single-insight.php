@@ -138,7 +138,7 @@ while ( have_posts() ) :
 			<div class="shell">
 				<div class="ends">
 					<a href="/interview-series/#takeaways" class="btn btn--out">All takeaways</a>
-					<a href="/guests-partners/#guest" class="btn btn--out">Be considered as a guest</a>
+					<a href="/guests/" class="btn btn--out">Be considered as a guest</a>
 					<a href="/universities/" class="btn btn--out">Bring The Access Exchange to campus</a>
 				</div>
 			</div>

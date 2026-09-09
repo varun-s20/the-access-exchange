@@ -65,9 +65,14 @@ function tae_site_index_rows() {
 			'u' => '/interview-series/',
 		),
 		array(
-			't' => 'Guests & Partners',
-			'd' => 'Guest consideration, sponsorship, nomination',
-			'u' => '/guests-partners/',
+			't' => 'Guests',
+			'd' => 'Be considered as a guest on the Interview Series',
+			'u' => '/guests/',
+		),
+		array(
+			't' => 'Partnerships',
+			'd' => 'Sponsor an interview, nominate a leader, build a partnership',
+			'u' => '/partnerships/',
 		),
 		array(
 			't' => 'Universities & Institutions',
@@ -97,12 +102,12 @@ function tae_site_index_rows() {
 		array(
 			't' => 'Share your perspective',
 			'd' => 'Guest consideration form',
-			'u' => '/guests-partners/#guest',
+			'u' => '/guests/#guest',
 		),
 		array(
 			't' => 'Partner with The Access Exchange',
 			'd' => 'Corporate sponsorship and partnership form',
-			'u' => '/guests-partners/#corporate',
+			'u' => '/partnerships/#corporate',
 		),
 		array(
 			't' => 'Bring The Access Exchange to campus',

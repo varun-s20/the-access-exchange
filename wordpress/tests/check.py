@@ -33,7 +33,7 @@ def words(html):
     t = re.sub(r"<!--.*?-->", " ", html, flags=re.S)
     t = re.sub(r"<[^>]+>", " ", t)
     t = (t.replace("&amp;", "&").replace("&nbsp;", " ")
-          .replace("&mdash;", "—").replace("&rsquo;", "’"))
+          .replace("&mdash;", "—").replace("&rsquo;", "'"))
     return re.sub(r"\s+", " ", t)
 
 
@@ -136,8 +136,10 @@ check("--mast-nav collapses under 1080px",
 
 
 # ── 6 · nav links resolve against the agreed architecture ──────────────────
-WANT = {"/", "/interview-series/", "/guests-partners/", "/universities/",
-        "/experiences/", "/coaching/", "/about/"}
+# Guests and Partnerships are two pages since 2026-09-04 (client request),
+# so the agreed set is eight, not seven.
+WANT = {"/", "/interview-series/", "/guests/", "/partnerships/",
+        "/universities/", "/experiences/", "/coaching/", "/about/"}
 
 
 class Nav(HTMLParser):
@@ -164,7 +166,7 @@ class Nav(HTMLParser):
 header = (WP / "header.html").read_text(encoding="utf-8")
 nav = Nav()
 nav.feed(header)
-check("masthead nav is the 7 agreed pages", set(nav.hrefs) == WANT,
+check("masthead nav is the 8 agreed pages", set(nav.hrefs) == WANT,
       f"got {nav.hrefs}")
 check("persistent CTA points at /get-involved/", nav.cta == ["/get-involved/"],
       f"got {nav.cta}")
@@ -224,10 +226,16 @@ for phrase in [
 for pillar in ["Knowledge", "Perspective", "Access", "Opportunity"]:
     check(f"pillar · {pillar}", f"<h3>{pillar}</h3>" in home)
 
-for cta in ["Enter The Access Exchange", "Partner with us", "Join The Access Exchange",
+for cta in ["Enter The Access Exchange", "Partner with us",
             "Bring The Access Exchange to campus", "Be considered as a guest",
             "Explore partnerships", "Explore experiences", "Explore coaching"]:
     check(f"CTA · {cta}", cta in home)
+# The email opt-in's button label is not in this markup - it is inside the CF7
+# form - so asserting the words here tested nothing. It used to pass only
+# because the shortcode's title= attribute contained them, and it broke the
+# moment the client renamed it to "Join The Exchange" (2026-08-20). What this
+# file is actually responsible for is placing the form.
+check("CTA · the email opt-in form is placed", 'html_class="form form--join"' in home)
 
 # ── 10 · launch state retires itself ───────────────────────────────────────
 # CLIENT EDIT (2026-08-20): §03 used to be two shortcodes
@@ -392,9 +400,15 @@ check("chapters set the time then press play",
       "video.dataset.start = secs" in jsq and "video.click()" in jsq)
 
 
-# ══ PHASE 3 · GUESTS & PARTNERS ════════════════════════════════════════════
+# ══ PHASE 3 · GUESTS + PARTNERSHIPS ════════════════════════════════════════
+# One page until 2026-09-04, two since. `gp` is the concatenation of both,
+# so assertions about copy that used to live on the combined page still
+# hold wherever the split put it; the checks that care WHICH page a thing
+# landed on read gpg / gpp directly.
 print()
-gp = (WP / "guests-partners.html").read_text(encoding="utf-8")
+gpg = (WP / "guests.html").read_text(encoding="utf-8")
+gpp = (WP / "partnerships.html").read_text(encoding="utf-8")
+gp = gpg + gpp
 cf7 = (WP / "CF7-SMTP.md").read_text(encoding="utf-8")
 
 # ── 31 · the handoff's copy, verbatim where it dictated it ─────────────────
@@ -402,8 +416,14 @@ for phrase in [
     "Bring a perspective worth hearing.",
     "We look for leaders, practitioners and thinkers with experience that can help others see something differently.",
     "Your title tells us where you are. We're interested in what you know now.",
-    "Some of your strongest voices are already inside your organisation.",
-    "Sponsor an interview. Nominate a leader. Build something meaningful with The Access Exchange.",
+    # Replaced 2026-09-04 (client revisions doc §2) - the old lines were
+    # "Some of your strongest voices are already inside your organisation."
+    # and "Sponsor an interview. Nominate a leader." The doc asked for ROI
+    # language instead. The same two sentences lead the corporate door on
+    # the homepage, and §41 asserts them there too - if this copy is
+    # reworded, both places move together.
+    "Amplify your company's thought leadership and build a direct pipeline to top university talent.",
+    "Partner with us to showcase your executives, elevate your employer brand, and give back to the next generation of industry leaders.",
 ]:
     check(f"guests copy · {phrase[:44]}", phrase in words(gp))
 
@@ -413,12 +433,15 @@ for option in ("Sponsor an Interview", "Nominate a Leader", "Build a Partnership
     check(f"corporate option · {option}", f"<b>{option}</b>" in gp)
 
 # ── 32 · the anchors the rest of the site already points at ────────────────
-for anchor in ("guest", "corporate"):
-    check(f"#{anchor} anchor exists", f'id="{anchor}"' in gp)
+# The anchors survive the split - they are still linked from inside each
+# page - but the rest of the site now links the PAGES, not the anchors.
+for anchor, page, url in (("guest", gpg, "/guests/"),
+                          ("corporate", gpp, "/partnerships/")):
+    check(f"#{anchor} anchor exists", f'id="{anchor}"' in page)
     users = [n for n, h in (("header", header), ("footer", footer),
                             ("home", home), ("series", series))
-             if f"/guests-partners/#{anchor}" in h]
-    check(f"#{anchor} is linked from elsewhere", users, str(users))
+             if url in h]
+    check(f"{url} is linked from elsewhere", users, str(users))
 
 # ── 33 · two forms, two notification categories ────────────────────────────
 check("guest form placed", 'html_class="form form--guest"' in gp)
@@ -460,7 +483,7 @@ check("menu panel hides its scrollbar",
 # list that used to duplicate the Get Involved page inside the menu was ours.
 check("persistent CTA is in the masthead", 'class="cta">Get Involved' in header)
 check("the menu does not re-list the six routes",
-      header.count("/guests-partners/#guest") == 0)
+      header.count("/guests/#guest") == 0)
 check("Get Involved is not a nav item", "/get-involved/" not in str(nav.hrefs))
 
 # ── 34 · the form base was shared, not copied a fourth time ────────────────
@@ -578,7 +601,7 @@ check("no Event schema on a page with no dated events",
       '"@type": "Event"' not in xp)
 
 # ── 44 · the inquiry pathways reach real forms ─────────────────────────────
-ROUTES = ("/universities/#enquire", "/guests-partners/#corporate", "/get-involved/")
+ROUTES = ("/universities/#enquire", "/partnerships/", "/get-involved/")
 for r in ROUTES:
     check(f"pathway · {r}", r in xp)
 # and those targets must be anchors that actually exist
@@ -639,7 +662,12 @@ for phrase in [
 ]:
     check(f"about copy · {phrase[:42]}", phrase in words(ab))
 check("founder section present", 'class="who"' in ab)
-check("founder bio is flagged as unsupplied", "[FOUNDER BIOGRAPHY" in ab)
+# The placeholder was filled 2026-09-04 (client revisions doc §3 note:
+# "strongly highlight the founders past credentials"). Assert the
+# credentials are actually there rather than that the gap is still marked.
+check("founder is named", "Akosua Nsowah" in ab)
+check("founder credentials present",
+      "M.Eng. in Cybersecurity" in ab and "CISA, CDPSE and CCRP" in ab)
 # single-insight.php borrows this page's vocabulary; renaming silently breaks it
 si = (PLUG / "templates" / "single-insight.php").read_text(encoding="utf-8")
 for cls in ("sheet", "sheet-head", "spread", "copy", "plate", "facts", "ends"):
@@ -649,8 +677,8 @@ for cls in ("sheet", "sheet-head", "spread", "copy", "plate", "facts", "ends"):
 
 # ── 48 · Get Involved · handoff §15 ────────────────────────────────────────
 check("get-involved hero", "How do you want to enter The Access Exchange?" in gi)
-ROUTES = [("Share your perspective", "/guests-partners/#guest"),
-          ("Partner with The Access Exchange", "/guests-partners/#corporate"),
+ROUTES = [("Share your perspective", "/guests/"),
+          ("Partner with The Access Exchange", "/partnerships/"),
           ("Bring The Access Exchange to campus", "/universities/#enquire"),
           ("Explore coaching", "/coaching/#coaching"),
           ("Explore coach training", "/coaching/#training"),
@@ -667,7 +695,11 @@ for n, name in [("4.8", "Guest consideration"), ("4.9", "Corporate partnership")
                 ("4.10", "University engagement"), ("4.11", "Professional coaching"),
                 ("4.12", "Coach training"), ("4.13", "General inquiry")]:
     check(f"CF7 §{n} · {name}", f"### {n} TAE - {name}" in cf7)
-check("the email opt-in is the seventh", "REPLACE_ID_JOIN" in home)
+# Was "REPLACE_ID_JOIN" in home. The join form now carries its real live id
+# (see below), and after that change this check was passing only because the
+# comment above the shortcode mentions the placeholder by name - which is not
+# a test. The seventh form is identified by its class, like the other six.
+check("the email opt-in is the seventh", 'form--join' in home)
 check("the old contact forms are retired",
       cf7.count("RETIRED - replaced by 4.13") == 4)
 # every placed form must have a spec, and every id must still be a placeholder
@@ -675,8 +707,19 @@ placed = set(re.findall(r'html_class="form (form--[a-z]+)"',
                         home + series + gp + uni + co + gi))
 check("all seven forms placed across the site", len(placed) == 7, str(sorted(placed)))
 ids = re.findall(r'contact-form-7 id="([^"]+)"', home + series + gp + uni + co + gi)
-check("no form id was accidentally hard-coded",
-      all(i.startswith("REPLACE_ID_") for i in ids), str(ids))
+# Six of the seven are still placeholders and must stay that way - shipping a
+# real id for a form that has not been created yet is how you get "Contact form
+# not found" on a live page.
+#
+# THE JOIN FORM IS THE DELIBERATE EXCEPTION. It exists on the live install and
+# 4dd65c1 is its actual id, restored 2026-09-04 after the placeholder shipped
+# by mistake and printed "Contact form not found" on the homepage. It is
+# install-specific: rebuild that form, or move to a different WordPress, and
+# CF7 issues a new id that has to be pasted here.
+JOIN_ID = "4dd65c1"
+unresolved = [i for i in ids if not i.startswith("REPLACE_ID_") and i != JOIN_ID]
+check("no form id was accidentally hard-coded", not unresolved, str(unresolved))
+check("the join form carries its live id", JOIN_ID in ids, str(ids))
 
 
 # ══ PHASE 7 · LAUNCH ═══════════════════════════════════════════════════════
@@ -729,7 +772,14 @@ BLOCKERS = [
     ("business email", "[BUSINESS EMAIL]", priv + terms),
     ("postal address", "[POSTAL ADDRESS]", priv),
     ("governing law", "[STATE/COUNTRY]", terms),
-    ("founder biography", "[FOUNDER BIOGRAPHY", ab),
+    # No founder blocker any more. The biography, the name and the portrait
+    # were all supplied by the client on 2026-08-21 and the portrait URL was
+    # confirmed after upload, so there is no placeholder text left to detect.
+    # WHAT IS STILL OUTSTANDING - ref/angelica.jpg and ref/shukur.jpg are not
+    # in the Media Library yet - cannot be asserted from here: the markup
+    # already carries their final /wp-content/ URLs, so a missing upload looks
+    # identical to a present one until the page is loaded. It is called out in
+    # about.html instead, and belongs on the pre-launch link check.
     ("form ids", "REPLACE_ID_", "".join(PAGES.values())),
 ]
 for label, marker, hay in BLOCKERS:
@@ -779,7 +829,8 @@ for name in ("global.css", "global.js"):
           b.exists() and a.read_bytes() == b.read_bytes())
 
 # ── 17 · every generated page exists and is marked as generated ────────────
-GENERATED = ["index.html", "interview-series.html", "guests-partners.html",
+GENERATED = ["index.html", "interview-series.html", "guests.html",
+             "partnerships.html",
              "universities.html", "experiences.html", "coaching.html",
              "about.html", "get-involved.html", "privacy.html", "terms.html"]
 pages = {}
@@ -814,8 +865,9 @@ for tag in ("header", "footer"):
           len(shapes) == 1 and None not in shapes, f"{len(shapes)} variants")
 
 # ── 21 · exactly one nav item is marked current, and only where it should be ─
-IN_NAV = {"index.html", "interview-series.html", "guests-partners.html",
-          "universities.html", "experiences.html", "coaching.html", "about.html"}
+IN_NAV = {"index.html", "interview-series.html", "guests.html",
+          "partnerships.html", "universities.html", "experiences.html",
+          "coaching.html", "about.html"}
 for name, html in pages.items():
     marked = sorted(set(re.findall(r'href="([^"]*)" aria-current="page"', html)))
     if name in IN_NAV:

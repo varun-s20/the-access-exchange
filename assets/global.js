@@ -128,9 +128,14 @@
       u: "/interview-series/",
     },
     {
-      t: "Guests & Partners",
-      d: "Guest consideration, sponsorship, nomination",
-      u: "/guests-partners/",
+      t: "Guests",
+      d: "Be considered as a guest on the Interview Series",
+      u: "/guests/",
+    },
+    {
+      t: "Partnerships",
+      d: "Sponsor an interview, nominate a leader, build a partnership",
+      u: "/partnerships/",
     },
     {
       t: "Universities & Institutions",
@@ -160,12 +165,12 @@
     {
       t: "Share your perspective",
       d: "Guest consideration form",
-      u: "/guests-partners/#guest",
+      u: "/guests/#guest",
     },
     {
       t: "Partner with The Access Exchange",
       d: "Corporate sponsorship and partnership form",
-      u: "/guests-partners/#corporate",
+      u: "/partnerships/#corporate",
     },
     {
       t: "Bring The Access Exchange to campus",
@@ -268,6 +273,7 @@
     run("menu", menu);
     run("siteSearch", siteSearch);
     run("reveals", reveals);
+    run("heroSource", heroSource);
     run("heroParallax", heroParallax);
     run("lazyVideo", lazyVideo);
     run("episode", episode);
@@ -599,6 +605,53 @@
   }
 
   /* ═══ 05 · SCROLL REVEALS ══════════════════════════════════════════════ */
+  /* ═══ 05a · HERO SOURCE ════════════════════════════════════════════════
+     CLIENT EDIT (2026-08-21): the home hero has two cuts - a 16:9 one and a
+     portrait one that reads properly in a phone's tall stage. This picks ONE.
+
+     The markup ships the <video> with no src at all and both URLs in data
+     attributes, because every declarative way of doing this is broken:
+     `<source media="...">` is not honoured inside <video> by any current
+     browser, and two <video> elements both download, autoplay overriding
+     preload="none". Setting src once, on an element that has nothing to fetch
+     yet, is the only shape that pulls a single file.
+
+     Orientation, not width. A phone held sideways wants the landscape cut and
+     a narrow desktop window wants the portrait one - both follow from the
+     shape of the stage, which is what actually differs. Read once, not on
+     resize: re-pointing src on a live element restarts playback, and nobody
+     rotates a phone to watch a hero loop start over.
+
+     No-JS, or this file blocked: the stage keeps its shape and its ground.
+     Only the loop is missing. */
+  function heroSource() {
+    var v = document.getElementById("heroVid");
+    if (!v || !v.dataset.wide) return;
+    if (window.matchMedia && matchMedia("(orientation: portrait)").matches
+        && v.dataset.tall) {
+      v.src = v.dataset.tall;
+    } else {
+      v.src = v.dataset.wide;
+    }
+    /* The element was parsed with no source, so it has already finished
+       resource selection and sits in NETWORK_NO_SOURCE. Setting src is
+       specified to restart that; load() says so out loud and costs a line. */
+    v.load();
+
+    /* CLIENT EDIT (2026-08-21): the hero must never show a play/pause control.
+       `controls` is absent and global.css takes the element out of hit-testing,
+       so the only way the loop can stall is a browser refusing the autoplay
+       outright - iOS Low Power Mode, or Safari set to never auto-play. Left
+       alone that leaves a frozen first frame under an inert play glyph, so the
+       first gesture anywhere in the document starts it instead. Once-only and
+       passive; play() rejects silently when it is not needed. */
+    var kick = function () { var r = v.play(); if (r) r.catch(function () {}); };
+    kick();
+    ["pointerdown", "touchstart", "keydown", "scroll"].forEach(function (ev) {
+      document.addEventListener(ev, kick, { once: true, passive: true });
+    });
+  }
+
   /* ═══ 05b · HERO PARALLAX ══════════════════════════════════════════════
      The stage photograph drifts as the page scrolls, so the hero has depth
      rather than being a still behind type.

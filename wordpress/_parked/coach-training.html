@@ -1,0 +1,35 @@
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     PARKED - COACH TRAINING AND CERTIFICATION
+     Client update 2026-09 §0: "Set to draft and remove both footer links. Keep
+     the page structure so it can be restored."
+
+     This was section #training inside coaching.html. It is parked here rather
+     than commented out in place, because the markup contains "--" sequences
+     (panelled--tint and friends) that are invalid inside an HTML comment.
+
+     TO RESTORE: paste this block back into coaching.html between the #coaching
+     section and the closing </div>, and put the footer link back:
+       <li><a href="/coaching/#training">Explore coach training</a></li>
+     The CF7 form it carries is form--training, still registered in
+     tools/build-static.py CF7_FORMS.
+     ═══════════════════════════════════════════════════════════════════════════ -->
+
+  <section class="panelled panelled--tint" id="training" aria-labelledby="ct-h">
+    <div class="shell panel-grid">
+
+      <div class="panel-say">
+        <p class="kicker lab">Coach training &amp; certification</p>
+        <h2 id="ct-h">Develop the people who help others move forward.</h2>
+        <p>The Access Exchange provides structured coach training and certification designed to develop thoughtful, practical and ethical coaches equipped to help others navigate professional growth and change using The Access Exchange standards and methodology.</p>
+        <p>Tell us where you are - already coaching, moving toward it, or building coaching capability inside an organisation - and we will come back with the detail relevant to you.</p>
+      </div>
+
+      <div class="panel-form">
+        <h3>Explore coach training</h3>
+        <!-- CF7 form "TAE - Coach training" - CF7-SMTP.md §4.12.
+             Separate inquiry path from the coaching form above. -->
+        [contact-form-7 id="REPLACE_ID_TRAINING" title="TAE - Coach training" html_class="form form--training"]
+      </div>
+
+    </div>
+  </section>
