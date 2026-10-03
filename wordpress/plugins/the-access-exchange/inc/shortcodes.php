@@ -201,10 +201,15 @@ function tae_sc_interviews( $atts ) {
 			// names who the first guests are, so the block builds anticipation
 			// instead of admitting there is nothing here yet.
 			//
-			// THE SAME COPY IS ON /interview-series/, where it is passed as
-			// [tae_coming_soon] attributes rather than hardcoded. Two places,
-			// one message - reword one and reword the other. The homepage is
-			// hardcoded here because view="home" takes no copy attributes.
+			// /interview-series/ carries its own copy of this block, passed as
+			// [tae_coming_soon] attributes rather than hardcoded. The homepage
+			// is hardcoded here because view="home" takes no copy attributes.
+			//
+			// CLIENT EDIT (2026-10-03): the homepage line was "Join the waitlist
+			// for our inaugural Interview Series." The client asked for the
+			// homepage only, so /interview-series/ deliberately still says the
+			// old line. The client's copy has an em dash; it is a hyphen here
+			// to match the rest of the site.
 			//
 			// THE HOUSTON SECTORS LINE IS A CLAIM ABOUT WHO HAS BEEN BOOKED.
 			// The client's own standing rule is that nothing on this site may
@@ -213,7 +218,7 @@ function tae_sc_interviews( $atts ) {
 			return tae_template(
 				'home-launch',
 				array(
-					'line'           => 'Join the waitlist for our inaugural Interview Series.',
+					'line'           => 'Campus Dates Are Limited - Join the Waitlist.',
 					'body'           => 'Featuring seasoned executives and founders from Houston\'s top energy, tech, and finance sectors.',
 					'cta'            => 'Join the waitlist',
 					'href'           => '#join',

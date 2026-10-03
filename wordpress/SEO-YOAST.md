@@ -22,8 +22,8 @@ Per-page work inherits from these. Getting them wrong makes every page wrong.
 | Organization name        | `The Access Exchange`                                                                                                                                                          |
 | Alternate name           | `Access Exchange`                                                                                                                                                              |
 | Organization logo        | Square PNG, **at least 512×512**, ideally 1024×1024, transparent or `#F8F8F3` background                                                                                       |
-| Organization description | `A tech media and professional-development platform: long-form interviews with people working in tech, and partnership programmes that bring those conversations onto campus.` |
-| Email                    | `hello@theaccessexchange.com`                                                                                                                                                  |
+| Organization description | `A tech media and professional-development platform: long-form interviews with people working in tech, and partnership programs that bring those conversations onto campus.` |
+| Email                    | `connect@theaccessexchange.com`                                                                                                                                                  |
 
 This is what produces the `Organization` node the partnerships `Service` schema
 points at. If you skip it, that `@id` reference dangles.
@@ -43,8 +43,10 @@ points at. If you skip it, that `@id` reference dangles.
 
 **Yoast SEO → Settings → Site representation → Other profiles**
 
-Add the YouTube URL. Add X/LinkedIn/Instagram only if they actually exist -
-an empty profile in `sameAs` is worse than no profile.
+Add the YouTube URL (`https://www.youtube.com/@theaccessexchange`) and the
+LinkedIn company page (`https://www.linkedin.com/company/theaccessexchange/`)
+- both are real now. Add X/Instagram only if they actually exist - an empty
+profile in `sameAs` is worse than no profile.
 
 ### 1.4 Content types
 
@@ -101,10 +103,10 @@ files have been **trimmed**. Current split:
 | `Service` (partnerships)                                              | **inline JSON-LD** - Yoast cannot express it                                                                                  |
 | `FAQPage` + `Question` (partnerships, interviews)                     | **inline JSON-LD** - Yoast can only do this via its Gutenberg FAQ block, which is unavailable inside an Elementor HTML widget |
 
-Eight page files now carry **no** JSON-LD at all (`index`, `guests-partners`,
-`experiences`, `coaching`, `about`, `get-involved`, `privacy`, `terms`). Two -
-`interview-series` and `universities` - carry a trimmed graph whose `@id`
-values match Yoast's node ids, so the two graphs stitch into one:
+Nine page files now carry **no** JSON-LD at all (`index`, `guests`,
+`partnerships`, `experiences`, `coaching`, `about`, `get-involved`, `privacy`,
+`terms`). Two - `interview-series` and `universities` - carry a trimmed graph
+whose `@id` values match Yoast's node ids, so the two graphs stitch into one:
 
 ```
 https://theaccessexchange.com/#organization          ← Yoast
@@ -121,7 +123,7 @@ been removed; only `Service` and `FAQPage` are inline now, matching the split
 below.
 
 **Before launch:** find-and-replace `https://theaccessexchange.com` with the real
-domain across **all ten** page files. It is functional in the two JSON-LD blocks
+domain across **all eleven** page files. It is functional in the two JSON-LD blocks
 above, and cosmetic in the instruction comments and Canonical fields at the top
 of every file - but those comments are served to the browser, so a stale domain
 sitting in the page source is a bad look either way.
@@ -134,7 +136,7 @@ Page**, _not_ **FAQ Page** - picking FAQ Page there would put a second
 
 ## 3. Per-page fields
 
-**Ten pages, plus the two generated types.** For each page open it in the
+**Eleven pages, plus the two generated types.** For each page open it in the
 **WordPress editor screen** (the one with the blue "Edit with Elementor" button),
 _not_ the Elementor canvas - the Yoast metabox is reliably there.
 
@@ -156,14 +158,18 @@ tuned to the 60-character snippet width, which the page's own H1 is not.
 | --- | --------------------------- | ------------------ | ------------------------------- | ---------------- |
 | 1   | Home                        | _(front page)_     | `the access exchange`           | Web Page         |
 | 2   | Interview Series            | `interview-series` | `leadership interview series`   | Collection Page  |
-| 3   | Guests & Partners           | `guests-partners`  | `be a guest interview series`   | Web Page         |
-| 4   | Universities & Institutions | `universities`     | `university leadership speaker` | Web Page         |
-| 5   | Experiences                 | `experiences`      | `leadership events and panels`  | Web Page         |
-| 6   | Coaching                    | `coaching`         | `professional coaching`         | Web Page         |
-| 7   | About                       | `about`            | `about the access exchange`     | About Page       |
-| 8   | Get Involved                | `get-involved`     | `contact the access exchange`   | Contact Page     |
-| 9   | Privacy Policy              | `privacy`          | _(none - see below)_            | Web Page         |
-| 10  | Terms & Conditions          | `terms`            | _(none - see below)_            | Web Page         |
+| 3   | Guests                      | `guests`           | `be a guest interview series`   | Web Page         |
+| 4   | Partnerships                | `partnerships`     | `corporate partnerships`        | Web Page         |
+| 5   | Universities & Institutions | `universities`     | `university leadership speaker` | Web Page         |
+| 6   | Experiences                 | `experiences`      | `leadership events and panels`  | Web Page         |
+| 7   | Coaching                    | `coaching`         | `professional coaching`         | Web Page         |
+| 8   | About                       | `about`            | `about the access exchange`     | About Page       |
+| 9   | Get Involved                | `get-involved`     | `contact the access exchange`   | Contact Page     |
+| 10  | Privacy Policy              | `privacy`          | _(none - see below)_            | Web Page         |
+| 11  | Terms & Conditions          | `terms`            | _(none - see below)_            | Web Page         |
+
+`/guests-partners/` (the old combined page) still exists under `_parked/` -
+not live, not in this table. 301 it to `/guests/` at migration, per §3.13.
 
 **Leave the keyphrase empty on the two legal pages.** They exist to be found by
 someone already on the site, not to rank. Yoast will show an orange dot; that is

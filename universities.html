@@ -59,6 +59,7 @@
   <g id="i-left"><path d="M15 5l-7 7 7 7"/></g>
   <g id="i-right"><path d="M9 5l7 7-7 7"/></g>
   <g id="b-youtube"><path fill="#FF0000" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/><path fill="#fff" d="M9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></g>
+  <g id="b-linkedin"><path fill="#0A66C2" d="M22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/><path fill="#fff" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452z"/></g>
 </defs></svg>
 
 <!-- ═══ MASTHEAD ═══════════════════════════════════════════════════════════ -->
@@ -115,9 +116,10 @@
     </nav>
     <div class="veil-sides veil-sides--one">
       <div class="veil-side">
-        <h4 class="lab">Watch</h4>
+        <h4 class="lab">Follow</h4>
         <div class="plat-row">
           <a href="https://www.youtube.com/@theaccessexchange" rel="noopener" aria-label="Watch on YouTube"><svg class="bi" viewBox="0 0 24 24" aria-hidden="true"><use href="#b-youtube"/></svg></a>
+          <a href="https://www.linkedin.com/company/theaccessexchange/" rel="noopener" aria-label="Follow on LinkedIn"><svg class="bi" viewBox="0 0 24 24" aria-hidden="true" style="width:20px;height:20px"><use href="#b-linkedin"/></svg></a>
         </div>
       </div>
     </div>
@@ -161,14 +163,14 @@
        · The FAQPage schema below must stay in sync with the accordion markup.
 
      SEO - enter these in Yoast / Rank Math / SEOPress, NOT here.
-       SEO title       Universities & Institutions - Bring The Access Exchange to your
+       SEO title       Universities & Institutions - Bring The Exchange to your
                        campus | The Access Exchange
-       Meta desc       Leadership talks, moderated discussions, industry
-                       sessions and custom campus programming that give students
-                       direct access to experienced leaders.  (152 chars)
+       Meta desc       An experienced professional on your campus for a live
+                       conversation with students, followed by student Q&A and
+                       professionally filmed.  (132 chars)
        Focus keyphrase university leadership speaker
        Canonical       https://theaccessexchange.com/universities/
-       OG title        Bring The Access Exchange to your campus
+       OG title        Bring The Exchange to your campus
        OG description  Some lessons only experience can teach.
        Twitter card    summary_large_image
        Robots          index, follow
@@ -186,13 +188,23 @@
   "@context": "https://schema.org",
   "@graph": [
     {
+      "@type": "WebPage",
+      "@id": "https://theaccessexchange.com/universities/#webpage",
+      "url": "https://theaccessexchange.com/universities/",
+      "name": "Universities & Institutions",
+      "description": "An experienced professional on your campus for a live conversation with students, followed by student Q&A and professionally filmed.",
+      "isPartOf": { "@id": "https://theaccessexchange.com/#site" },
+      "publisher": { "@id": "https://theaccessexchange.com/#org" },
+      "inLanguage": "en-GB"
+    },
+    {
       "@type": "Service",
       "name": "University and institutional engagements",
-      "serviceType": "Leadership talks, moderated discussions, industry sessions and custom campus programming",
-      "provider": { "@id": "https://theaccessexchange.com/#organization" },
+      "serviceType": "Live on-campus conversations with experienced professionals, followed by student Q&A; also leadership talks, moderated discussions, industry sessions and custom campus programming",
+      "provider": { "@id": "https://theaccessexchange.com/#org" },
       "audience": {
         "@type": "Audience",
-        "audienceType": "Colleges, academic programmes, student organisations and professional associations"
+        "audienceType": "Colleges, academic programs, student organizations and professional associations"
       }
     },
     {
@@ -201,18 +213,14 @@
       "isPartOf": { "@id": "https://theaccessexchange.com/universities/#webpage" },
       "inLanguage": "en-GB",
       "mainEntity": [
-        { "@type": "Question", "name": "What does an engagement cost?",
-          "acceptedAnswer": { "@type": "Answer", "text": "It depends on the format and the number of sessions. The first conversation is free, and we will give you the number on that call rather than after three meetings and a proposal document." } },
-        { "@type": "Question", "name": "Do students pay anything?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Never. Institutions arrange the programming; students are never charged to attend or to watch." } },
         { "@type": "Question", "name": "How much lead time do you need?",
           "acceptedAnswer": { "@type": "Answer", "text": "About two weeks for a single leadership talk. Four to six for a custom campus experience, mostly because matching the right person takes longer than booking a room." } },
         { "@type": "Question", "name": "Can you work around our term dates?",
           "acceptedAnswer": { "@type": "Answer", "text": "Yes. Tell us your assessment periods and reading weeks on the first call and we plan around them." } },
         { "@type": "Question", "name": "What if our audience is small?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Twenty engaged students in a seminar room is a better session than three hundred in a lecture theatre. Audience size is not the filter and there is no minimum." } },
-        { "@type": "Question", "name": "Can we record the session?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Usually yes, with the speaker's agreement. Anything recorded with your students is yours to reuse." } }
+          "acceptedAnswer": { "@type": "Answer", "text": "Twenty engaged students in a seminar room is a better session than three hundred in a lecture theater. Audience size is not the filter and there is no minimum." } },
+        { "@type": "Question", "name": "Is the session filmed?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Sessions may be professionally filmed and published by The Access Exchange, with appropriate permissions." } }
       ]
     }
   ]
@@ -226,7 +234,7 @@
     <h2 class="lab">On this page</h2>
     <ol id="outlineList">
       <li><a href="#s1" data-to="s1"><span class="n">01</span>Why it matters</a></li>
-      <li><a href="#s2" data-to="s2"><span class="n">02</span>The formats</a></li>
+      <li><a href="#s2" data-to="s2"><span class="n">02</span>The format</a></li>
       <li><a href="#s3" data-to="s3"><span class="n">03</span>How it comes together</a></li>
       <li><a href="#s4" data-to="s4"><span class="n">04</span>Who we work with</a></li>
       <li><a href="#s5" data-to="s5"><span class="n">05</span>Questions we get first</a></li>
@@ -241,6 +249,10 @@
       <p class="kicker lab">Universities &amp; institutions</p>
       <h1>Bring The Access Exchange to your campus.</h1>
       <p class="stand">Give students direct access to experienced leaders, industry perspective and conversations that make the world beyond the classroom more visible.</p>
+      <!-- CLIENT EDIT (2026-10-03): the primary campus format, stated in the
+           hero so it is the first thing a visitor understands. Added under
+           the handoff stand above, not in place of it. -->
+      <p class="stand">An experienced professional comes to your campus for a live conversation with your students, followed by student Q&amp;A. The session is professionally filmed for The Access Exchange.</p>
       <div class="head-cta">
         <a href="#enquire" class="btn">Request an engagement</a>
         <a href="#s2" class="btn btn--out">Explore formats</a>
@@ -258,13 +270,6 @@
         <p>What a leader knows about a turning point in their career, an industry shift they had to read correctly, or a call they got wrong and had to recover from - none of that is in a syllabus. It is held by the people who were there, and it usually reaches students only if they happen to know somebody.</p>
         <div class="pull"><q>Bring the experience of industry closer to the people preparing to shape it.</q></div>
         <p>Everything below is the mechanics of getting the right person in front of the right audience, on your timetable.</p>
-        <!-- CLIENT EDIT (2026-08-20): per-section CTA to #enquire, added to
-             sections 01-04 below (the FAQ section's was removed per client
-             feedback - a "still have questions" button reads redundant right
-             above the FAQ accordion itself). Wording is varied per section on
-             purpose rather than repeating "Request an engagement" four times.
-             Solid .btn, not .btn--out - client felt the outline style read as
-             too subtle for a CTA. -->
         <a href="#enquire" class="btn" style="margin-top:clamp(24px,2.8vw,38px)">Bring this to your campus</a>
       </div>
     </div>
@@ -273,23 +278,49 @@
   <!-- ═══ 02 ═══════════════════════════════════════════════════════════════ -->
   <section class="sec" id="s2" aria-labelledby="s2-h">
     <div class="col">
-      <span class="num lab">02 - The formats</span>
-      <h2 id="s2-h">Four ways to bring it into the room.</h2>
+      <!-- CLIENT EDIT (2026-10-03): the Live Campus Conversation is now THE
+           format, stated first. The four formats that used to be the whole
+           section ("Four ways to bring it into the room.") stay on as
+           additional options in the .vs box below it, deliberately smaller.
+           The form's "Requested format" select lists the Live Campus
+           Conversation first to match - CF7-SMTP.md §4.10. -->
+      <span class="num lab">02 - The format</span>
+      <h2 id="s2-h">One live conversation, on your campus.</h2>
       <div class="body">
-        <p>Most institutions start with one of these and add others once an audience has been through it. Nothing here is a bundle you have to take whole.</p>
+        <p><strong>The Live Campus Conversation is how most institutions work with us.</strong> An experienced professional comes to your campus for a live interview in front of your students. The floor then opens for student questions, and the session is professionally filmed for The Access Exchange.</p>
       </div>
 
       <ul class="rows">
-        <li><span class="n">01</span><div><b>Leadership Talk + Q&amp;A</b><span>A focused leadership session, followed by direct student questions. The Q&amp;A is the part they remember, so we leave real time for it.</span></div></li>
-        <li><span class="n">02</span><div><b>Moderated Leadership Discussion</b><span>A deeper, moderated discussion around experience, perspective and the thinking behind the work rather than the headline version of it.</span></div></li>
-        <li><span class="n">03</span><div><b>Industry Session</b><span>A topic-driven programme with experienced practitioners, built around a theme your students or your department are already working on.</span></div></li>
-        <li><span class="n">04</span><div><b>Custom Campus Experience</b><span>Programming shaped around your students, academic programmes, industry themes or institutional objectives. If none of the above is the right shape, this is.</span></div></li>
+        <li><span class="n">01</span><div><b>A live conversation on campus</b><span>An in-depth interview with an experienced professional, in a room your students already use - the decisions, turning points and lessons behind the career rather than the headline version of it.</span></div></li>
+        <li><span class="n">02</span><div><b>Student Q&amp;A</b><span>Direct questions from your students. The Q&amp;A is the part they remember, so we leave real time for it.</span></div></li>
+        <li><span class="n">03</span><div><b>Professionally filmed</b><span>The session is professionally filmed for The Access Exchange, so the conversation can reach people well beyond the room.</span></div></li>
       </ul>
 
       <figure class="plate" style="margin-top:clamp(24px,2.8vw,38px)">
         <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1600&h=686&q=72" alt="A speaker addressing a full lecture hall" loading="lazy" decoding="async">
         <figcaption class="lab">A session run in the room your students already use</figcaption>
       </figure>
+
+      <div class="body" style="margin-top:clamp(24px,2.8vw,38px)">
+        <p><strong>Additional options.</strong> Where a different shape suits your students better, these are available alongside the Live Campus Conversation or instead of it.</p>
+      </div>
+
+      <div class="vs">
+        <div>
+          <h3>Talks and discussions</h3>
+          <ul>
+            <li><b>Leadership Talk + Q&amp;A</b> - a focused leadership session, followed by direct student questions.</li>
+            <li><b>Moderated Leadership Discussion</b> - a deeper, moderated discussion around experience, perspective and the thinking behind the work.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Built around your program</h3>
+          <ul>
+            <li><b>Industry Session</b> - a topic-driven program with experienced practitioners, built around a theme your students or your department are already working on.</li>
+            <li><b>Custom Campus Experience</b> - programming shaped around your students, academic programs, industry themes or institutional objectives.</li>
+          </ul>
+        </div>
+      </div>
       <a href="#enquire" class="btn" style="margin-top:clamp(24px,2.8vw,38px)">Talk through the right format</a>
     </div>
   </section>
@@ -304,10 +335,14 @@
       </div>
 
       <ul class="rows">
-        <li><span class="n">01</span><div><b>We talk</b><span>A short call to understand your programme, your audience, and what success looks like for your institution. No deck.</span></div></li>
+        <li><span class="n">01</span><div><b>We talk</b><span>A short call to understand your program, your audience, and what success looks like for your institution. No deck.</span></div></li>
         <li><span class="n">02</span><div><b>We shape it together</b><span>The format, the theme and the kind of speaker, built around what your students actually need this year.</span></div></li>
-        <li><span class="n">03</span><div><b>We run it</b><span>On campus or online, on a timeline that fits your term and your assessment periods.</span></div></li>
-        <li><span class="n">04</span><div><b>You keep it</b><span>Recording and materials where the speaker agrees, and a named contact who stays with the relationship.</span></div></li>
+        <li><span class="n">03</span><div><b>We run it</b><span>Live on your campus, in front of your students, on a timeline that fits your term and your assessment periods.</span></div></li>
+        <!-- CLIENT EDIT (2026-10-03): was "You keep it - Recording and
+             materials where the speaker agrees...". The Access Exchange films
+             and publishes the conversations, so nothing here may imply the
+             institution owns or can freely reuse the footage. -->
+        <li><span class="n">04</span><div><b>We share it</b><span>Sessions may be professionally filmed and published by The Access Exchange, with appropriate permissions. A named contact stays with the relationship throughout.</span></div></li>
       </ul>
       <a href="#enquire" class="btn" style="margin-top:clamp(24px,2.8vw,38px)">Start the process</a>
     </div>
@@ -327,15 +362,15 @@
           <h3>Academic and institutional</h3>
           <ul>
             <li><b>Colleges and universities</b> - leadership perspective that complements the teaching rather than repeating it.</li>
-            <li><b>Academic programmes</b> - practitioners who can speak to the subject, not to industry in general.</li>
+            <li><b>Academic programs</b> - practitioners who can speak to the subject, not to industry in general.</li>
             <li><b>Professional associations</b> - sessions for members at the point they are making bigger decisions.</li>
           </ul>
         </div>
         <div>
           <h3>Student-facing</h3>
           <ul>
-            <li><b>Careers and employability</b> - sessions students actually attend, and something reusable afterwards.</li>
-            <li><b>Student organisations</b> - smaller, student-led formats where the room sets the agenda.</li>
+            <li><b>Careers and employability</b> - sessions students actually attend, and a conversation they can come back to once it is published.</li>
+            <li><b>Student organizations</b> - smaller, student-led formats where the room sets the agenda.</li>
             <li><b>Alumni relations</b> - a reason to call an alum that is not a donation ask.</li>
           </ul>
         </div>
@@ -343,7 +378,7 @@
 
       <div class="plate-pair">
         <figure><img src="https://images.unsplash.com/photo-1763890763432-17c9a529da20?auto=format&fit=crop&w=800&h=600&q=72" alt="Two students walking through campus" loading="lazy" decoding="async">
-          <figcaption class="lab">Student organisations and course reps</figcaption></figure>
+          <figcaption class="lab">Student organizations and course reps</figcaption></figure>
         <figure><img src="https://images.unsplash.com/photo-1670528148572-9270351b95bd?auto=format&fit=crop&w=800&h=600&q=72" alt="A university building" loading="lazy" decoding="async">
           <figcaption class="lab">Leadership talks and moderated discussions</figcaption></figure>
       </div>
@@ -357,17 +392,15 @@
       <span class="num lab">05 - Questions we get first</span>
       <h2 id="s5-h">The questions institutions ask first.</h2>
 
-      <!-- Keep these six in sync with the FAQPage schema at the top of the file. -->
+      <!-- Keep these four in sync with the FAQPage schema at the top of the file.
+           CLIENT EDIT (2026-10-03): "What does an engagement cost?" and "Do
+           students pay anything?" removed. Campus engagements are currently
+           free and the client wants no pricing raised anywhere on this page.
+           "Can we record the session?" became "Is the session filmed?" - The
+           Access Exchange films, so the old answer's institution usage rights
+           no longer applied. -->
       <div class="qs">
         <details open>
-          <summary><h3>What does an engagement cost?</h3><span class="sign" aria-hidden="true"></span></summary>
-          <p class="a">It depends on the format and the number of sessions. The first conversation is free, and we will give you the number on that call rather than after three meetings and a proposal document.</p>
-        </details>
-        <details>
-          <summary><h3>Do students pay anything?</h3><span class="sign" aria-hidden="true"></span></summary>
-          <p class="a">Never. Institutions arrange the programming; students are never charged to attend or to watch.</p>
-        </details>
-        <details>
           <summary><h3>How much lead time do you need?</h3><span class="sign" aria-hidden="true"></span></summary>
           <p class="a">About two weeks for a single leadership talk. Four to six for a custom campus experience, mostly because matching the right person takes longer than booking a room.</p>
         </details>
@@ -377,19 +410,13 @@
         </details>
         <details>
           <summary><h3>What if our audience is small?</h3><span class="sign" aria-hidden="true"></span></summary>
-          <p class="a">Twenty engaged students in a seminar room is a better session than three hundred in a lecture theatre. Audience size is not the filter and there is no minimum.</p>
+          <p class="a">Twenty engaged students in a seminar room is a better session than three hundred in a lecture theater. Audience size is not the filter and there is no minimum.</p>
         </details>
         <details>
-          <summary><h3>Can we record the session?</h3><span class="sign" aria-hidden="true"></span></summary>
-          <p class="a">Usually yes, with the speaker's agreement. Anything recorded with your students is yours to reuse.</p>
+          <summary><h3>Is the session filmed?</h3><span class="sign" aria-hidden="true"></span></summary>
+          <p class="a">Yes. Sessions may be professionally filmed and published by The Access Exchange, with appropriate permissions.</p>
         </details>
       </div>
-      <!-- CLIENT EDIT (2026-08-20): a "still have questions" CTA was here,
-           right above this FAQ accordion - removed per client feedback, it
-           read redundant next to the FAQ itself. The other 4 per-section
-           CTAs on this page ("Bring this to your campus" / "Talk through the
-           right format" / "Start the process" / "See where you fit") are
-           unaffected. -->
     </div>
   </section>
 
@@ -406,7 +433,9 @@
       <p class="lede">Two or three lines is enough to start. If it is not a fit we will say so quickly, rather than book a call to say it slowly.</p>
 
       <div class="assure">
-        <div><b>No cost to ask</b><span>The first call is a scoping conversation, not a pitch.</span></div>
+        <!-- CLIENT EDIT (2026-10-03): was "No cost to ask" - no pricing
+             language anywhere near the campus offer. -->
+        <div><b>Simple to start</b><span>The first call is a scoping conversation, not a pitch.</span></div>
         <div><b>Term-time aware</b><span>We plan around your term and assessment periods.</span></div>
         <div><b>One contact</b><span>The person you speak to first stays with the engagement.</span></div>
       </div>
@@ -418,12 +447,12 @@
 			<div class="field"><label class="lab" for="fun-institution">Institution</label><span class="wpcf7-form-control-wrap" data-name="institution"><input type="text" id="fun-institution" name="institution" placeholder="University or organisation"></span></div>
 			<div class="field"><label class="lab" for="fun-email">Email</label><span class="wpcf7-form-control-wrap" data-name="email"><input type="email" id="fun-email" name="email" placeholder="you@institution.edu"></span></div>
 			<div class="field"><label class="lab" for="fun-audience">Audience</label><span class="wpcf7-form-control-wrap" data-name="audience"><input type="text" id="fun-audience" name="audience" placeholder="Who would be in the room - course, year, society"></span></div>
-			<div class="field"><label class="lab" for="fun-format">Requested format</label><span class="wpcf7-form-control-wrap" data-name="format"><select id="fun-format" name="format"><option>Select a format</option><option>Leadership Talk + Q&A</option><option>Moderated Leadership Discussion</option><option>Industry Session</option><option>Custom Campus Experience</option><option>Not sure yet</option></select></span></div>
+			<div class="field"><label class="lab" for="fun-format">Requested format</label><span class="wpcf7-form-control-wrap" data-name="format"><select id="fun-format" name="format"><option>Select a format</option><option>Live Campus Conversation + Student Q&A</option><option>Leadership Talk + Q&A</option><option>Moderated Leadership Discussion</option><option>Industry Session</option><option>Custom Campus Experience</option><option>Not sure yet</option></select></span></div>
 			<div class="field"><label class="lab" for="fun-when">Preferred timing, if known</label><span class="wpcf7-form-control-wrap" data-name="when"><input type="text" id="fun-when" name="when" placeholder="A term, a month, or a date"></span></div>
 			<div class="field"><label class="lab" for="fun-size">Expected attendance, if known</label><span class="wpcf7-form-control-wrap" data-name="size"><input type="text" id="fun-size" name="size" placeholder="A rough number is fine"></span></div>
 			<div class="field field--wide"><label class="lab" for="fun-goals">Goals and topics</label><span class="wpcf7-form-control-wrap" data-name="goals"><textarea id="fun-goals" name="goals" placeholder="What you want students to come away with, and any themes you already have in mind."></textarea></span></div>
 			<div class="form-foot">
-				<p class="lab">No cost to ask. We reply within two working days</p>
+				<p class="lab">We reply within two working days</p>
 				<input type="submit" value="Request an engagement" class="wpcf7-submit btn">
 			</div>
 			<div class="wpcf7-response-output" aria-hidden="true"></div>
@@ -482,15 +511,16 @@
         <ul>
           <li><a href="guests.html">Guests</a></li>
           <li><a href="partnerships.html">Partnerships</a></li>
-          <li><a href="universities.html#enquire">Bring The Access Exchange to campus</a></li>
+          <li><a href="universities.html">Bring The Access Exchange to campus</a></li>
           <li><a href="get-involved.html">General inquiry</a></li>
         </ul>
       </div>
 
       <div>
-        <h4 class="lab">Watch</h4>
+        <h4 class="lab">Follow</h4>
         <div class="plat-row">
           <a href="https://www.youtube.com/@theaccessexchange" rel="noopener" aria-label="Watch on YouTube"><svg class="bi" viewBox="0 0 24 24" aria-hidden="true"><use href="#b-youtube"/></svg></a>
+          <a href="https://www.linkedin.com/company/theaccessexchange/" rel="noopener" aria-label="Follow on LinkedIn"><svg class="bi" viewBox="0 0 24 24" aria-hidden="true" style="width:20px;height:20px"><path fill="#0A66C2" d="M22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/><path fill="#fff" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452z"/></svg></a>
         </div>
       </div>
 

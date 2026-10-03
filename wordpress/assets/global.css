@@ -2439,15 +2439,19 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
    larger image on the page; .crew-card .ph below was scaled down to match. */
 .tae-about .who .ph{width:clamp(200px,26vw,360px);aspect-ratio:4/5}
 /* CLIENT EDIT (2026-08-21): "the image and the text section are of the same
-   height". Side by side, the portrait now takes its height from the row and
-   drops the 4/5 ratio, so its bottom edge lands on the last line of the bio
-   instead of wherever 4/5 happened to end. Must sit after the rule above -
-   a media query adds no specificity, so on equal weight the later rule wins.
-   Stacked (under 820px) there is no text column to match, so the ratio stays
-   and .who-grid keeps centring. */
+   height". Side by side, the portrait took its height from the row and
+   dropped the 4/5 ratio, so its bottom edge landed on the last line of the
+   bio instead of wherever 4/5 happened to end.
+
+   CLIENT EDIT (2026-09-09): the bio grew from 2 paragraphs to 6, so the
+   stretched box got tall enough that object-fit:cover was cropping the
+   portrait into a zoomed-in sliver. Sticky instead, same pattern as
+   .tae-home .campus .ph: the portrait keeps its 4/5 ratio and pins near the
+   top of the row while the long bio scrolls past beside it. Stacked (under
+   820px) there is no text column to match and .who-grid keeps centring. */
 @media(min-width:820px){
-  .tae-about .who-grid{align-items:stretch}
-  .tae-about .who .ph{aspect-ratio:auto}
+  .tae-about .who-grid{align-items:start}
+  .tae-about .who .ph{position:sticky;top:calc(var(--mast-short) + 26px)}
 }
 .tae-about .who .who-name{font-family:var(--skandia);font-weight:400;
   font-size:clamp(1.24rem,2.4vw,2.05rem);line-height:1.22;letter-spacing:-.032em;

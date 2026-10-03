@@ -541,6 +541,25 @@ check("every FAQ schema question is in the accordion",
       sorted(schema_qs) == sorted(markup_qs),
       f"{len(schema_qs)} in schema, {len(markup_qs)} in markup")
 
+# ── 38b · no pricing on the campus page, in the copy or the form ───────────
+# Client, 2026-10-03: campus engagements are currently free and pricing is not
+# to be raised anywhere on this page - FAQ, assurances or form included.
+PRICING = re.compile(r"\b(costs?|pric(e|es|ing)|budgets?|fees?|pay|paid|charged?|free)\b", re.I)
+uni_form = cf7[cf7.index("### 4.10"):cf7.index("**B · Mail tab**", cf7.index("### 4.10"))]
+check("no pricing language on /universities/",
+      not PRICING.search(words(uni)), str(PRICING.findall(words(uni))))
+check("no pricing field or line in the university form",
+      not PRICING.search(uni_form.split("```")[1]),
+      str(PRICING.findall(uni_form.split("```")[1])))
+
+# ── 38c · campus links from other pages land on the top of the page ────────
+# Client, 2026-10-03: visitors see the experience before the form. Only the
+# University page itself may jump to its own #enquire band.
+deep = [f.name for f in WP.glob("*.html")
+        if f.name != "universities.html"
+        and "/universities/#enquire" in re.sub(r"<!--.*?-->", "", f.read_text(encoding="utf-8"), flags=re.S)]
+check("no other page deep-links to the campus form", not deep, str(deep))
+
 # ── 39 · the six fields the handoff names for this form, by name ───────────
 check("university form placed", 'html_class="form form--university"' in uni)
 check("form id still flagged as a placeholder", "REPLACE_ID_UNIVERSITY" in uni)
@@ -601,7 +620,7 @@ check("no Event schema on a page with no dated events",
       '"@type": "Event"' not in xp)
 
 # ── 44 · the inquiry pathways reach real forms ─────────────────────────────
-ROUTES = ("/universities/#enquire", "/partnerships/", "/get-involved/")
+ROUTES = ("/universities/", "/partnerships/", "/get-involved/")
 for r in ROUTES:
     check(f"pathway · {r}", r in xp)
 # and those targets must be anchors that actually exist
@@ -679,7 +698,7 @@ for cls in ("sheet", "sheet-head", "spread", "copy", "plate", "facts", "ends"):
 check("get-involved hero", "How do you want to enter The Access Exchange?" in gi)
 ROUTES = [("Share your perspective", "/guests/"),
           ("Partner with The Access Exchange", "/partnerships/"),
-          ("Bring The Access Exchange to campus", "/universities/#enquire"),
+          ("Bring The Access Exchange to campus", "/universities/"),
           ("Explore coaching", "/coaching/#coaching"),
           ("Explore coach training", "/coaching/#training"),
           ("General inquiry", "#general")]

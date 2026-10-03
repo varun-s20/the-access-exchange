@@ -1725,7 +1725,7 @@ deciding whether to ask is how an inquiry form loses an inquiry.
 </div>
 <div class="field">
   <label class="lab" for="u-fmt">Requested format</label>
-  [select* format id:u-fmt first_as_label "Select a format" "Leadership Talk + Q&A" "Moderated Leadership Discussion" "Industry Session" "Custom Campus Experience" "Not sure yet"]
+  [select* format id:u-fmt first_as_label "Select a format" "Live Campus Conversation + Student Q&A" "Leadership Talk + Q&A" "Moderated Leadership Discussion" "Industry Session" "Custom Campus Experience" "Not sure yet"]
 </div>
 <div class="field">
   <label class="lab" for="u-when">Preferred timing, if known</label>
@@ -1741,10 +1741,21 @@ deciding whether to ask is how an inquiry form loses an inquiry.
 </div>
 <input class="sr" type="text" name="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
 <div class="form-foot">
-  <p class="lab">No cost to ask. We reply within two working days</p>
+  <p class="lab">We reply within two working days</p>
   [submit class:btn "Request an engagement"]
 </div>
 ```
+
+**CLIENT EDIT (2026-10-03).** Two changes from the previous version of this
+form, both to paste into the live form's Form tab:
+
+- The footer line was `No cost to ask. We reply within two working days`.
+  Campus engagements are currently free and the client wants no pricing
+  language anywhere in the campus flow, so `No cost to ask.` is gone. There
+  is no budget or cost field on this form and there must not be one.
+- `"Live Campus Conversation + Student Q&A"` is now the first format option,
+  matching the primary format stated first on `/universities/`. The other
+  four stay as additional options.
 
 **B · Mail tab**
 
