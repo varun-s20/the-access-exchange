@@ -105,22 +105,27 @@ check("gold-on-paper is decorative only (documented as failing)", rgp < 3.0,
       f"{rgp:.2f}:1 - comment must keep saying so")
 
 
-# ── 4 · mobile masthead: wordmark must not sit under the CTA ───────────────
+# ── 4 · mobile masthead: logo must not sit under the CTA ───────────────────
 # At 360px: --chrome-pad clamps to 18px, hamburger 24px, .mark offset by pad+40.
+# The logo there is the A-X mark at --icon-h (60px bar - 26px), its width
+# following the file's own aspect ratio.
 # CTA is padding 0 12px, .6rem/9.6px uppercase with .1em tracking.
 VW = 360
 pad = max(18, min(0.04 * VW, 64))
 mark_left = pad + 40
-mark_font = max(0.94 * 16, min(0.039 * VW, 1.18 * 16))
-mark_w = len("The Access Exchange") * mark_font * 0.52   # ~0.52em average advance
+check("mobile masthead sizes the mark from the bar",
+      "--icon-h:calc(var(--mast-short)-26px)" in CSS.replace(" ", ""))
+icon = re.search(r'class="mark-icon"[^>]*width="(\d+)" height="(\d+)"',
+                 (WP / "header.html").read_text(encoding="utf-8"))
+mark_w = (60 - 26) * int(icon.group(1)) / int(icon.group(2)) if icon else 999
 mark_right = mark_left + mark_w
 
 cta_font = 0.6 * 16
 cta_w = len("Get Involved") * cta_font * 0.72 + 24       # uppercase + .1em tracking
 cta_left = VW - pad - cta_w
 
-check("mobile wordmark clears the CTA at 360px", mark_right < cta_left,
-      f"wordmark ends {mark_right:.0f}px, CTA starts {cta_left:.0f}px")
+check("mobile logo clears the CTA at 360px", mark_right < cta_left,
+      f"logo ends {mark_right:.0f}px, CTA starts {cta_left:.0f}px")
 
 
 # ── 5 · masthead height reserves the nav strip ─────────────────────────────

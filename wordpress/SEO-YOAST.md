@@ -21,7 +21,7 @@ Per-page work inherits from these. Getting them wrong makes every page wrong.
 | Organization or person   | **Organization**                                                                                                                                                               |
 | Organization name        | `The Access Exchange`                                                                                                                                                          |
 | Alternate name           | `Access Exchange`                                                                                                                                                              |
-| Organization logo        | Square PNG, **at least 512×512**, ideally 1024×1024, transparent or `#F8F8F3` background                                                                                       |
+| Organization logo        | `wordpress/assets/images/tae-site-icon.png` - the A-X mark on paper, 1024×1024. Same file as the Site Icon (README-WORDPRESS.md §2b)                                             |
 | Organization description | `A tech media and professional-development platform: long-form interviews with people working in tech, and partnership programs that bring those conversations onto campus.` |
 | Email                    | `connect@theaccessexchange.com`                                                                                                                                                  |
 
@@ -237,8 +237,17 @@ fallback (§1.2), which is correct for pages that aren't meant to be shared.
 Set these on the **Social tab**, not as the Featured Image - Hello Elementor
 would print the featured image into the page body.
 
-If you only make one, put it in **Site basics → Site image** and every page
-falls back to it.
+**The Site image is NOT a fallback for these pages.** Yoast picks a preview
+image in this order: the page's Social tab → its featured image → the first
+image in the page content → Site basics → Site image. Every page here has
+photos in its content, so without a Social-tab image Yoast shares the first
+photo - which is how the home page went out on WhatsApp with the Unsplash
+students (2026-10-31). The Site image only covers Privacy and Terms.
+
+`og-home.jpg` exists now: the logo on paper, cut by `tools/brand-assets.py`
+into `wordpress/assets/images/`. Its lockup sits inside the centre 630px so
+WhatsApp's square crop keeps all of it. Until the other cards are made, use
+it on any page whose preview should show the logo rather than a photo.
 
 ---
 

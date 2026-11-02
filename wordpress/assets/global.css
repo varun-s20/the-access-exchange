@@ -99,17 +99,19 @@
   --r:10px;
 
   /* masthead
-     --mast-tall is the wordmark band and keeps its original measurements, so the
-     collapse choreography and --mark-top below are untouched. --mast-nav is the
-     primary-nav strip underneath it; --mast-full is what .mast and .mast-spacer
-     actually reserve. Under 1080px --mast-nav drops to 0 (see §04) and the nav
-     moves into the menu panel. */
-  --mast-tall:clamp(96px,12vw,158px);
+     --mast-tall is the logo band. --mast-nav is the primary-nav strip
+     underneath it; --mast-full is what .mast and .mast-spacer actually reserve.
+     Under 1080px --mast-nav drops to 0 (see §04) and the nav moves into the
+     menu panel.
+     The band's floor went from 96px to 120px with the stacked logo: the
+     lettering under the mark is 8% of the lockup's height, so a 66px lockup on
+     a tablet set it at 5px. At 120px it is 7.5px, and 10.7px at full width. */
+  --mast-tall:clamp(120px,12vw,158px);
   --mast-short:clamp(64px,7vw,78px);
   --mast-nav:46px;
   --mast-full:calc(var(--mast-tall) + var(--mast-nav));
-  --fs-mark:clamp(1.5rem,5.7vw,4.2rem);
-  --fs-mark-sm:clamp(1.1rem,1.85vw,1.5rem);
+  --logo-h:calc(var(--mast-tall) - 30px);
+  --icon-h:calc(var(--mast-short) - 26px);
 
   /* the masthead and footer ignore the page shell so they match everywhere */
   --chrome-shell:1560px;
@@ -599,7 +601,7 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
    under 99999 so the WP admin bar still wins.
      .mast 9000  <  .veil 9990  <  .find 9995  <  admin bar 99999            */
 .mast{position:fixed;inset:0 0 auto;z-index:9000;height:var(--mast-full);
-  --mark-top:calc(var(--mast-short) + (var(--mast-tall) - var(--mast-short)) * .38);
+  --mark-top:calc(var(--mast-tall) / 2);
   background:var(--paper);color:var(--ink);
   transition:height .55s var(--ease),box-shadow .5s var(--ease)}
 /* Solid paper, by choice. A translucent blurred bar was tried and read as a
@@ -681,24 +683,42 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
   top:var(--mark-top);height:var(--hair);background:var(--rule);z-index:0;
   transition:opacity .4s var(--ease),top .55s var(--ease)}
 .mast.compact .mast-rule{opacity:0}
-/* .mark is an <a>, so two classes deep to out-rank the `.mast a` neutraliser */
+/* LOGOS - every brand slot (masthead, menu panel, footer) carries the same
+   pair: .mark-full, the stacked lockup, from 760px up; .mark-icon, the A-X
+   mark, below it. Each slot sets the two heights; widths follow the files.
+   The masthead adds one exception: collapsed, the bar is too short for the
+   lockup's lettering to read, so the lockup shrinks and fades out as the mark
+   fades in - the same move the type wordmark used to make. */
+.mark-full,.mark-icon{width:auto;max-width:none}
+@media(max-width:759px){.mark-full{display:none}}
+@media(min-width:760px){.veil-mark .mark-icon,.foot-mark .mark-icon{display:none}}
+
+/* .mark is an <a>, so two classes deep to out-rank the `.mast a` neutraliser.
+   The two images share one grid cell, so the box is the larger of them and
+   never outgrows the bar once the lockup has shrunk. */
 .mast .mark{position:absolute;left:50%;top:var(--mark-top);translate:-50% -50%;z-index:1;
-  background:var(--paper);padding-inline:clamp(14px,3vw,42px);white-space:nowrap;
-  font-family:var(--skandia);font-weight:400;font-size:var(--fs-mark);line-height:1;
-  letter-spacing:-.038em;color:var(--ink);
-  transition:font-size .55s var(--ease),top .55s var(--ease)}
-.mark i{font-style:italic;font-weight:300}
-.mast.compact .mark{font-size:var(--fs-mark-sm)}
+  display:grid;place-items:center;background:var(--paper);
+  padding-inline:clamp(14px,3vw,42px);
+  transition:top .55s var(--ease)}
+.mast .mark img{grid-area:1/1}
+.mast .mark-full{height:var(--logo-h);
+  transition:height .55s var(--ease),opacity .4s var(--ease)}
+.mast .mark-icon{height:var(--icon-h);opacity:0;transition:opacity .4s var(--ease)}
+.mast.compact .mark-full{height:var(--icon-h);opacity:0}
+.mast.compact .mark-icon{opacity:1}
+@media(prefers-reduced-motion:reduce){
+  .mast .mark,.mast .mark-full,.mast .mark-icon{transition:none}
+}
 @media(max-width:759px){
   :root{--mast-tall:60px;--mast-short:60px}
   .mast{--mark-top:calc(var(--mast-short) / 2);box-shadow:0 1px 0 var(--rule)}
   .mast-l .srchbtn{display:none}
   .mast-rule{display:none}
-  /* the CTA stays on mobile (handoff §7) - so the wordmark stops being centred
+  /* the CTA stays on mobile (handoff §7) - so the logo stops being centred
      and sits next to the hamburger instead. Centred, the two collide at 360px. */
   .mast .mark{left:calc(var(--chrome-pad) + 40px);translate:0 -50%;
-    background:none;padding:0;letter-spacing:-.03em;font-size:clamp(.94rem,3.9vw,1.18rem)}
-  .mast.compact .mark{font-size:clamp(.94rem,3.9vw,1.18rem)}
+    background:none;padding:0}
+  .mast .mark-icon{opacity:1}
   .mast-r .cta{min-height:34px;padding:0 12px;font-size:.6rem;letter-spacing:.1em;
     box-shadow:2px 2px 0 0 var(--ink)}
   .mast-in{gap:12px}
@@ -732,9 +752,8 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
 @media(max-width:759px){.veil-panel{width:100%;min-width:0}}
 .veil-top{display:flex;align-items:center;justify-content:space-between;gap:16px;
   min-height:var(--mast-short)}
-.veil-mark{font-family:var(--skandia);font-weight:400;letter-spacing:-.036em;
-  font-size:clamp(1.05rem,1.5vw,1.3rem);line-height:1}
-.veil-mark i{font-style:italic;font-weight:300}
+.veil-mark .mark-full{height:clamp(84px,7vw,96px)}
+.veil-mark .mark-icon{height:var(--icon-h)}
 /* two classes deep so it out-ranks the `.veil button{color:inherit}` neutraliser */
 .veil .veil-close{color:var(--ink-2);transition:color .3s var(--ease)}
 .veil .veil-close:hover{color:var(--ink)}
@@ -820,13 +839,11 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
   transition:color .3s var(--ease)}
 .foot li a:hover{color:var(--paper);text-decoration:underline;text-underline-offset:3px;
   text-decoration-color:var(--accent)}
-/* fills the measure between the rules; Access bold, Exchange lighter, as in
-   the masthead */
-.foot-mark{display:block;text-align:center;white-space:nowrap;
-  font-family:var(--skandia-m);font-weight:500;color:var(--paper);
-  font-size:clamp(1.9rem,9.65vw,9.6rem);line-height:1;letter-spacing:-.05em;
+/* the reversed logo, centred between the rules - the sign-off of every page */
+.foot-mark{display:flex;justify-content:center;
   padding:clamp(30px,4vw,60px) 0 clamp(22px,2.8vw,40px)}
-.foot-mark i{font-style:italic;font-weight:300}
+.foot-mark .mark-full{height:clamp(150px,17vw,250px)}
+.foot-mark .mark-icon{height:96px}
 .foot-bot{display:flex;flex-wrap:wrap;gap:10px 22px;justify-content:space-between;
   padding-top:20px;border-top:var(--hair) solid color-mix(in srgb,var(--paper) 16%,transparent);
   color:color-mix(in srgb,var(--paper) 50%,transparent)}
@@ -834,13 +851,11 @@ a:hover > .ph,.card:hover .ph,.it:hover .ph,.face:hover .ph,.minor:hover .ph{
 /* the platform marks keep their own colours against the dark ground */
 .foot .plat-row a{opacity:1}
 @media(max-width:559px){
-  /* the wordmark is set to fill the measure, so it needs the tighter ratio
-     once the side padding stops shrinking with the viewport */
-  .foot-mark{font-size:9.1vw}
   /* a phone is too narrow for the columns to wrap into anything but a ragged
      centred block, so every entity - the four link columns and the legal row
-     under the wordmark alike - stacks and starts at the same left edge */
+     under the logo alike - stacks and starts at the same left edge */
   .foot-cols,.foot-bot{flex-direction:column;align-items:flex-start}
+  .foot-mark{justify-content:flex-start}
 }
 
 

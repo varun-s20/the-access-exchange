@@ -7,7 +7,8 @@ and the `20vc/` folder was left alone entirely.
 wordpress/
 ├── assets/
 │   ├── global.css                 all CSS for all six pages, one file
-│   └── global.js                  all JS for all six pages, one file
+│   ├── global.js                  all JS for all six pages, one file
+│   └── images/                    logos + site icon (§2b)
 ├── header.html                    Theme Builder → Header
 ├── footer.html                    Theme Builder → Footer
 ├── index.html                     page body only  →  /
@@ -235,6 +236,64 @@ the container list at the top of §02b needs one more entry.
 
 The active menu item is set at runtime by `global.js` (it compares each nav
 `href` to `location.pathname`), so the header file stays identical site-wide.
+
+---
+
+## 2b. Logos and favicon
+
+Two logos, one rule: the **A-X mark** is the main logo (phones, the collapsed
+desktop bar, the favicon); the **full lockup** (mark over THE ACCESS EXCHANGE)
+is the desktop logo. The header and footer HTML already reference both - you
+only have to put the files where they point.
+
+All the files are in `wordpress/assets/images/`, cut from the client's masters
+by `python tools/brand-assets.py`. Re-run that if the client sends new artwork.
+
+| File                   | Where it shows                                  | How it gets there        |
+| ---------------------- | ----------------------------------------------- | ------------------------ |
+| `tae-logo.png`         | masthead + menu panel, 760px and wider          | Media Library (1)        |
+| `tae-mark.png`         | masthead + menu panel on phones; collapsed bar  | Media Library (1)        |
+| `tae-logo-reverse.png` | footer, 760px and wider (paper-on-black)        | Media Library (1)        |
+| `tae-mark-reverse.png` | footer on phones                                | Media Library (1)        |
+| `tae-site-icon.png`    | browser tab, bookmarks, phone home screen       | Site Icon setting (2)    |
+| `favicon.ico`, `apple-touch-icon.png` | static preview only - **do not upload**; WordPress makes its own from (2) | - |
+
+**1. The four logo files → Media Library** *(done 2026-10-31)*
+
+They were uploaded through **Media → Add New Media File** and live at
+`https://theaccessexchange.com/wp-content/uploads/2026/10/tae-logo.png` and
+so on. `header.html` and `footer.html` already carry those paths
+(`/wp-content/uploads/2026/10/...`), so they paste in as they are.
+
+If a logo is ever re-uploaded, WordPress files it under that month's folder
+(and adds `-1` to the name if the old one is still there). Copy its File URL
+from the Media Library and update the paths - four in `header.html`, two in
+`footer.html` - before re-pasting.
+
+Then re-paste `header.html` and `footer.html` into their Theme Builder
+widgets (§2), and update `global.css` (§1). All three changed with the logos.
+
+**2. Favicon / site icon**
+
+**Elementor → Site Settings → Site Identity → Site Favicon** → upload
+`tae-site-icon.png` → Update. (Same setting as **Appearance → Customize →
+Site Identity → Site Icon** - use whichever you see.) WordPress generates the
+32px tab icon, the 180px Apple touch icon and the Android icons from it, and
+prints the `<link rel="icon">` tags on every page itself - add nothing to the
+theme. The icon sits on solid paper, not transparency, because iOS fills a
+transparent home-screen icon with black, which would swallow the black A.
+
+Also set the same file as the **Yoast organization logo** (SEO-YOAST.md §1).
+
+**Check it**
+
+- Desktop, top of a page: full lockup centred in the masthead.
+- Scroll: the lockup shrinks and cross-fades to the A-X mark.
+- Phone width: the A-X mark beside the hamburger; the menu panel and footer
+  show the mark too.
+- Footer on desktop: the paper-on-black lockup between the two rules.
+- Browser tab: the A-X icon. Browsers cache favicons hard - check in a
+  private window, and purge any page cache (LiteSpeed, WP Rocket) first.
 
 ---
 

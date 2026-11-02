@@ -14,6 +14,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://images.pexels.com" crossorigin>
+<link rel="icon" href="assets/images/favicon.ico" sizes="16x16 32x32 48x48">
+<link rel="icon" type="image/png" href="assets/images/tae-site-icon.png" sizes="1024x1024">
+<link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
 <link rel="stylesheet" href="assets/global.css">
 </head>
 
@@ -49,6 +52,17 @@
      The active nav item is set at runtime by global.js (it compares each href to
      location.pathname, across both navs), so this file stays byte-identical
      site-wide.
+
+     LOGOS (client, 2026-10-30). Both <img>s ship together and CSS shows one:
+       · tae-logo.png  the full lockup - desktop, 760px and up
+       · tae-mark.png  the A-X mark - phones, and the collapsed desktop bar,
+                       where the lockup's lettering would be under 5px tall
+     They are Media Library uploads (2026-10-31), so the paths carry the
+     upload month: /wp-content/uploads/2026/10/. If a logo is ever re-uploaded,
+     copy its new File URL into all four src below and the two in footer.html
+     (README-WORDPRESS.md §2b).
+     Both are alt="" because the hidden span names the link once, whichever
+     image is showing; an alt on each would read the name twice on desktop.
      ═══════════════════════════════════════════════════════════════════════════ -->
 
 <svg class="sr" aria-hidden="true" focusable="false"><defs>
@@ -65,7 +79,11 @@
 <!-- ═══ MASTHEAD ═══════════════════════════════════════════════════════════ -->
 <div class="mast" id="mast">
   <span class="mast-rule" aria-hidden="true"></span>
-  <a class="mark" href="index.html" rel="home">The Access <i>Exchange</i></a>
+  <a class="mark" href="index.html" rel="home">
+    <img class="mark-full" src="assets/images/tae-logo.png" width="463" height="256" alt="" fetchpriority="high">
+    <img class="mark-icon" src="assets/images/tae-mark.png" width="229" height="160" alt="">
+    <span class="sr">The Access Exchange</span>
+  </a>
   <div class="mast-in">
     <div class="mast-l">
       <button type="button" id="menuBtn" aria-expanded="false" aria-controls="veil" aria-label="Open menu">
@@ -97,7 +115,11 @@
 <div class="veil" id="veil" role="dialog" aria-modal="true" aria-label="Menu" hidden>
   <div class="veil-panel">
     <div class="veil-top">
-      <a class="veil-mark" href="index.html" rel="home">The Access <i>Exchange</i></a>
+      <a class="veil-mark" href="index.html" rel="home">
+        <img class="mark-full" src="assets/images/tae-logo.png" width="463" height="256" alt="" loading="lazy">
+        <img class="mark-icon" src="assets/images/tae-mark.png" width="229" height="160" alt="" loading="lazy">
+        <span class="sr">The Access Exchange</span>
+      </a>
       <button type="button" id="veilClose" class="veil-close" aria-label="Close menu">
         <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-close"/></svg>
       </button>
@@ -365,8 +387,10 @@
        · Inside it, ONE "HTML" widget containing everything in this file
        · Display Conditions: Entire Site
 
-     The wordmark is set to fill the measure between the two rules, so it
-     scales with the viewport rather than sitting at a fixed size.
+     The logo between the two rules is the reversed artwork (paper A, gold
+     triangle) - the masthead files would vanish on this black. Full lockup
+     from 760px up, A-X mark below, the same split as the masthead. Both are
+     cut by tools/brand-assets.py and live in /wp-content/uploads/2026/10/.
      Update the © year here once a year, or swap the <span> for the shortcode
      [year] if you have a snippet plugin registered for it.
 
@@ -418,7 +442,11 @@
 
     </div>
 
-    <div class="foot-mark">The Access <i>Exchange</i></div>
+    <div class="foot-mark">
+      <img class="mark-full" src="assets/images/tae-logo-reverse.png" width="965" height="533" alt="" loading="lazy" decoding="async">
+      <img class="mark-icon" src="assets/images/tae-mark-reverse.png" width="344" height="240" alt="" loading="lazy" decoding="async">
+      <span class="sr">The Access Exchange</span>
+    </div>
 
     <div class="foot-bot lab">
       <span>&copy; 2026 The Access Exchange</span>

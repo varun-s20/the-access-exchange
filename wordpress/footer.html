@@ -5,8 +5,10 @@
        · Inside it, ONE "HTML" widget containing everything in this file
        · Display Conditions: Entire Site
 
-     The wordmark is set to fill the measure between the two rules, so it
-     scales with the viewport rather than sitting at a fixed size.
+     The logo between the two rules is the reversed artwork (paper A, gold
+     triangle) - the masthead files would vanish on this black. Full lockup
+     from 760px up, A-X mark below, the same split as the masthead. Both are
+     cut by tools/brand-assets.py and live in /wp-content/uploads/2026/10/.
      Update the © year here once a year, or swap the <span> for the shortcode
      [year] if you have a snippet plugin registered for it.
 
@@ -58,7 +60,11 @@
 
     </div>
 
-    <div class="foot-mark">The Access <i>Exchange</i></div>
+    <div class="foot-mark">
+      <img class="mark-full" src="/wp-content/uploads/2026/10/tae-logo-reverse.png" width="965" height="533" alt="" loading="lazy" decoding="async">
+      <img class="mark-icon" src="/wp-content/uploads/2026/10/tae-mark-reverse.png" width="344" height="240" alt="" loading="lazy" decoding="async">
+      <span class="sr">The Access Exchange</span>
+    </div>
 
     <div class="foot-bot lab">
       <span>&copy; 2026 The Access Exchange</span>

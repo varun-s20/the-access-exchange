@@ -453,7 +453,17 @@ def relink(markup):
 
     Applies to page bodies as well as the chrome - the home page's own CTAs
     point at /coaching/ and friends just as the nav does.
+
+    An upload whose file wordpress/assets/images/ also holds (fetch-images.py
+    and brand-assets.py both write there) points at the copy main() makes in
+    assets/images/, whatever folder the Media Library filed it under. Uploads
+    with no local copy - the about page portraits - are left as they are.
     """
+    local = {f.name for f in (WP / "assets" / "images").glob("*")}
+    markup = re.sub(
+        r'src="/wp-content/uploads/(?:[^"]*/)?([^"/]+)"',
+        lambda m: f'src="assets/images/{m.group(1)}"' if m.group(1) in local
+        else m.group(0), markup)
     return re.sub(r'\bhref="([^"]*)"',
                   lambda m: f'href="{to_local(m.group(1))}"', markup)
 
@@ -536,6 +546,9 @@ def page(title, desc, scope, nav, body, header, footer, index_js):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://images.pexels.com" crossorigin>
+<link rel="icon" href="assets/images/favicon.ico" sizes="16x16 32x32 48x48">
+<link rel="icon" type="image/png" href="assets/images/tae-site-icon.png" sizes="1024x1024">
+<link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
 <link rel="stylesheet" href="assets/global.css">
 </head>
 
@@ -588,6 +601,11 @@ def main():
     (ROOT / "assets").mkdir(exist_ok=True)
     for name in ("global.css", "global.js"):
         shutil.copyfile(WP / "assets" / name, ROOT / "assets" / name)
+    # logos, favicons and any downloaded photos - see relink()
+    (ROOT / "assets" / "images").mkdir(exist_ok=True)
+    for f in (WP / "assets" / "images").glob("*"):
+        if f.is_file():
+            shutil.copyfile(f, ROOT / "assets" / "images" / f.name)
 
     written = []
 
